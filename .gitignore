@@ -1,7 +1,26 @@
-.DS_Store
-.env
-/node_modules/
+.secure.log
+node_modules
+.react-router
 
-# React Router
-/.react-router/
-/build/
+/build
+/public/build
+/public/saksbehandling
+/server/build
+
+.DS_Store
+
+/.cache
+/resources
+
+#intellij
+*.iml
+/.idea
+/.fleet
+
+# .env
+.env*
+
+copilot-instructions.md
+.sisyphus/
+.playwright-mcp/
+.agents

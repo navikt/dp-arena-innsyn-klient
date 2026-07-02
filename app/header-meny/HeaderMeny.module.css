@@ -1,0 +1,89 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.searchAndSaksbehandlerContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.linkContainer {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  height: 100%;
+  margin-right: var(--ax-space-16);
+}
+
+.linkItem {
+  display: flex;
+  align-items: center;
+
+  height: 100%;
+  padding: 0 var(--ax-space-16);
+
+  color: #fff;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.linkItem:hover {
+  box-shadow: inset 0 -4px var(--ax-border-focus);
+}
+
+.linkItemActive.linkItemActive {
+  background-color: var(--ax-bg-default);
+  box-shadow: inset 0 -4px var(--ax-border-accent);
+}
+
+.user {
+  margin-left: auto;
+  align-self: stretch;
+  white-space: nowrap;
+}
+
+.user button {
+  height: 100%;
+}
+
+.antallOppgaverTilBehandling {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: var(--ax-font-size-small);
+
+  margin-left: var(--ax-space-4);
+  width: 22px;
+  height: 22px;
+
+  background-color: var(--ax-bg-danger-strong);
+  border-radius: var(--ax-radius-full);
+}
+
+.loader {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: var(--ax-font-size-small);
+
+  margin-left: var(--ax-space-4);
+  width: 22px;
+  height: 22px;
+}
+
+
+.dropdownMeny.dropdownMeny {
+  width: fit-content;
+}
+
+.loggUt {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}

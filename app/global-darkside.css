@@ -1,0 +1,43 @@
+@import "tailwindcss";
+@import "@navikt/ds-css" layer(components);
+@config "../tailwind.config.js";
+
+:root .light {
+  --dp-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.15), 0px 0px 1px 0px rgba(0, 0, 0, 0.2);
+  --dp-shadow-inset:
+    0px 1px 3px 0px rgba(0, 0, 0, 0.15) inset, 0px 0px 1px 0px rgba(0, 0, 0, 0.2) inset;
+  --dp-shadow-2: 0 0 1px 1px var(--ax-neutral-300A);
+}
+
+:root .dark {
+  --dp-shadow: 0px 1px 3px 0px rgba(107, 107, 138, 0.35), 0px 0px 1px 0px rgba(107, 107, 138, 0.5);
+  --dp-shadow-inset:
+    0px 1px 3px 0px rgba(107, 107, 138, 0.35) inset, 0px 0px 1px 0px rgba(107, 107, 138, 0.5) inset;
+  --dp-shadow-2: 0 0 1px 1px var(--ax-neutral-300A);
+}
+
+.main-container {
+  min-height: 100vh;
+  background-color: var(--ax-bg-sunken);
+  display: flex;
+  flex-direction: column;
+}
+
+.main {
+  background-color: var(--ax-bg-sunken);
+  padding: var(--ax-space-16);
+}
+
+.card {
+  background-color: var(--ax-bg-default);
+  box-shadow: var(--dp-shadow-2);
+  border-radius: var(--ax-radius-8);
+}
+
+.card-raised {
+  background-color: var(--ax-bg-neutral-soft);
+}
+
+.readmore--with-checkboxes .aksel-read-more__content .checkbox--in-readmore .aksel-checkboxes {
+  margin-top: 0;
+}

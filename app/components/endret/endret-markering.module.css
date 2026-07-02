@@ -1,0 +1,5 @@
+.endret {
+  border-radius: 4px;
+  border: 1px solid var(--ax-border-warning-subtle);
+  background: var(--ax-bg-warning-soft);
+}

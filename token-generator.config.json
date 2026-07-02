@@ -1,0 +1,6 @@
+[
+  {
+    "env": "DP_SAKSBEHANDLING_TOKEN",
+    "url": "https://azure-token-generator.intern.dev.nav.no/api/obo?aud=dev-fss.teamdagpenger.dp-arena-gw"
+  }
+]

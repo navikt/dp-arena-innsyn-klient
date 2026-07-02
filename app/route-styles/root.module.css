@@ -1,0 +1,30 @@
+.devEnvironmentBanner {
+  position: sticky;
+  top: 0;
+  z-index: 101;
+  background-color: hotpink;
+  color: white;
+  text-align: center;
+  font-weight: bold;
+  font-size: 0.75rem;
+  padding: 2px 0;
+  letter-spacing: 0.05em;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.headerLogo {
+  display: flex;
+  text-decoration: none;
+}
+
+.pageHeader span {
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: var(--ax-space-8);
+}

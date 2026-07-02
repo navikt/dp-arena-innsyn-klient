@@ -1,0 +1,7 @@
+.successIcon {
+  color: var(--ax-border-success);
+}
+
+.errorIcon {
+  color: var(--ax-border-danger);
+}

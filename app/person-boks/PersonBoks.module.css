@@ -1,0 +1,43 @@
+.container {
+  position: sticky;
+  top: 48px;
+  z-index: 3;
+
+  display: flex;
+  gap: var(--ax-space-48, var(--ax-space-42));
+  padding: var(--ax-space-16, var(--ax-space-16));
+
+  background-color: var(--ax-bg-default, var(--ax-bg-default));
+  box-shadow: var(--dp-shadow);
+}
+
+.navnContainer {
+  display: flex;
+  align-items: center;
+  gap: var(--ax-space-8, var(--ax-space-8));
+}
+
+.infoElement {
+  display: flex;
+  align-items: center;
+  gap: var(--ax-space-4, var(--ax-space-4));
+  white-space: nowrap;
+}
+
+.iconContainer {
+  border-radius: var(--ax-radius-full);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 26px;
+  height: 26px;
+}
+
+.iconContainerMann {
+  background-color: var(--ax-bg-accent-strong);
+}
+
+.iconContainerKvinne {
+  background-color: var(--ax-bg-danger-strong);
+}
