@@ -7,6 +7,8 @@ jobs:
   test:
     name: test
     runs-on: ubuntu-latest
+    env:
+      NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN || github.token }}
     permissions:
       contents: "read"
     steps:
@@ -33,9 +35,7 @@ jobs:
       - name: Install dependencies
         if: steps.node_modules.outputs.cache-hit != 'true'
         run: pnpm install --ignore-scripts
-        env: 
-          GITHUB_TOKEN: ${{ secrets.READER_TOKEN }}
-      
+
       - name: Run tests
         run: pnpm test
 
@@ -44,6 +44,8 @@ jobs:
     needs: [ test ]
     if: github.actor != 'dependabot[bot]' || github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    env:
+      NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN || github.token }}
     permissions:
       contents: "read"
       id-token: "write"
@@ -75,16 +77,12 @@ jobs:
       - name: Install dependencies
         if: steps.node_modules.outputs.cache-hit != 'true'
         run: pnpm install --ignore-scripts
-        env:
-          GITHUB_TOKEN: ${{ secrets.READER_TOKEN }}
 
       - name: Build app
         run: pnpm build
 
       - name: Remove dev dependencies
         run: pnpm install --ignore-scripts --prod
-        env:
-          GITHUB_TOKEN: ${{ secrets.READER_TOKEN }}
 
       - name: Bygg og push Docker image
         uses: nais/docker-build-push@v0
