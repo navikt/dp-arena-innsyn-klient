@@ -1,22 +1,14 @@
-FROM node:24-alpine AS development-dependencies-env
-COPY . /app
+FROM europe-north1-docker.pkg.dev/cgr-nav/pull-through/nav.no/node:24@sha256:fb2bd4e2f51382da799687aed2cb2d25d11d292070ed7ddbf1ce8bd226f58318 AS runtime
 WORKDIR /app
-RUN npm ci
 
-FROM node:24-alpine AS production-dependencies-env
-COPY ./package.json package-lock.json /app/
-WORKDIR /app
-RUN npm ci --omit=dev
+ARG NODE_ENV=production
+ENV NODE_ENV=${NODE_ENV}
+ENV TZ="Europe/Oslo"
+EXPOSE 3000
 
-FROM node:24-alpine AS build-env
-COPY . /app/
-COPY --from=development-dependencies-env /app/node_modules /app/node_modules
-WORKDIR /app
-RUN npm run build
+COPY ./public ./public/
+COPY ./package.json ./package.json
+COPY ./build/ ./build/
+COPY ./node_modules ./node_modules
 
-FROM node:24-alpine
-COPY ./package.json package-lock.json /app/
-COPY --from=production-dependencies-env /app/node_modules /app/node_modules
-COPY --from=build-env /app/build /app/build
-WORKDIR /app
-CMD ["npm", "run", "start"]
+CMD ["./node_modules/@react-router/serve/dist/cli.js", "./build/server/index.js"]

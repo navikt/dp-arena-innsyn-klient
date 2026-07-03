@@ -1,0 +1,54 @@
+version: 2
+
+registries:
+  npm-github:
+    type: npm-registry
+    url: https://npm.pkg.github.com
+    token: ${{ secrets.READER_TOKEN }}
+
+updates:
+  # Maintain dependencies for GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+      time: "10:05"
+      timezone: "Europe/Oslo"
+    cooldown:
+      default-days: 7
+  # Maintain dependencies for docker
+  - package-ecosystem: "docker"
+    directory: "/"
+    registries: '*'
+    schedule:
+      interval: "daily"
+      time: "10:05"
+      timezone: "Europe/Oslo"
+    cooldown:
+      default-days: 7
+  # Maintain dependencies for npm
+  - package-ecosystem: "npm"
+    directory: "/"
+    registries: '*'
+    schedule:
+      interval: "daily"
+      time: "10:05"
+      timezone: "Europe/Oslo"
+    cooldown:
+      default-days: 7
+    groups:
+      # Group all react-router dependencies together
+      react-router:
+        patterns:
+          - "react-router*"
+          - "@react-router*"
+      navikt:
+        patterns:
+          - "@navikt/*"
+      eslint:
+        patterns:
+          - "eslint*"
+          - "@eslint*"
+      graphql-codegen:
+        patterns:
+          - "@graphql-codegen*"
