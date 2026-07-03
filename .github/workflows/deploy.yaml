@@ -103,26 +103,23 @@ jobs:
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
 
-#  deploy-dev:
-#    name: Deploy til dev-gcp
-#    permissions:
-#      id-token: "write"
-#    if: github.actor != 'dependabot[bot]' || github.ref == 'refs/heads/main'
-#    # if: github.ref == 'refs/heads/main'
-#    needs: [ build ]
-#    runs-on: ubuntu-latest
-#    environment:
-#      name: Development
-#      url: "https://saksbehandling-dagpenger.ansatt.dev.nav.no"
-#    steps:
-#      - uses: actions/checkout@v7.0.0
-#      - uses: nais/deploy/actions/deploy@v2
-#        env:
-#          VAR: image=${{ needs.build.outputs.image }},githubSha=${{ github.sha }}
-#          CLUSTER: dev-gcp
-#          RESOURCE: .nais/nais.yaml,.nais/unleash-apitoken.yaml
-#          VARS: .nais/vars-dev.yaml
-#          PRINT_PAYLOAD: true
+  deploy-dev:
+    name: Deploy til dev-gcp
+    permissions:
+      id-token: "write"
+    if: github.actor != 'dependabot[bot]' || github.ref == 'refs/heads/main'
+    # if: github.ref == 'refs/heads/main'
+    needs: [ build ]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.0
+      - uses: nais/deploy/actions/deploy@v2
+        env:
+          VAR: image=${{ needs.build.outputs.image }}
+          CLUSTER: dev-gcp
+          RESOURCE: .nais/nais.yaml
+          VARS: .nais/vars-dev.yaml
+          PRINT_PAYLOAD: true
 #
 #  deploy-prod:
 #    name: Deploy til prod-gcp

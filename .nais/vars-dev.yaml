@@ -1,0 +1,10 @@
+ingress: "https://arena-innsyn-dagpenger.ansatt.dev.nav.no"
+gcp_env: "dev"
+
+dp-arena-gw_cluster_name: "dev-fss"
+dp-arena-gw_url: "https://dp-arena-gw.intern.dev.nav.no"
+
+azure:
+  tenant: trygdeetaten.no
+  grupper:
+    saksbehandler: "3e28466f-c53d-46da-8b44-a4abc2ad4593" # 0000-GA-Dagpenger-Saksbehandler

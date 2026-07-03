@@ -1,0 +1,73 @@
+apiVersion: nais.io/v1alpha1
+kind: Application
+metadata:
+  name: dp-arena-innsyn-klient
+  namespace: teamdagpenger
+  labels:
+    team: teamdagpenger
+    app: dp-arena-innsyn-klient
+spec:
+  image: "{{image}}"
+  port: 3000
+  liveness:
+    path: /api/internal/isAlive
+    initialDelay: 5
+    timeout: 1
+    periodSeconds: 10
+    failureThreshold: 10
+  readiness:
+    path: /api/internal/isReady
+    initialDelay: 5
+    timeout: 1
+  prometheus:
+    enabled: true
+    path: /api/internal/metrics
+  replicas:
+    min: 2
+    max: 2
+  resources:
+    limits:
+      memory: 512Mi
+    requests:
+      cpu: 200m
+      memory: 512Mi
+  ingresses:
+    - {{ingress}}
+  env:
+    - name: GCP_ENV
+      value: "{{gcp_env}}"
+    - name: DP_ARENA_GW_URL
+      value: "{{dp-arena-gw_url}}"
+    - name: DP_ARENA_GW_CLUSTER_NAME
+      value: "{{dp-arena-gw_cluster_name}}"
+
+  accessPolicy:
+    outbound:
+      external:
+        - host: graph.microsoft.com
+        - host: login.microsoftonline.com
+        - host: dp-arena-gw.intern.dev.nav.no
+
+  azure:
+    application:
+      tenant: "{{azure.tenant}}"
+      enabled: true
+      claims:
+        groups:
+          - id: "{{azure.grupper.saksbehandler}}"
+    sidecar:
+      enabled: true
+      autoLogin: true
+  observability:
+    autoInstrumentation:
+      enabled: true
+      runtime: nodejs
+    logging:
+      destinations:
+        - id: loki
+        - id: elastic
+
+#  frontend:
+#    generatedConfig:
+#      mountPath: /app/build/client/nais.js
+
