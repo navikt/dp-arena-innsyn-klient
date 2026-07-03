@@ -1,6 +1,6 @@
 import { useContext } from "react";
 
-import { SaksbehandlerContext } from "~/context/saksbehandler-context";
+import { SaksbehandlerContext } from "~/features/layout/context/saksbehandler-context";
 
 export function useSaksbehandler() {
   const context = useContext(SaksbehandlerContext);

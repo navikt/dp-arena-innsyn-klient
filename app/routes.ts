@@ -1,12 +1,12 @@
 import {index, layout, route, type RouteConfig} from "@react-router/dev/routes";
 
 export default [
-    layout("routes/layout.tsx", [
+    layout("features/layout/index.tsx", [
 
-        index("routes/index.tsx"),
-        route("person/:personId", "routes/Person.tsx", [
-            route("saker", "routes/PersonSaksliste.tsx", [
-                route(":sakId", "routes/PersonSakDetaljer.tsx"),
+        index("features/index.tsx"),
+        route("person/:personId", "features/person/PersonPage.tsx", [
+            route("saker", "features/sak/SaksListePage.tsx", [
+                route(":sakId", "features/sak/SaksDetaljerPage.tsx"),
 
             ])
         ])

@@ -32,31 +32,6 @@ export function formaterTilNorskDato(inputDato: Date | string, medKlokkeslett?: 
   });
 }
 
-/**
- * Formaterer en dato til et backend-vennlig format (ISO-format).
- *
- * @param inputDato - En `Date`-instans eller en streng i norsk datoformat (`dd.MM.yyyy`).
- * @param medKlokkeslett - Om klokkeslett skal inkluderes i resultatet (standard er false).
- * @returns En streng på formatet `yyyy-MM-dd` eller `yyyy-MM-dd'T'HH:mm:ss`.
- *
- * @throws Kaster en feil hvis `inputDato` er en streng som ikke følger formatet `dd.MM.yyyy`.
- */
-export function formaterTilBackendDato(inputDato: Date | string, medKlokkeslett?: boolean) {
-  const dato = inputDato instanceof Date ? inputDato : parse(inputDato, "dd.MM.yyyy", new Date());
-
-  if (isNaN(dato.getTime())) {
-    throw new Error("inputDato må være en Date eller en streng i formatet 'dd.MM.yyyy'");
-  }
-
-  if (medKlokkeslett) {
-    // 2021-01-31T12:00:00
-    return format(dato, "yyyy-MM-dd'T'HH:mm:ss", { locale: nb });
-  }
-
-  // 2021-01-31
-  return format(dato, "yyyy-MM-dd", { locale: nb });
-}
-
 export type SortOrder = 'ASC' | 'DESC';
 
 // export function dateComperator(

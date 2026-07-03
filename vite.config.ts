@@ -11,7 +11,7 @@ export default defineConfig({
             ? "https://cdn.nav.no/teamdagpenger/dp-arena-innsyn-klient/client/"
             : "/",
     server: {
-        port: 3001,
+        port: 3000,
     },
     plugins: [reactRouter(), tailwindcss(), devtoolsJson()],
     build: {

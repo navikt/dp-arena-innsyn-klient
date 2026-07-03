@@ -1,21 +1,8 @@
-import {
-    type ActionFunctionArgs,
-    isRouteErrorResponse,
-    Links,
-    Meta,
-    Outlet,
-    Scripts,
-    ScrollRestoration, useRouteError,
-} from "react-router";
+import {type ActionFunctionArgs, Links, Meta, Outlet, Scripts, ScrollRestoration, useRouteError,} from "react-router";
 import akselDarksideOverrides from "~/aksel-darkside-overrides.css?url";
 import globalDarksideCss from "~/global-darkside.css?url";
-
-
-import type {Route} from "./+types/root";
-import "./app.css";
-import {handleActions} from "~/server-side-actions/handle-actions";
-import {SaksbehandlerProvider} from "~/context/saksbehandler-context";
-import {RootErrorBoundaryView} from "~/error-boundary/RootErrorBoundaryView";
+import {handleActions} from "~/features/handle-actions";
+import {RootErrorBoundaryView} from "~/components/error-boundary/RootErrorBoundaryView";
 
 export function meta() {
     return [
@@ -26,14 +13,14 @@ export function meta() {
             name: "viewport",
             content: "width=device-width,initial-scale=1",
         },
-        {title: "Dagpenger saksbehandling"},
+        {title: "Arena Innsyn"},
         {
             property: "og:title",
-            content: "Dagpenger saksbehandling",
+            content: "Arena Innsyn",
         },
         {
             name: "description",
-            content: "Saksbehandlingløsning for dagpenger",
+            content: "Arena Innsyn for Dagpenger",
         },
     ];
 }
@@ -78,7 +65,6 @@ export function Layout({children}: { children: React.ReactNode }) {
             <Links/>
         </head>
         <body>
-
         {children}
         <ScrollRestoration/>
         <Scripts/>
@@ -89,15 +75,12 @@ export function Layout({children}: { children: React.ReactNode }) {
 
 export default function App() {
     return (
-        // <SaksbehandlerProvider>
-
-            <Outlet/>
-        // </SaksbehandlerProvider>
+        <Outlet/>
     );
 }
 
 export function ErrorBoundary() {
     const error = useRouteError();
 
-    return <RootErrorBoundaryView links={<Links />} meta={<Meta />} error={error} />;
+    return <RootErrorBoundaryView links={<Links/>} meta={<Meta/>} error={error}/>;
 }

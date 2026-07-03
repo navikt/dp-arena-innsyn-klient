@@ -1,20 +1,20 @@
 declare global {
-  interface Window {
-    env: IEnv;
-    // umami: typeof umami;
-  }
+    interface Window {
+        env: IEnv;
+        // umami: typeof umami;
+    }
 }
 
 interface IEnv {
-  IS_LOCALHOST: string;
-  USE_MSW: string;
-  DP_ARENA_GW_URL: string;
-  GCP_ENV: string;
+    IS_LOCALHOST: string;
+    USE_MSW: string;
+    DP_ARENA_GW_URL: string;
+    GCP_ENV: string;
 }
 
 export function getEnv(value: keyof IEnv) {
 
-  const env = typeof window !== "undefined" ? window.env : process.env;
+    const env = typeof window !== "undefined" ? window.env : process.env;
 
-  return env[value] || "";
+    return env[value] || "";
 }

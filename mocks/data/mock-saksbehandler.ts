@@ -1,4 +1,4 @@
-import type {ISaksbehandler} from "~/models/microsoft.server";
+import type {ISaksbehandler} from "~/features/layout/clients/auth.server";
 
 export const mockSaksbehandler: ISaksbehandler = {
     onPremisesSamAccountName: "Z993298",
