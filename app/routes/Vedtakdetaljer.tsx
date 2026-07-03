@@ -15,8 +15,6 @@ interface IProps {
 
 export function Vedtakdetaljer({vedtak, relatertVedtak}: IProps): React.ReactElement {
     const faktaMap = useMemo(() => new Map(vedtak.fakta.map((f) => [f.kode, f])), [vedtak.vedtakId]);
-console.log("faktaMap", faktaMap)
-    console.log("vedtak.rettighetkode", vedtak.rettighetkode)
     // Bygg alle oppslag for relatert vedtak én gang. Gating på visEndringer skjer i de avledede verdiene under.
     const relatert = useMemo(() => {
         if (relatertVedtak == null) return null;

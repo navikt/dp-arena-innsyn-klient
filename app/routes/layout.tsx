@@ -19,16 +19,20 @@ export async function loader({request}: LoaderFunctionArgs) {
         saksbehandler,
         env: {
             IS_LOCALHOST: getEnv("IS_LOCALHOST"),
+            GCP_ENV: getEnv("GCP_ENV")
         }
     }
 
 }
 
 export default function Layout() {
-    const saksbehandler = useLoaderData<typeof loader>();
+    const { saksbehandler, env } = useLoaderData<typeof loader>();
 
     return (
         <SaksbehandlerProvider>
+            {env.GCP_ENV === "dev" && (
+                <div className={styles.devEnvironmentBanner}>DEV-MILJØ</div>
+            )}
             <InternalHeader className={styles.header}>
                 <Link to={"/"} className={styles.headerLogo}>
                     <InternalHeader.Title as="h1" className={styles.pageHeader}>
@@ -36,7 +40,7 @@ export default function Layout() {
                     </InternalHeader.Title>
                 </Link>
 
-                <HeaderMeny saksbehandler={saksbehandler.saksbehandler}/>
+                <HeaderMeny saksbehandler={saksbehandler}/>
             </InternalHeader>
             {/*<AlertProvider>*/}
             {/*    <GlobalAlerts />*/}

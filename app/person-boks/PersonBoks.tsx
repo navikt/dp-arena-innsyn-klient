@@ -30,13 +30,13 @@ export function PersonBoks({person}: IProps) {
                         })}
                     >
                       {kjonn === "MANN" && (
-                          <SilhouetteFillIcon title="" fontSize="1.5rem" color="white"/>
+                          <SilhouetteFillIcon title="Mann" fontSize="1.5rem" color="white"/>
                       )}
                         {kjonn === "KVINNE" && (
-                            <FigureOutwardFillIcon title="" fontSize="1.5rem" color="white"/>
+                            <FigureOutwardFillIcon title="Kvinne" fontSize="1.5rem" color="white"/>
                         )}
                         {kjonn === "UKJENT" && (
-                            <CircleFillIcon title="" fontSize="1.5rem" color="white"/>
+                            <CircleFillIcon title="Ukjent" fontSize="1.5rem" color="white"/>
                         )}
                     </span>
 

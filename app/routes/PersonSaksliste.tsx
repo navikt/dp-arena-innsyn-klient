@@ -1,14 +1,13 @@
-import {type ActionFunctionArgs, type LoaderFunctionArgs, Outlet, useLoaderData} from "react-router";
+import {type ActionFunctionArgs, type LoaderFunctionArgs, Outlet, useLoaderData, useNavigate, useParams} from "react-router";
 import {handleActions} from "~/server-side-actions/handle-actions";
 import {hentSakerForPerson} from "~/models/saksbehandling.server";
 import invariant from "tiny-invariant";
 import {AnimatePresence, motion} from "motion/react";
-import {Button, Heading, HGrid, HStack, LinkCard, Page, Tag} from "@navikt/ds-react";
+import {Button, Heading, HGrid, HStack, LinkCard, List, Page, Tag} from "@navikt/ds-react";
 import {useState} from "react";
 import {ChevronLeftDoubleIcon, ChevronRightDoubleIcon} from "@navikt/aksel-icons";
 import {FieldValue} from "~/components/field-value/field-value";
 import {norsktDatoformat} from "~/utils/dato.utils";
-import {PageBlock} from "@navikt/ds-react/Page";
 
 export async function action({request, params}: ActionFunctionArgs) {
     return await handleActions(request, params);
@@ -18,7 +17,6 @@ export async function loader({params, request}: LoaderFunctionArgs) {
     invariant(params.personId, "Mangler person id")
     const personId = Number(params.personId);
     const saker = await hentSakerForPerson(request, personId)
-    console.log("saker", saker)
     return {
         saker,
         personId
@@ -27,7 +25,7 @@ export async function loader({params, request}: LoaderFunctionArgs) {
 
 }
 
-function sakStatus(status: string | undefined): "accent" | "neutral" | "info" | "success" | "warning" | "danger" | "meta-purple" | "meta-lime" | "brand-beige" | "brand-blue" | "brand-magenta" {
+export function sakStatus(status: string | undefined): "accent" | "neutral" | "info" | "success" | "warning" | "danger" | "meta-purple" | "meta-lime" | "brand-beige" | "brand-blue" | "brand-magenta" {
     switch (status) {
         // AKTIV
         // INAKT
@@ -46,6 +44,8 @@ function sakStatus(status: string | undefined): "accent" | "neutral" | "info" | 
 export default function PersonSaksliste() {
     const {saker, personId} = useLoaderData<typeof loader>()
     const [erLukket, setErLukket] = useState(false);
+    const params = useParams()
+    const navigate = useNavigate();
 
     return (
         <>
@@ -64,46 +64,56 @@ export default function PersonSaksliste() {
                                     <div className="flex items-center gap-2">
                                         <Heading size={"small"}>Saker ({saker.length})</Heading>
                                     </div>
-                                    {saker.map((sak) => (
-                                        <LinkCard>
-                                            {/*<Box*/}
-                                            {/*    asChild*/}
-                                            {/*    borderRadius="12"*/}
-                                            {/*    padding="space-8"*/}
-                                            {/*    style={{ backgroundColor: "var(--ax-bg-moderateA)" }}*/}
-                                            {/*>*/}
-                                            {/*    <LinkCard.Icon>*/}
-                                            {/*        <TasklistIcon fontSize="1.5rem" />*/}
-                                            {/*    </LinkCard.Icon>*/}
-                                            {/*</Box>*/}
-                                            <LinkCard.Title>
-                                                <HStack gap={"space-0 space-12"}>
-                                                    <LinkCard.Anchor href={`/person/${personId}/saker/${sak.sakId}`}>
+                                    <ul className={"flex flex-col gap-4"}>
+                                        {saker.map((sak) => (
+                                              <li key={sak.sakId}>
+                                                <LinkCard
+                                                      data-color={sak.sakId === params.sakId ? "accent" : "neutral"}
+                                                      onClick={() => navigate(`/person/${personId}/saker/${sak.sakId}`)}
+                                                      style={{ cursor: "pointer" }}>
+                                                    {/*<Box*/}
+                                                    {/*    asChild*/}
+                                                    {/*    borderRadius="12"*/}
+                                                    {/*    padding="space-8"*/}
+                                                    {/*    style={{ backgroundColor: "var(--ax-bg-moderateA)" }}*/}
+                                                    {/*>*/}
+                                                    {/*    <LinkCard.Icon>*/}
+                                                    {/*        <TasklistIcon fontSize="1.5rem" />*/}
+                                                    {/*    </LinkCard.Icon>*/}
+                                                    {/*</Box>*/}
+                                                    <LinkCard.Title>
+                                                        <HStack gap={"space-0 space-12"} align={"center"}>
+                                                            {/*  <LinkCard.Anchor*/}
+                                                            {/*      href="#"*/}
+                                                            {/*      onClick={(e) => e.preventDefault()}*/}
+                                                            {/*  >*/}
+                                                                {sak.opprettetAar}-{sak.lopenr}
+                                                            {/*</LinkCard.Anchor>*/}
+                                                            <Tag
+                                                                key={sak.sakId}
+                                                                size={"small"}
+                                                                variant={"moderate"}
+                                                                data-color={sakStatus(sak.statuskode)}
+                                                                className={"whitespace-nowrap"}
+                                                            >
+                                                                {sak.statusnavn}
+                                                            </Tag>
+                                                        </HStack>
+                                                    </LinkCard.Title>
+                                                    <LinkCard.Description>
+                                                        <HGrid columns={2}>
 
-                                                        {sak.opprettetAar}-{sak.lopenr}
-                                                    </LinkCard.Anchor>
-                                                    <Tag
-                                                        key={sak.sakId}
-                                                        size={"xsmall"}
-                                                        variant={"outline"}
-                                                        data-color={sakStatus(sak.statuskode)}
-                                                        className={"whitespace-nowrap"}
-                                                    >
-                                                        {sak.statusnavn}
-                                                    </Tag>
-                                                </HStack>
-                                            </LinkCard.Title>
-                                            <LinkCard.Description>
-                                                <HGrid columns={2}>
+                                                            <FieldValue label={"SaksId"} value={sak.sakId || "-"}/>
+                                                            <FieldValue label={"Registrert dato"}
+                                                                        value={sak.registrertDato ? norsktDatoformat(sak.registrertDato) : "-"}/>
+                                                        </HGrid>
+                                                    </LinkCard.Description>
 
-                                                    <FieldValue label={"SaksId"} value={sak.sakId || "-"}/>
-                                                    <FieldValue label={"Registrert dato"}
-                                                                value={sak.registrertDato ? norsktDatoformat(sak.registrertDato) : "-"}/>
-                                                </HGrid>
-                                            </LinkCard.Description>
+                                                </LinkCard>
+                                            </li>
+                                        ))}
+                                    </ul>
 
-                                        </LinkCard>
-                                    ))}
                                 </div>
                             </aside>
                         </motion.div>
@@ -121,13 +131,13 @@ export default function PersonSaksliste() {
                     <Button
                         size={"xsmall"}
                         variant={"primary"}
-                        icon={erLukket ? <ChevronRightDoubleIcon/> : <ChevronLeftDoubleIcon/>}
+                        icon={erLukket ? <ChevronRightDoubleIcon title="Pil høyre"/> : <ChevronLeftDoubleIcon title="Pil venstre"/>}
                         onClick={() => setErLukket(!erLukket)}
-                        aria-label={erLukket ? "Åpne oppgaveoversikt" : "Lukk oppgaveoversikt"}
+                        aria-label={erLukket ? "Åpne saksliste" : "Lukk saksliste"}
                     />
                 </motion.div>
             </div>
-            <Page.Block as={"main"} className={"card flex flex-1 flex-col gap-4 p-2"}>
+            <Page.Block as={"main"} className={"flex flex-1 flex-col gap-4 h-fit"}>
                 <Outlet/>
             </Page.Block>
 

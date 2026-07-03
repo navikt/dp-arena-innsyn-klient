@@ -2,11 +2,11 @@ import {type ActionFunctionArgs, type LoaderFunctionArgs, useLoaderData} from "r
 import {handleActions} from "~/server-side-actions/handle-actions";
 import invariant from "tiny-invariant";
 import {hentSakForPerson} from "~/models/saksbehandling.server";
-import {Heading, HStack, Tag, VStack} from "@navikt/ds-react";
+import {Heading, HStack, Page, Tag, VStack} from "@navikt/ds-react";
 import {VedtakTabell} from "~/routes/VedtakTabell";
 import {FieldValue} from "~/components/field-value/field-value";
 import {norsktDatoformat} from "~/utils/dato.utils";
-import styles from "~/route-styles/person.module.css";
+import {sakStatus} from "~/routes/PersonSaksliste";
 
 export async function action({request, params}: ActionFunctionArgs) {
     return await handleActions(request, params);
@@ -51,6 +51,7 @@ export default function PersonSakDetaljer() {
 
     return (
 
+        <Page.Block className={"card p-4"}>
             <VStack gap="space-24">
                 <HStack gap="space-20" align="center">
                     <Heading size="medium">
@@ -67,7 +68,7 @@ export default function PersonSakDetaljer() {
                     <HStack gap="space-8">
                         {sak.statuskode != null && (
                             <Tag variant="moderate" size="small"
-                                 data-color={sak.statuskode === 'AKTIV' ? 'success' : 'neutral'}>
+                                 data-color={sakStatus(sak.statuskode)}>
                                 {sak.statusnavn}
                             </Tag>
                         )}
@@ -91,10 +92,11 @@ export default function PersonSakDetaljer() {
                     <VStack gap="space-32" marginInline="space-32" marginBlock="space-8">
 
 
-                    {/*<Nokkeltall sak={sak} />*/}
-                    <VedtakTabell vedtak={sak.vedtak}/>
+                        {/*<Nokkeltall sak={sak} />*/}
+                        <VedtakTabell vedtak={sak.vedtak}/>
                     </VStack>
                 </div>
             </VStack>
+        </Page.Block>
     )
 }

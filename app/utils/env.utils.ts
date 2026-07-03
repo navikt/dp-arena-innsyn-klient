@@ -6,19 +6,15 @@ declare global {
 }
 
 interface IEnv {
-
-  // GCP_ENV: string;
   IS_LOCALHOST: string;
   USE_MSW: string;
   DP_ARENA_GW_URL: string;
-
+  GCP_ENV: string;
 }
 
 export function getEnv(value: keyof IEnv) {
 
   const env = typeof window !== "undefined" ? window.env : process.env;
 
-  console.log("value", env[value])
-  console.log("key", value)
   return env[value] || "";
 }
