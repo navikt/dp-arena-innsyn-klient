@@ -46,7 +46,12 @@ spec:
       external:
         - host: graph.microsoft.com
         - host: login.microsoftonline.com
-        - host: dp-arena-gw.intern.dev.nav.no
+      #  - host: dp-arena-gw.intern.dev.nav.no
+
+      rules:
+        - application: dp-arena-gw
+          namespace: teamdagpenger
+          cluster: dev-fss
 
   azure:
     application:
