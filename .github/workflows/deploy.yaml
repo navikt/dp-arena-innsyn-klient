@@ -26,7 +26,7 @@ jobs:
           registry-url: "https://npm.pkg.github.com"
 
       - name: Cache node_modules
-        uses: actions/cache@v5.0.5
+        uses: actions/cache@v6.1.0
         id: node_modules
         with:
           path: ./node_modules
@@ -68,7 +68,7 @@ jobs:
           registry-url: "https://npm.pkg.github.com"
 
       - name: Cache node_modules
-        uses: actions/cache@v5.0.5
+        uses: actions/cache@v6.1.0
         id: node_modules
         with:
           path: ./node_modules
