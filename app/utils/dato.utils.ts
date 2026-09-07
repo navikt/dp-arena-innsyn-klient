@@ -1,4 +1,4 @@
-import { format, parse } from "date-fns";
+import {compareAsc, compareDesc, format, parse} from "date-fns";
 import { nb } from "date-fns/locale";
 
 /**
@@ -32,6 +32,13 @@ export function formaterTilNorskDato(inputDato: Date | string, medKlokkeslett?: 
   });
 }
 
+export function pickDate(rawDates: (string | null | undefined)[], direction: 'asc' | 'desc'): Date | null | undefined {
+  return rawDates
+      .filter((d) => d != null)
+      .map((d) => parseFaktaDato(d))
+      .sort((a, b) => (direction === 'asc' ? compareAsc(a, b) : compareDesc(a, b)))[0];
+}
+
 export type SortOrder = 'ASC' | 'DESC';
 
 // export function dateComperator(
@@ -61,7 +68,10 @@ export type SortOrder = 'ASC' | 'DESC';
 //   return parseISO(dateString);
 // }
 
-export function norsktDatoformat(date: Date | string): string {
+export function norsktDatoformat(date: Date | string | null | undefined): string {
+  if (date === null || date === undefined) {
+    return '—';
+  }
   return format(date, 'dd.MM.yyyy', { locale: nb });
 }
 

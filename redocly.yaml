@@ -1,6 +1,5 @@
 apis:
   arena-sak-innsyn@v1:
-    #root: https://dp-arena-gw.intern.dev.nav.no/arena/innsyn/openapi/arena-sak-innsyn-api.yaml
-    root: /Users/frodesjovatsen/workspace/sandbox/dp-migrering/openapi/src/main/resources/arena-sak-innsyn-api.yaml
+    root: https://dp-arena-gw.dev-fss-pub.nais.io/arena/innsyn/openapi/arena-sak-innsyn-api.yaml
     x-openapi-ts:
       output: ./openapi/arena-sak-innsyn-typer.ts
