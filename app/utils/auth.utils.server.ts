@@ -7,7 +7,7 @@ export async function getSaksbehandlingOboToken(request: Request) {
     return process.env.DP_SAKSBEHANDLING_TOKEN as string;
   }
 
-  const audience = `api://${process.env.DP_ARENA_GW_CLUSTER_NAME}.teamdagpenger.dp-arena-gw/.default`;
+  const audience = `api://${process.env.DP_MIGRERING_CLUSTER_NAME}.teamdagpenger.dp-migrering/.default`;
   return await getOnBehalfOfToken(request, audience);
 }
 

@@ -36,17 +36,17 @@ spec:
   env:
     - name: GCP_ENV
       value: "{{gcp_env}}"
-    - name: DP_ARENA_GW_URL
-      value: "{{dp-arena-gw_url}}"
-    - name: DP_ARENA_GW_CLUSTER_NAME
-      value: "{{dp-arena-gw_cluster_name}}"
+    - name: DP_MIGRERING_URL
+      value: "{{dp-migrering_url}}"
+    - name: DP_MIGRERING_CLUSTER_NAME
+      value: "{{dp-migrering_cluster_name}}"
 
   accessPolicy:
     outbound:
       external:
         - host: graph.microsoft.com
         - host: login.microsoftonline.com
-        - host: dp-arena-gw.dev-fss-pub.nais.io
+        - host: dp-migrering.dev-fss-pub.nais.io
 
   azure:
     application:
