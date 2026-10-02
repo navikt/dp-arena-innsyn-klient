@@ -1,6 +1,6 @@
 import {useMemo, useState} from "react";
 import type {components} from "../../../../../openapi/arena-sak-innsyn-typer";
-import {BodyShort, HStack, Label, Switch, VStack} from "@navikt/ds-react";
+import {BodyLong, BodyShort, HStack, Label, Switch, VStack} from "@navikt/ds-react";
 import {FieldValue} from "~/features/sak/components/field-value/field-value";
 import {formaterFaktaDato} from "~/utils/dato.utils";
 import {BeregningSeksjon} from "~/features/sak/components/vedtak-detaljer/BeregningSeksjon";
@@ -56,10 +56,16 @@ export function Vedtakdetaljer({vedtak, relatertVedtak}: IProps): React.ReactEle
 
     return (
         <VStack gap="space-32" marginInline="space-32" marginBlock="space-8">
-            <HStack gap="space-16">
-                <Label size="medium">Vedtak {vedtak.rettighetnavn}</Label>
-                {vedtaksdatoFormatert != null && <BodyShort size="medium">{vedtaksdatoFormatert}</BodyShort>}
-            </HStack>
+            <VStack gap={"space-4"}>
+
+                <HStack gap="space-16">
+                    <Label size="medium">Vedtak {vedtak.rettighetnavn}</Label>
+                    {vedtaksdatoFormatert != null && <BodyShort size="medium">{vedtaksdatoFormatert}</BodyShort>}
+                </HStack>
+                {
+                    vedtak.begrunnelse && <BodyLong size="small">{vedtak.begrunnelse ?? '—'}</BodyLong>
+                }
+            </VStack>
             {relatertVedtak != null && (
                 <HStack gap="space-32">
                     <FieldValue label="Endring av vedtak nr." value={relatertVedtak.lopenrvedtak?.toString() || "n/a"}/>
@@ -70,28 +76,28 @@ export function Vedtakdetaljer({vedtak, relatertVedtak}: IProps): React.ReactEle
             )}
             <HStack gap="space-32" wrap>
                 {/*{vedtak.rettighetkode === 'AAP' && (*/}
-                    <>
-                        <FieldValue
-                            label="Gjelder fra"
-                            value={formaterFaktaDato(faktaMap.get('FDATO')?.verdi) ?? '—'}
-                            isChanged={erFaktaEndret('FDATO')}
-                        />
-                        <FieldValue
-                            label="Justert fra-dato"
-                            value={formaterFaktaDato(faktaMap.get('AAPJUSTFD')?.verdi) ?? '—'}
-                            isChanged={erFaktaEndret('AAPJUSTFD')}
-                        />
-                        <FieldValue
-                            label="Opprinnelig til-dato"
-                            value={formaterFaktaDato(faktaMap.get('OPPRTDATO')?.verdi) ?? '—'}
-                            isChanged={erFaktaEndret('OPPRTDATO')}
-                        />
-                        <FieldValue
-                            label="Gjelder til og med"
-                            value={formaterFaktaDato(faktaMap.get('TDATO')?.verdi) ?? '—'}
-                            isChanged={erFaktaEndret('TDATO')}
-                        />
-                    </>
+                <>
+                    <FieldValue
+                        label="Gjelder fra"
+                        value={formaterFaktaDato(faktaMap.get('FDATO')?.verdi) ?? '—'}
+                        isChanged={erFaktaEndret('FDATO')}
+                    />
+                    <FieldValue
+                        label="Justert fra-dato"
+                        value={formaterFaktaDato(faktaMap.get('AAPJUSTFD')?.verdi) ?? '—'}
+                        isChanged={erFaktaEndret('AAPJUSTFD')}
+                    />
+                    <FieldValue
+                        label="Opprinnelig til-dato"
+                        value={formaterFaktaDato(faktaMap.get('OPPRTDATO')?.verdi) ?? '—'}
+                        isChanged={erFaktaEndret('OPPRTDATO')}
+                    />
+                    <FieldValue
+                        label="Gjelder til og med"
+                        value={formaterFaktaDato(faktaMap.get('TDATO')?.verdi) ?? '—'}
+                        isChanged={erFaktaEndret('TDATO')}
+                    />
+                </>
                 {/*)}*/}
                 <FieldValue
                     label="Saksbehandler"

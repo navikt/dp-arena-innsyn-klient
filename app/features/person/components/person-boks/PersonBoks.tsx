@@ -3,7 +3,7 @@ import {useSaksbehandler} from "~/hooks/useSaksbehandler";
 import {maskerVerdi} from "~/utils/skjul-sensitiv-opplysning";
 
 import type {components} from "../../../../../openapi/arena-sak-innsyn-typer";
-import styles from "./PersonBoks.module.css";
+import styles from "./person-boks.module.css";
 import classnames from "classnames";
 import {CircleFillIcon, FigureOutwardFillIcon, SilhouetteFillIcon} from "@navikt/aksel-icons";
 import {finnKjonnFraFodselsnummer} from "~/utils/fodselsnummer.utils";

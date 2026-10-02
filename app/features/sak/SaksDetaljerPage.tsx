@@ -1,12 +1,14 @@
 import {type ActionFunctionArgs, type LoaderFunctionArgs, useLoaderData} from "react-router";
 import {handleActions} from "~/features/handle-actions";
 import invariant from "tiny-invariant";
-import {Heading, HStack, Page, Tag, VStack} from "@navikt/ds-react";
+import {BodyShort, Heading, HStack, Page, Tag, VStack} from "@navikt/ds-react";
 import {VedtakTabell} from "~/features/sak/components/vedtak-detaljer/VedtakTabell";
 import {FieldValue} from "~/features/sak/components/field-value/field-value";
-import {norsktDatoformat} from "~/utils/dato.utils";
+import {norsktDatoformat, pickDate} from "~/utils/dato.utils";
 import {sakStatus} from "~/features/sak/SaksListePage";
 import {hentSakForPerson} from "~/features/sak/clients/sak-client.server";
+import type {components} from "../../../openapi/arena-sak-innsyn-typer";
+import {Nokkeltall} from "~/features/sak/components/vedtak-detaljer/NokkelTall";
 
 export async function action({request, params}: ActionFunctionArgs) {
     return await handleActions(request, params);
@@ -14,22 +16,35 @@ export async function action({request, params}: ActionFunctionArgs) {
 
 export async function loader({params, request}: LoaderFunctionArgs) {
     invariant(params.sakId, "Mangler sak id")
-    const sak = await hentSakForPerson(request, params.sakId)
-    return sak
+    return await hentSakForPerson(request, params.sakId)
 
+}
+
+// Returnerer justert fradato (AAPJUSTFD) om den finnes, ellers original fradato (FDATO)
+function getFradato(vedtak: components["schemas"]["ArenaVedtakMedDetaljerResponse"]): string | null | undefined {
+    return vedtak.fakta.find((f) => f.kode === 'FDATO')?.verdi;
+
+    //vedtak.fakta.find((f) => f.kode === 'AAPJUSTFD')?.verdi ??
+}
+
+function getTildato(vedtak: components["schemas"]["ArenaVedtakMedDetaljerResponse"]): string | null | undefined {
+    return vedtak.fakta.find((f) => f.kode === 'TDATO')?.verdi;
+
+    //vedtak.fakta.find((f) => f.kode === 'AAPJUSTFD')?.verdi ??
 }
 
 export default function SaksDetaljer() {
     const sak = useLoaderData<typeof loader>();
 
-    // const nyesteVedtak = sak.vedtak.sort((a, b) => b.lopenrvedtak - a.lopenrvedtak)[0];
-    //
-    // const startdato = pickDate(sak.vedtak.map(getFradato), 'asc');
-    // const sluttdato = pickDate(
-    //     sak.vedtak.map((v) => v.fakta.find((f) => f.kode === 'TDATO')?.verdi),
-    //     'desc'
-    // );
+    const nyesteVedtak = sak.vedtak.sort((a, b) => b.lopenrvedtak - a.lopenrvedtak)[0];
 
+    const startdato = pickDate(sak.vedtak.map(getFradato), 'asc');
+    const sluttdato = pickDate(
+        sak.vedtak.map(getTildato),
+        'desc'
+    );
+
+    console.log("sluttdato", sluttdato);
     const {
         dagpengePeriodeTeller,
         maxPeriodePermittertTeller,
@@ -55,16 +70,16 @@ export default function SaksDetaljer() {
             <VStack gap="space-24">
                 <HStack gap="space-20" align="center">
                     <Heading size="medium">
-                        {/*Arena {nyesteVedtak?.rettighetnavn ?? ''} {sak.opprettetAar} {sak.lopenr}*/}
-                        Arena {sak.opprettetAar}-{sak.lopenr}
+                        {/*Arena {nyesteVedtak?.rettighet navn ?? ''} {sak.opprettetAar} {sak.lopenr}*/}
+                        Arena {nyesteVedtak?.rettighetnavn ?? ''} {sak.opprettetAar}-{sak.lopenr}
                     </Heading>
 
 
-                    {/*{startdato != null && (*/}
-                    {/*    <BodyShort size="small" data-testid="sak-datoperiode">*/}
-                    {/*        {norsktDatoformat(startdato)} {sluttdato != null && `– ${norsktDatoformat(sluttdato)}`}*/}
-                    {/*    </BodyShort>*/}
-                    {/*)}*/}
+                    {startdato != null && (
+                        <BodyShort size="small" data-testid="sak-datoperiode">
+                            {norsktDatoformat(startdato)} - {norsktDatoformat(sluttdato)}
+                        </BodyShort>
+                    )}
                     <HStack gap="space-8">
                         {sak.statuskode != null && (
                             <Tag variant="moderate" size="small"
@@ -92,7 +107,7 @@ export default function SaksDetaljer() {
                     <VStack gap="space-32" marginInline="space-32" marginBlock="space-8">
 
 
-                        {/*<Nokkeltall sak={sak} />*/}
+                        <Nokkeltall sak={sak}/>
                         <VedtakTabell vedtak={sak.vedtak}/>
                     </VStack>
                 </div>

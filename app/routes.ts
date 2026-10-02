@@ -9,6 +9,12 @@ export default [
                 route(":sakId", "features/sak/SaksDetaljerPage.tsx"),
 
             ])
+        ]),
+        route("api/internal", "features/api/index.ts",[
+            route("isReady", "features/api/is-ready.ts"),
+            route("isAlive", "features/api/is-alive.ts"),
+            route("metrics", "features/api/metrics.ts")
+
         ])
     ])
 

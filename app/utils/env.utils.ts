@@ -8,7 +8,7 @@ declare global {
 interface IEnv {
     IS_LOCALHOST: string;
     USE_MSW: string;
-    DP_ARENA_GW_URL: string;
+    DP_MIGRERING_URL: string;
     GCP_ENV: string;
 }
 
