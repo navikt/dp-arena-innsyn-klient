@@ -54,7 +54,7 @@ Logg på med en testbruker. Hent ut verdien fra `access_token`, rediger `.env` o
 endre `DP_SAKSBEHANDLING_TOKEN` til det
 matchende genererte tokenet.
 
-[dp-arena-gw](https://azure-token-generator.intern.dev.nav.no/api/obo?aud=dev-fss.teamdagpenger.dp-arena-gw),
+[dp-migrering](https://azure-token-generator.intern.dev.nav.no/api/obo?aud=dev-fss.teamdagpenger.dp-migrering),
 
 
 ## Vanlige problemer med oppsett

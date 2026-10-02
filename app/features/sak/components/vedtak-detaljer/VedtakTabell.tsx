@@ -62,6 +62,7 @@ export function VedtakTabell({ vedtak }: IProp): React.ReactElement {
                                 key={vedtakId}
                                 togglePlacement="right"
                                 content={<Vedtakdetaljer vedtak={vedtak} relatertVedtak={relatertVedtak} />}
+                                expandOnRowClick
                             >
                                 <Table.DataCell>{lopenrvedtak}</Table.DataCell>
                                 <Table.DataCell scope="row">{rettighetnavn}</Table.DataCell>
