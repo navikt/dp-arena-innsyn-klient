@@ -27,26 +27,26 @@ spec:
     max: 2
   resources:
     limits:
-      memory: 128Mi
+      memory: 256Mi
     requests:
-      cpu: 75m
-      memory: 128Mi
+      cpu: 50m
+      memory: 256Mi
   ingresses:
     - {{ingress}}
   env:
     - name: GCP_ENV
       value: "{{gcp_env}}"
-    - name: DP_ARENA_GW_URL
-      value: "{{dp-arena-gw_url}}"
-    - name: DP_ARENA_GW_CLUSTER_NAME
-      value: "{{dp-arena-gw_cluster_name}}"
+    - name: DP_MIGRERING_URL
+      value: "{{dp-migrering_url}}"
+    - name: DP_MIGRERING_CLUSTER_NAME
+      value: "{{dp-migrering_cluster_name}}"
 
   accessPolicy:
     outbound:
       external:
         - host: graph.microsoft.com
         - host: login.microsoftonline.com
-        - host: dp-arena-gw.dev-fss-pub.nais.io
+        - host: dp-migrering.dev-fss-pub.nais.io
 
   azure:
     application:
