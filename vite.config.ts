@@ -7,6 +7,9 @@ import {configDefaults} from "vitest/config";
 
 
 export default defineConfig(({mode}) => ({
+    // Vitest doesn't need the real .env (tests stub env vars explicitly), and reading it
+    // can fail in restricted environments — point env loading at a dir without one.
+    envDir: mode === 'test' ? path.resolve(__dirname, 'mocks') : undefined,
     base:
         process.env.NODE_ENV === "production"
             ? "https://cdn.nav.no/teamdagpenger/dp-arena-innsyn-klient/client/"
@@ -37,5 +40,18 @@ export default defineConfig(({mode}) => ({
         environment: 'node',
         exclude: [...configDefaults.exclude, '.react-router/**'],
         setupFiles: ['./vitest.setup.ts'],
+        coverage: {
+            provider: 'v8',
+            reporter: ['text', 'html'],
+            include: ['app/**/*.{ts,tsx}'],
+            exclude: [
+                ...(configDefaults.coverage?.exclude ?? []),
+                'app/**/*.test.{ts,tsx}',
+                'app/root.tsx',
+                'app/entry.client.tsx',
+                'app/entry.server.tsx',
+                '.react-router/**',
+            ],
+        },
     },
 }));

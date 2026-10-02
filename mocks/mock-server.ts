@@ -2,9 +2,11 @@ import {setupServer} from "msw/node";
 
 import {logger} from "~/utils/logger.utils";
 import {mockAzure} from "./mock-azure";
+import {mockArena} from "./mock-arena";
 
 const mswHandlers = [
     ...mockAzure,
+    ...mockArena,
 
 ];
 

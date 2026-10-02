@@ -6,6 +6,7 @@ node_modules
 /public/build
 /public/saksbehandling
 /server/build
+/coverage
 
 .DS_Store
 
@@ -21,7 +22,6 @@ node_modules
 .env*
 !.env.example
 
-copilot-instructions.md
 .sisyphus/
 .playwright-mcp/
 .agents
