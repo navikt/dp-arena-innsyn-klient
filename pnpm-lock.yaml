@@ -52,7 +52,7 @@ importers:
         version: 4.4.0
       isbot:
         specifier: ^5.1.36
-        version: 5.1.44
+        version: 5.2.2
       lru-cache:
         specifier: ^11.5.1
         version: 11.5.3
@@ -1285,8 +1285,8 @@ packages:
   is-promise@4.0.0:
     resolution: {integrity: sha512-hvpoI6korhJMnej285dSg6nu1+e6uxs7zG3BYAm5byqDsgJNWwxzM6z6iZiAgQR4TJ30JmBTOwqZUw3WlyH3AQ==}
 
-  isbot@5.1.44:
-    resolution: {integrity: sha512-PGEHtwMnKbZpeSEXW2Utx+/JWed7dp6DiH0WWg33vGSDA7RUvpUeJSVlLrVkQ1RCpvDOUc/eH9ql7VsdbBZ8pA==}
+  isbot@5.2.2:
+    resolution: {integrity: sha512-iQcBXcd+Rv/pkubRyGh2utW2j1oPG5hZY6TUhVPpqK4G+o3IbxpJNx04hgksjc/N7GK5pEorUxDeg31cFgEk/w==}
     engines: {node: '>=18'}
 
   istanbul-lib-coverage@3.2.2:
@@ -2530,7 +2530,7 @@ snapshots:
       dedent: 1.7.2(babel-plugin-macros@3.1.0)
       es-module-lexer: 2.3.2
       exit-hook: 5.1.0
-      isbot: 5.1.44
+      isbot: 5.2.2
       jsesc: 3.1.0
       lodash: 4.18.1
       p-map: 7.0.4
@@ -3305,7 +3305,7 @@ snapshots:
 
   is-promise@4.0.0: {}
 
-  isbot@5.1.44: {}
+  isbot@5.2.2: {}
 
   istanbul-lib-coverage@3.2.2: {}
 
