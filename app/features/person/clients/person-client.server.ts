@@ -4,6 +4,7 @@ import {getHeaders} from "~/utils/fetch.utils";
 
 import type {components} from "../../../../openapi/arena-sak-innsyn-typer";
 import {arenaInnsynsClient} from "~/utils/client.utils.server";
+import {logger} from "~/utils/logger.utils";
 
 
 export async function sokPerson(request: Request, ident: string) {
@@ -11,20 +12,26 @@ export async function sokPerson(request: Request, ident: string) {
     const body: components["schemas"]["IdentForesporsel"] = {
         ident: ident
     }
-    const {data, error, response} = await arenaInnsynsClient.POST("/arena/innsyn/person", {
-        headers: getHeaders(onBehalfOfToken),
-        body: body,
-    });
+    try {
+        const {data, error, response} = await arenaInnsynsClient.POST("/arena/innsyn/person", {
+            headers: getHeaders(onBehalfOfToken),
+            body: body,
+        });
 
-    if (data) {
-        return data;
+        logger.info(`Sok person respons: ${response.status}`);
+        if (data) {
+            return data;
+        }
+
+        if (error) {
+            handleHttpProblem(error);
+        }
+
+        // throw new Error(`Uhåndtert feil i hentPerson(). ${response.status} - ${response.statusText}`);
+    } catch (error) {
+        logger.error(`Feil ved henting av person fra Arena: ${error}`);
+        throw error;
     }
-
-    if (error) {
-        handleHttpProblem(error);
-    }
-
-    throw new Error(`Uhåndtert feil i hentPerson(). ${response.status} - ${response.statusText}`);
 }
 
 
