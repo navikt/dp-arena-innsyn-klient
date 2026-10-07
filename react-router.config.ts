@@ -4,5 +4,6 @@ export default {
   // Config options...
   // Server-side render by default, to enable SPA mode set this to `false`
   ssr: true,
-  basename: "/"
+  basename: "/",
+  allowedActionOrigins: ["**.ansatt.nav.no"],
 } satisfies Config;
