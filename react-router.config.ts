@@ -5,5 +5,5 @@ export default {
   // Server-side render by default, to enable SPA mode set this to `false`
   ssr: true,
   basename: "/",
-  allowedActionOrigins: ["**.ansatt.nav.no"],
+  allowedActionOrigins: ["arena-innsyn-dagpenger.ansatt.dev.nav.no",],
 } satisfies Config;
