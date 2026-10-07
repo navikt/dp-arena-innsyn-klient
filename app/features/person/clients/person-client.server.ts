@@ -13,12 +13,11 @@ export async function sokPerson(request: Request, ident: string) {
         ident: ident
     }
     try {
-        const {data, error, response} = await arenaInnsynsClient.POST("/arena/innsyn/person", {
+        const {data, error} = await arenaInnsynsClient.POST("/arena/innsyn/person", {
             headers: getHeaders(onBehalfOfToken),
             body: body,
         });
 
-        logger.info(`Sok person respons: ${response.status}`);
         if (data) {
             return data;
         }
@@ -27,7 +26,6 @@ export async function sokPerson(request: Request, ident: string) {
             handleHttpProblem(error);
         }
 
-        // throw new Error(`Uhåndtert feil i hentPerson(). ${response.status} - ${response.statusText}`);
     } catch (error) {
         logger.error(`Feil ved henting av person fra Arena: ${error}`);
         throw error;
