@@ -2,7 +2,7 @@
   "name": "dp-arena-innsyn-klient",
   "private": true,
   "type": "module",
-  "packageManager": "pnpm@11.28.3",
+  "packageManager": "pnpm@12.8.2",
   "scripts": {
     "build": "react-router build",
     "dev": "react-router dev",
