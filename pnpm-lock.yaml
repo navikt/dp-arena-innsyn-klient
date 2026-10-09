@@ -42,7 +42,7 @@ importers:
         specifier: 8.4.0
         version: 8.4.0(react-router@8.4.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(supports-color@7.2.0)(typescript@6.0.3)
       '@rvf/react-router':
-        specifier: ^8.1.2
+        specifier: ^8.2.0
         version: 8.2.0(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react-router@8.4.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react@19.2.7)(scheduler@0.27.0)
       classnames:
         specifier: ^2.5.1
