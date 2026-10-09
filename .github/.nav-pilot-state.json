@@ -1,9 +1,9 @@
 {
   "collection": "nav-pilot",
-  "version": "2026.10.05-143335-970f811",
+  "version": "2026.10.08-225212-8936779",
   "scope": "repo",
   "source_repo": "navikt/copilot",
-  "source_sha": "bf2a3c383d984f51b95aca57deafe10c3eb88044",
+  "source_sha": "f1f3393973e26deb7dd16dace4be655f8400800c",
   "installed_at": "2026-10-02T11:27:02Z",
   "files": [
     {
@@ -16,7 +16,8 @@
     },
     {
       "path": ".github/agents/code-review.agent.md",
-      "hash": "5a019cbf3eda9ce2"
+      "hash": "811b2a6765ff86de",
+      "revision": "f1f3393973e26deb7dd16dace4be655f8400800c"
     },
     {
       "path": ".github/agents/forfatter.agent.md",
@@ -32,7 +33,8 @@
     },
     {
       "path": ".github/agents/nav-pilot.agent.md",
-      "hash": "c2ec92805bae041b"
+      "hash": "8c6cbe9101b541c5",
+      "revision": "f1f3393973e26deb7dd16dace4be655f8400800c"
     },
     {
       "path": ".github/agents/research.agent.md",
@@ -40,11 +42,17 @@
     },
     {
       "path": ".github/agents/rust.agent.md",
-      "hash": "f915a28c049a0f64"
+      "hash": "e1cb55806cd87d8c",
+      "revision": "f1f3393973e26deb7dd16dace4be655f8400800c"
     },
     {
       "path": ".github/agents/security-champion.agent.md",
-      "hash": "09850437ed89c7bb"
+      "hash": "65fed295fcdd5bd1",
+      "revision": "f1f3393973e26deb7dd16dace4be655f8400800c"
+    },
+    {
+      "path": ".github/agents/worker.agent.md",
+      "hash": "43c860f99cd1337e"
     },
     {
       "path": ".github/hooks/ask-first-aria.py",
@@ -220,7 +228,8 @@
     },
     {
       "path": ".github/skills/nav-dekoratoren/",
-      "hash": "36a286dece9e2c63"
+      "hash": "4b5d432477529d66",
+      "revision": "f1f3393973e26deb7dd16dace4be655f8400800c"
     },
     {
       "path": ".github/skills/nav-plan/",
