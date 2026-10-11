@@ -2,6 +2,8 @@ name: Bygg og deploy
 on:
   workflow_dispatch:
   push:
+    branches:
+      - main
 
 jobs:
   test:
@@ -42,7 +44,7 @@ jobs:
   build:
     name: Bygg
     needs: [ test ]
-    if: github.actor != 'dependabot[bot]' || github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     env:
       NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN || github.token }}
