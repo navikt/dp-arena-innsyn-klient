@@ -3,15 +3,16 @@ on:
   merge_group:
   push:
     branches:
-      - 'dependabot/**'
-      - 'update-digests'
-      - 'renovate/**'
-      - 'feat/**'
-      - 'copilot-customization-sync'
+      - '**'
+#      - 'dependabot/**'
+#      - 'update-digests'
+#      - 'renovate/**'
+#      - 'feat/**'
+#      - 'copilot-customization-sync'
 
 jobs:
-  test:
-    name: test
+  pr-test:
+    name: pr-test
     runs-on: ubuntu-latest
     env:
       NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN || github.token }}
