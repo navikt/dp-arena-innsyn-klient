@@ -1,0 +1,10 @@
+ingress: "https://arena-innsyn-dagpenger.ansatt.nav.no"
+gcp_env: "prod"
+
+dp-migrering_cluster_name: "prod-fss"
+dp-migrering_url: "https://dp-migrering.prod-fss-pub.nais.io/"
+
+azure:
+  tenant: nav.no
+  grupper:
+    saksbehandler: "2e9c63d8-322e-4c1f-b500-a0abb812761c" # 0000-GA-Dagpenger-Saksbehandler
