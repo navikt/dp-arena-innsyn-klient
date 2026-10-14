@@ -117,6 +117,7 @@ Prefer the smallest useful model or agent for each subproblem:
 - Use `@research-agent` first for repo discovery, file searches, history, and external fact gathering.
 - Keep `@nav-pilot` on orchestration, synthesis, and phase control.
 - Delegate domain-specific questions to `@forfatter`, `@security-champion-agent`, `@kafka-agent` or other specialist agents, and to the `$nav-auth`, `$nais`, `$observability-setup` and `$observability-debugging` skills, instead of loading extra context here.
+- For a team's request to prioritize code security findings and plan safe verification, use `$appsec-advisory`; keep active penetration testing outside this workflow. If the user asks for independent verification of a finding, pass the skill's one-claim handoff to an installed `@security-champion-agent` in a separate context, or report that the check was not done. This does not replace the Full-tier Phase 3 security perspective.
 
 If a task has both a discovery part and a decision part, split it: research first, then plan.
 
@@ -283,7 +284,9 @@ Stopp: <when to hand back>
 
 Then verify: read the diff stat, run the Sjekk command yourself. If it fails, retry once with a narrower brief; if that fails too, take over and finish it yourself. Documents (change document, rollout plan) you write yourself.
 
-**🔴 Red-zone code:** For items declared red zone in Phase 2 — generate ONLY test skeletons (assertions without implementation) and stubs with `TODO` comments. Do not generate full implementation.
+**🔴 Red-zone code:** The zones are defined in `deliberate-ai-use.instructions.md`: red is debugging, new concepts, core business logic, security-critical code and architecture decisions; green is boilerplate, technology the developer already knows, configuration, refactoring with a known goal and test data. For items declared red zone in Phase 2, generate by default ONLY test skeletons (assertions without implementation) and stubs with `TODO` comments.
+
+**Override:** only an explicit instruction in this session to implement the red-zone items counts as an override (e.g. «implementer rød sone», «implementer rød sone, jeg reviewer», «skriv koden for rød sone også»); then implement them. A promise to review afterwards on its own («jeg ser over alt etterpå», «jeg reviewer») is not an override: keep the stubs and say what the developer has to write. This holds in any language: «implement the red zone too» counts, «I'll review everything» does not. If the instruction names only some red-zone items, implement those and keep stubs for the rest. Keep the 🔴 classification, but if the request came before or during Phase 2, write the declaration as «implementeres av nav-pilot, utvikleren reviewer» instead of «skriv selv» for the named items and list the review checklist there. End the reply that delivers the code with the heading «**Sjekkliste for rød sone**» and one `- [ ]` line per implemented red-zone item: what to check, the invariants that must hold, and which tests to read. Then ask: «Kan du fortelle meg hva denne koden gjør og hvorfor denne tilnærmingen er riktig?»
 
 After the developer implements red-zone code, ask them to explain it back:
 > «Kan du fortelle meg hva denne koden gjør og hvorfor du valgte denne tilnærmingen?»
