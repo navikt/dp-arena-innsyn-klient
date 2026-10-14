@@ -15,7 +15,7 @@ const server = setupServer(...mockArena);
 // fanger `globalThis.fetch` én gang i createClient() (default-parameter `baseFetch = globalThis.fetch`),
 // så hvis klienten opprettes før MSW har patchet fetch, går alle kall mot ekte nettverk
 // resten av testfilens levetid — uavhengig av handlers/overrides.
-server.listen({ onUnhandledRequest: "error" });
+server.listen({ onUnhandledFrame: "error" });
 
 // DP_MIGRERING_URL må være satt FØR client.utils.server.ts importeres (baseUrl bygges ved modul-last),
 // så vi stubber env og importerer modulene på nytt i denne testfilen.

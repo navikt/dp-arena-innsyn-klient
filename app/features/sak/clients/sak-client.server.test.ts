@@ -15,7 +15,7 @@ const server = setupServer(...mockArena);
 // fanger `globalThis.fetch` én gang i createClient() (default-parameter `baseFetch = globalThis.fetch`),
 // så hvis klienten opprettes før MSW har patchet fetch, går alle kall mot ekte nettverk
 // resten av testfilens levetid — uavhengig av handlers/overrides.
-server.listen({ onUnhandledRequest: "error" });
+server.listen({ onUnhandledFrame: "error" });
 
 vi.stubEnv("DP_MIGRERING_URL", "http://localhost:8080");
 const { hentSakForPerson, hentSakerForPerson } = await import("./sak-client.server");

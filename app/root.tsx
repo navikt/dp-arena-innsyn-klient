@@ -3,6 +3,7 @@ import akselDarksideOverrides from "~/aksel-darkside-overrides.css?url";
 import globalDarksideCss from "~/global-darkside.css?url";
 import {handleActions} from "~/features/handle-actions";
 import {RootErrorBoundaryView} from "~/components/error-boundary/RootErrorBoundaryView";
+import {NaisMetaTags} from "@nais/apm/react";
 
 export function meta() {
     return [
@@ -63,6 +64,7 @@ export function Layout({children}: { children: React.ReactNode }) {
             <meta name="viewport" content="width=device-width, initial-scale=1"/>
             <Meta/>
             <Links/>
+            <NaisMetaTags/>
         </head>
         <body>
         {children}

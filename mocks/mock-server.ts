@@ -13,7 +13,7 @@ const mswHandlers = [
 export async function startMockServer() {
     const server = setupServer(...mswHandlers);
 
-    server.listen({onUnhandledRequest: "warn"});
+    server.listen({onUnhandledFrame: "warn"});
     server.events.on("request:start", ({request}) => {
         logger.info(`[MSW INTERCEPTED]: ${request.method} ${request.url}`);
     });

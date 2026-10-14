@@ -43,7 +43,7 @@ describe("VedtakTabell", () => {
     const vedtak = [
       lagVedtak({ vedtakId: 1, lopenrvedtak: 1, utfallkode: "Ja" }),
       lagVedtak({ vedtakId: 2, lopenrvedtak: 2, utfallkode: "Nei" }),
-      lagVedtak({ vedtakId: 3, lopenrvedtak: 3, utfallkode: null }),
+      lagVedtak({ vedtakId: 3, lopenrvedtak: 3, utfallkode: undefined }),
     ];
 
     render(<VedtakTabell vedtak={vedtak} />);
