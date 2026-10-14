@@ -37,7 +37,7 @@ spec:
     - name: GCP_ENV
       value: "{{gcp_env}}"
     - name: DP_MIGRERING_URL
-      value: "{{dp-migrering_url}}"
+      value: "https://{{dp-migrering_url}}/"
     - name: DP_MIGRERING_CLUSTER_NAME
       value: "{{dp-migrering_cluster_name}}"
 
@@ -46,7 +46,7 @@ spec:
       external:
         - host: graph.microsoft.com
         - host: login.microsoftonline.com
-        - host: dp-migrering.dev-fss-pub.nais.io
+        - host: "{{dp-migrering_url}}"
 
   azure:
     application:
