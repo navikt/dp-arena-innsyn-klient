@@ -5,7 +5,8 @@ metadata:
   namespace: teamdagpenger
   labels:
     team: teamdagpenger
-    app: dp-arena-innsyn-klient
+    # app: dp-arena-innsyn-klient
+    subteam: bjoa
 spec:
   image: "{{image}}"
   port: 3000
