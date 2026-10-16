@@ -180,7 +180,7 @@ importers:
         version: 0.7.3(@grafana/faro-react@2.12.1(react-dom@19.3.0(react@19.3.0))(react-router-dom@7.18.4(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-router@8.4.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react@19.3.0)(supports-color@7.2.0))(react-dom@19.3.0(react@19.3.0))(react-router-dom@7.18.4(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-router@8.4.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react@19.3.0)(supports-color@7.2.0)
       '@navikt/aksel-icons':
         specifier: ^8.16.2
-        version: 8.19.0
+        version: 8.19.1
       '@navikt/ds-css':
         specifier: ^8.16.2
         version: 8.19.0
@@ -588,8 +588,8 @@ packages:
       react-router: '>=6.0.0'
       react-router-dom: '>=6.0.0'
 
-  '@navikt/aksel-icons@8.19.0':
-    resolution: {integrity: sha512-9ENUIokS5kvHtjjzQWICPqq5yxqL/bQ2PHr2T3xyhuU/T/7EqV4x+VcJtBIZ6H4hDTdr1kMccHSDRm7IY6O7uQ==, tarball: https://npm.pkg.github.com/download/@navikt/aksel-icons/8.19.0/e0331b96fecc072f758ecd504cd55f7330191186}
+  '@navikt/aksel-icons@8.19.1':
+    resolution: {integrity: sha512-+bUSI3jL4l5QkobFYXUBho46hmET0Z7pxXBgriuKFSw2jH4yB78I+g8zc+fgQavx400l3l7lKtOuBghVjDMqLQ==, tarball: https://npm.pkg.github.com/download/@navikt/aksel-icons/8.19.1/543f88829691088b9c53163d824b74956cf51ef1}
 
   '@navikt/ds-css@8.19.0':
     resolution: {integrity: sha512-rqLecNlxMObVBb5b7VuO7BZB2N1y/y1CXPae9IXboq/S6d/Jy8dF1nRsAzB+C4cMC8U7BqAEs3O5TCZGqtmQbA==, tarball: https://npm.pkg.github.com/download/@navikt/ds-css/8.19.0/6945cd4c3798bbf95be9d9b01af1caeb57599174}
@@ -3070,7 +3070,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@navikt/aksel-icons@8.19.0': {}
+  '@navikt/aksel-icons@8.19.1': {}
 
   '@navikt/ds-css@8.19.0': {}
 
@@ -3078,7 +3078,7 @@ snapshots:
     dependencies:
       '@floating-ui/react': 0.27.20(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@floating-ui/react-dom': 2.1.9(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@navikt/aksel-icons': 8.19.0
+      '@navikt/aksel-icons': 8.19.1
       '@navikt/ds-tokens': 8.19.2
       '@types/react': 19.3.0
       date-fns: 4.4.0
