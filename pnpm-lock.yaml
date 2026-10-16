@@ -189,7 +189,7 @@ importers:
         version: 8.19.0(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@navikt/ds-tailwind':
         specifier: ^8.16.2
-        version: 8.19.0
+        version: 8.19.1
       '@navikt/oasis':
         specifier: ^4.2.2
         version: 4.2.2
@@ -601,8 +601,8 @@ packages:
       react: ^17 || ^18 || ^19
       react-dom: ^17 || ^18 || ^19
 
-  '@navikt/ds-tailwind@8.19.0':
-    resolution: {integrity: sha512-068wR3tlHgHPWEhpWiDtc8xfI9FpjNSDlWt4R7xnQ0mt4ovMwkCctCPkAxD5xyHIhb3aIqZ7wM08wy5F+XorCw==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tailwind/8.19.0/784dbd2cacceba3fb28754dc04a4fc64f717fbdd}
+  '@navikt/ds-tailwind@8.19.1':
+    resolution: {integrity: sha512-SvsA1VQ44YlXjskU4yDa0S+TmN+Hlk/B77LNJG2HZpoexiEQ7qMJFcQYFwOjiPGqZbBbANiUij6/GupkLHfWVg==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tailwind/8.19.1/8f5a5c284b00560912c7b6779e411ed1d9ea7c42}
 
   '@navikt/ds-tokens@8.19.2':
     resolution: {integrity: sha512-biANGtITI5PeOFKIuSmwELLajSQBe9hys0D/Mhk+l/J/ARoxolNFVXsg4woRRNP6aRvxGGzHQB45nyDBdgunEA==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tokens/8.19.2/057a50d0df4a94efe3bb213e5306691b78b2d6f8}
@@ -3086,7 +3086,7 @@ snapshots:
       react-day-picker: 10.0.1(@types/react@19.3.0)(react@19.3.0)
       react-dom: 19.3.0(react@19.3.0)
 
-  '@navikt/ds-tailwind@8.19.0': {}
+  '@navikt/ds-tailwind@8.19.1': {}
 
   '@navikt/ds-tokens@8.19.2': {}
 
