@@ -41,6 +41,8 @@ spec:
       value: "https://{{dp-migrering_url}}/"
     - name: DP_MIGRERING_CLUSTER_NAME
       value: "{{dp-migrering_cluster_name}}"
+  envFrom:
+    - secret: dp-arena-innsyn-klient-api-token
 
   accessPolicy:
     outbound:
