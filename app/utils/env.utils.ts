@@ -10,6 +10,8 @@ interface IEnv {
     USE_MSW: string;
     DP_MIGRERING_URL: string;
     GCP_ENV: string;
+    UNLEASH_SERVER_API_URL: string;
+    UNLEASH_SERVER_API_TOKEN: string;
 }
 
 export function getEnv(value: keyof IEnv) {

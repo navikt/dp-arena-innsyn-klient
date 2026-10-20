@@ -7,6 +7,8 @@ import { isbot } from "isbot";
 import type { RenderToPipeableStreamOptions } from "react-dom/server";
 import { renderToPipeableStream } from "react-dom/server";
 import {getEnv} from "~/utils/env.utils";
+import {logger} from "~/utils/logger.utils";
+import {unleash} from "~/utils/unleash.server";
 
 export const streamTimeout = 5_000;
 
@@ -14,6 +16,11 @@ if (getEnv("USE_MSW") === "true") {
   const { startMockServer } = await import("../mocks/mock-server");
   await startMockServer();
 }
+
+unleash.on("synchronized", () => {
+  logger.info("Unleash is ready");
+});
+
 export default function handleRequest(
   request: Request,
   responseStatusCode: number,

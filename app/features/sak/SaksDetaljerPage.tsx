@@ -1,7 +1,7 @@
-import {type ActionFunctionArgs, type LoaderFunctionArgs, useLoaderData} from "react-router";
+import {type ActionFunctionArgs, Link, type LoaderFunctionArgs, useLoaderData} from "react-router";
 import {handleActions} from "~/features/handle-actions";
 import invariant from "tiny-invariant";
-import {BodyShort, Heading, HStack, Page, Tag, VStack} from "@navikt/ds-react";
+import {BodyShort, Button, Heading, HStack, Page, Tag, VStack} from "@navikt/ds-react";
 import {VedtakTabell} from "~/features/sak/components/vedtak-detaljer/VedtakTabell";
 import {FieldValue} from "~/features/sak/components/field-value/field-value";
 import {norsktDatoformat, pickDate} from "~/utils/dato.utils";
@@ -9,6 +9,8 @@ import {sakStatus} from "~/features/sak/SaksListePage";
 import {hentSakForPerson} from "~/features/sak/clients/sak-client.server";
 import type {components} from "../../../openapi/arena-sak-innsyn-typer";
 import {Nokkeltall} from "~/features/sak/components/vedtak-detaljer/NokkelTall";
+import WithFeatureEnabled from "~/components/WithFeatureEnabled";
+import {unleash} from "~/utils/unleash.server";
 
 export async function action({request, params}: ActionFunctionArgs) {
     return await handleActions(request, params);
@@ -16,8 +18,12 @@ export async function action({request, params}: ActionFunctionArgs) {
 
 export async function loader({params, request}: LoaderFunctionArgs) {
     invariant(params.sakId, "Mangler sak id")
-    return await hentSakForPerson(request, params.sakId)
+    const sak = await hentSakForPerson(request, params.sakId);
 
+    return {
+        sak,
+        kanStarteMigrering: unleash.isEnabled("dp-migrering.start-migrering"),
+    };
 }
 
 // Returnerer justert fradato (AAPJUSTFD) om den finnes, ellers original fradato (FDATO)
@@ -34,7 +40,7 @@ function getTildato(vedtak: components["schemas"]["ArenaVedtakMedDetaljerRespons
 }
 
 export default function SaksDetaljer() {
-    const sak = useLoaderData<typeof loader>();
+    const {sak, kanStarteMigrering} = useLoaderData<typeof loader>();
 
     const nyesteVedtak = sak.vedtak.sort((a, b) => b.lopenrvedtak - a.lopenrvedtak)[0];
 
@@ -68,27 +74,30 @@ export default function SaksDetaljer() {
 
         <Page.Block className={"card p-4"}>
             <VStack gap="space-24">
-                <HStack gap="space-20" align="center">
-                    <Heading size="medium">
-                        {/*Arena {nyesteVedtak?.rettighet navn ?? ''} {sak.opprettetAar} {sak.lopenr}*/}
-                        Arena {nyesteVedtak?.rettighetnavn ?? ''} {sak.opprettetAar}-{sak.lopenr}
-                    </Heading>
+                <HStack justify="space-between">
+                    <HStack gap="space-20" align="center">
+                        <Heading size="medium">
+                            Arena {nyesteVedtak?.rettighetnavn ?? ''} {sak.opprettetAar}-{sak.lopenr}
+                        </Heading>
 
 
-                    {startdato != null && (
-                        <BodyShort size="small" data-testid="sak-datoperiode">
-                            {norsktDatoformat(startdato)} - {norsktDatoformat(sluttdato)}
-                        </BodyShort>
-                    )}
-                    <HStack gap="space-8">
-                        {sak.statuskode != null && (
-                            <Tag variant="moderate" size="small"
-                                 data-color={sakStatus(sak.statuskode)}>
-                                {sak.statusnavn}
-                            </Tag>
+                        {startdato != null && (
+                            <BodyShort size="small" data-testid="sak-datoperiode">
+                                {norsktDatoformat(startdato)} - {norsktDatoformat(sluttdato)}
+                            </BodyShort>
                         )}
-                        {/*{sluttdato != null && <SluttdatoTag sluttdato={sluttdato} />}*/}
+                        <HStack gap="space-8">
+                            {sak.statuskode != null && (
+                                <Tag variant="moderate" size="small"
+                                     data-color={sakStatus(sak.statuskode)}>
+                                    {sak.statusnavn}
+                                </Tag>
+                            )}
+                        </HStack>
                     </HStack>
+                    <WithFeatureEnabled enabled={kanStarteMigrering}>
+                        <Button as={Link} to={`./start-migrering`} size="medium">Migrer sak</Button>
+                    </WithFeatureEnabled>
                 </HStack>
                 <div className={"card"}>
 
@@ -105,8 +114,6 @@ export default function SaksDetaljer() {
                 </div>
                 <div className={"card"}>
                     <VStack gap="space-32" marginInline="space-32" marginBlock="space-8">
-
-
                         <Nokkeltall sak={sak}/>
                         <VedtakTabell vedtak={sak.vedtak}/>
                     </VStack>

@@ -87,11 +87,11 @@ Bruker → Ingress/Proxy → [Feature toggle]
 
 ```kotlin
 // RedirectServer.kt — enkel Ktor-app som ruter basert på toggle
-fun Application.configureRouting(unleash: Unleash) {
+fun Application.configureRouting(unleashServer: Unleash) {
     routing {
         get("/{path...}") {
             val path = call.parameters.getAll("path")?.joinToString("/") ?: ""
-            val target = if (unleash.isEnabled("ny-tjeneste-aktiv")) {
+            val target = if (unleashServer.isEnabled("ny-tjeneste-aktiv")) {
                 "https://ny-tjeneste.intern.nav.no/$path"
             } else {
                 "https://gammel-tjeneste.intern.nav.no/$path"
@@ -109,10 +109,10 @@ fun Application.configureRouting(unleash: Unleash) {
 class MigrerendeService(
     private val gammel: GammelService,
     private val ny: NyService,
-    private val unleash: Unleash
+    private val unleashServer: Unleash
 ) {
     fun hentVedtak(id: String): Vedtak {
-        return if (unleash.isEnabled("bruk-ny-vedtak-service")) {
+        return if (unleashServer.isEnabled("bruk-ny-vedtak-service")) {
             ny.hentVedtak(id)
         } else {
             gammel.hentVedtak(id)
@@ -136,7 +136,7 @@ Nav bruker Unleash for gradvis utrulling. Standard oppsett:
 spec:
   env:
     - name: UNLEASH_SERVER_API_URL
-      value: https://unleash.nais.io/api
+      value: https://unleashServer.nais.io/api
     - name: UNLEASH_SERVER_API_TOKEN
       value: ${UNLEASH_API_TOKEN}
 ```
@@ -154,7 +154,7 @@ fun erAktivert(toggle: FeatureToggle, navIdent: String? = null): Boolean {
     val context = UnleashContext.builder()
         .apply { navIdent?.let { addProperty("navIdent", it) } }
         .build()
-    return unleash.isEnabled(toggle.key, context)
+    return unleashServer.isEnabled(toggle.key, context)
 }
 ```
 

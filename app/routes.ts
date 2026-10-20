@@ -7,6 +7,7 @@ export default [
         route("person/:personId", "features/person/PersonPage.tsx", [
             route("saker", "features/sak/SaksListePage.tsx", [
                 route(":sakId", "features/sak/SaksDetaljerPage.tsx"),
+                route(":sakId/start-migrering", "features/sak/StartMigreringDialog.tsx"),
 
             ])
         ]),

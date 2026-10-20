@@ -1,29 +1,31 @@
 import { ecsFormat } from "@elastic/ecs-pino-format";
 import type { Logger, LoggerOptions } from "pino";
 import { pino } from "pino";
+import pinoPretty from "pino-pretty"; // 1. Import pino-pretty directly
 
 import { getEnv } from "~/utils/env.utils";
 
-const devConfig: LoggerOptions = {
-  transport: {
-    target: "pino-pretty",
-    options: {
-      colorize: true,
+// 2. Wrap pino logger initialization conditionally
+let pinoLogger: Logger;
+
+if (getEnv("IS_LOCALHOST") === "true") {
+  // Pass the synchronous pinoPretty stream directly as the second argument
+  pinoLogger = pino(
+      { level: "debug" },
+      pinoPretty({ colorize: true })
+  );
+} else {
+  const prodConfig: LoggerOptions = {
+    ...ecsFormat(),
+    timestamp: false,
+    formatters: {
+      level: (label) => ({ level: label }),
     },
-  },
-};
+  };
+  pinoLogger = pino(prodConfig);
+}
 
-const prodConfig: LoggerOptions = {
-  ...ecsFormat(),
-  timestamp: false,
-  formatters: {
-    level: (label) => ({ level: label }),
-  },
-};
-
-const pinoLogger: Logger = pino(getEnv("IS_LOCALHOST") === "true" ? devConfig : prodConfig);
-
-// Logger wrapper to handle server-side and client-side logging. Console.log is needed client-side for faro auto capture to function properly
+// Logger wrapper to handle server-side and client-side logging.
 export const logger = {
   info: (data: unknown) => {
     if (typeof document === "undefined") {

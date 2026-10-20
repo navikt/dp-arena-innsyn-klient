@@ -1,4 +1,4 @@
-import {HGrid, InfoCard, Page} from "@navikt/ds-react";
+import {InfoCard, Page} from "@navikt/ds-react";
 
 export default function Index() {
 
@@ -10,6 +10,7 @@ export default function Index() {
                     <InfoCard.Title>Arena saker</InfoCard.Title>
                 </InfoCard.Header>
                 <InfoCard.Content>
+                    <br/>
                     Her kan man se saker i Arena
                 </InfoCard.Content>
             </InfoCard>
