@@ -1,19 +1,19 @@
 import { ecsFormat } from "@elastic/ecs-pino-format";
 import type { Logger, LoggerOptions } from "pino";
 import { pino } from "pino";
-import pinoPretty from "pino-pretty"; // 1. Import pino-pretty directly
 
 import { getEnv } from "~/utils/env.utils";
 
-// 2. Wrap pino logger initialization conditionally
 let pinoLogger: Logger;
 
 if (getEnv("IS_LOCALHOST") === "true") {
-  // Pass the synchronous pinoPretty stream directly as the second argument
-  pinoLogger = pino(
-      { level: "debug" },
-      pinoPretty({ colorize: true })
-  );
+  pinoLogger = pino({
+    level: "debug",
+    transport: {
+      target: import.meta.resolve("pino-pretty"),
+      options: { colorize: true },
+    },
+  });
 } else {
   const prodConfig: LoggerOptions = {
     ...ecsFormat(),
