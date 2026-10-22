@@ -171,13 +171,13 @@ importers:
         version: 1.5.0
       '@emotion/react':
         specifier: ^11.14.0
-        version: 11.14.0(@types/react@19.3.0)(react@19.3.0)(supports-color@7.2.0)
+        version: 11.14.0(@types/react@19.3.0)(react@19.3.1)(supports-color@7.2.0)
       '@emotion/styled':
         specifier: ^11.14.1
-        version: 11.14.1(@emotion/react@11.14.0(@types/react@19.3.0)(react@19.3.0)(supports-color@7.2.0))(@types/react@19.3.0)(react@19.3.0)(supports-color@7.2.0)
+        version: 11.14.1(@emotion/react@11.14.0(@types/react@19.3.0)(react@19.3.1)(supports-color@7.2.0))(@types/react@19.3.0)(react@19.3.1)(supports-color@7.2.0)
       '@nais/apm':
         specifier: 0.7.3
-        version: 0.7.3(@grafana/faro-react@2.12.1(react-dom@19.3.0(react@19.3.0))(react-router-dom@7.18.4(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-router@8.4.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react@19.3.0)(supports-color@7.2.0))(react-dom@19.3.0(react@19.3.0))(react-router-dom@7.18.4(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-router@8.4.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react@19.3.0)(supports-color@7.2.0)
+        version: 0.7.3(@grafana/faro-react@2.12.1(react-dom@19.3.1(react@19.3.1))(react-router-dom@7.18.4(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(react-router@8.4.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(react@19.3.1)(supports-color@7.2.0))(react-dom@19.3.1(react@19.3.1))(react-router-dom@7.18.4(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(react-router@8.4.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(react@19.3.1)(supports-color@7.2.0)
       '@navikt/aksel-icons':
         specifier: ^8.16.2
         version: 8.19.2
@@ -186,7 +186,7 @@ importers:
         version: 8.19.2
       '@navikt/ds-react':
         specifier: ^8.16.2
-        version: 8.19.1(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+        version: 8.19.1(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       '@navikt/ds-tailwind':
         specifier: ^8.16.2
         version: 8.19.2
@@ -195,16 +195,16 @@ importers:
         version: 4.2.2
       '@react-router/fs-routes':
         specifier: ^8.4.0
-        version: 8.4.0(@react-router/dev@8.4.0(@react-router/serve@8.4.0(react-router@8.4.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(supports-color@7.2.0)(typescript@7.0.2))(babel-plugin-macros@3.1.0)(react-router@8.4.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(supports-color@7.2.0)(typescript@7.0.2)(vite@8.3.4(@types/node@26.6.5)(jiti@2.7.0)))(typescript@7.0.2)
+        version: 8.4.0(@react-router/dev@8.4.0(@react-router/serve@8.4.0(react-router@8.4.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(supports-color@7.2.0)(typescript@7.0.2))(babel-plugin-macros@3.1.0)(react-router@8.4.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(supports-color@7.2.0)(typescript@7.0.2)(vite@8.3.4(@types/node@26.6.5)(jiti@2.7.0)))(typescript@7.0.2)
       '@react-router/node':
         specifier: 8.4.0
-        version: 8.4.0(react-router@8.4.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(typescript@7.0.2)
+        version: 8.4.0(react-router@8.4.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(typescript@7.0.2)
       '@react-router/serve':
         specifier: 8.4.0
-        version: 8.4.0(react-router@8.4.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(supports-color@7.2.0)(typescript@7.0.2)
+        version: 8.4.0(react-router@8.4.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(supports-color@7.2.0)(typescript@7.0.2)
       '@rvf/react-router':
         specifier: ^8.2.0
-        version: 8.2.0(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react-router@8.4.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react@19.3.0)(scheduler@0.28.0)
+        version: 8.2.0(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react-router@8.4.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(react@19.3.1)(scheduler@0.28.0)
       classnames:
         specifier: ^2.5.1
         version: 2.5.1
@@ -219,7 +219,7 @@ importers:
         version: 11.5.3
       motion:
         specifier: ^14.0.0
-        version: 14.2.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+        version: 14.2.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       openapi-fetch:
         specifier: ^0.17.0
         version: 0.17.0
@@ -231,13 +231,13 @@ importers:
         version: 15.1.3
       react:
         specifier: ^19.3.0
-        version: 19.3.0
+        version: 19.3.1
       react-dom:
         specifier: ^19.2.7
-        version: 19.3.0(react@19.3.0)
+        version: 19.3.1(react@19.3.1)
       react-router:
         specifier: 8.4.0
-        version: 8.4.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+        version: 8.4.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       tiny-invariant:
         specifier: ^1.3.3
         version: 1.3.3
@@ -256,7 +256,7 @@ importers:
     devDependencies:
       '@react-router/dev':
         specifier: 8.4.0
-        version: 8.4.0(@react-router/serve@8.4.0(react-router@8.4.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(supports-color@7.2.0)(typescript@7.0.2))(babel-plugin-macros@3.1.0)(react-router@8.4.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(supports-color@7.2.0)(typescript@7.0.2)(vite@8.3.4(@types/node@26.6.5)(jiti@2.7.0))
+        version: 8.4.0(@react-router/serve@8.4.0(react-router@8.4.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(supports-color@7.2.0)(typescript@7.0.2))(babel-plugin-macros@3.1.0)(react-router@8.4.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(supports-color@7.2.0)(typescript@7.0.2)(vite@8.3.4(@types/node@26.6.5)(jiti@2.7.0))
       '@tailwindcss/vite':
         specifier: ^4.3.2
         version: 4.3.3(vite@8.3.4(@types/node@26.6.5)(jiti@2.7.0))
@@ -268,7 +268,7 @@ importers:
         version: 7.0.1(@testing-library/dom@10.4.2)(vitest@5.0.4)
       '@testing-library/react':
         specifier: ^16.3.2
-        version: 16.3.3(@testing-library/dom@10.4.2)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+        version: 16.3.3(@testing-library/dom@10.4.2)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       '@types/node':
         specifier: ^26
         version: 26.6.5
@@ -2298,10 +2298,10 @@ packages:
       '@types/react':
         optional: true
 
-  react-dom@19.3.0:
-    resolution: {integrity: sha512-JDk8dgif51OjFoDE70+OT9ICyYr+69HlmihNwp1+Nsfbna3t5sIiCa9ZJktDmQ4/1b/rn26hIAR2uYXDMr5r0Q==}
+  react-dom@19.3.1:
+    resolution: {integrity: sha512-Y0bARz53lhEC1NMCASs0/j+faB/zqt3R8hpvg1e8+61ZVJ4UL0UdC4cBbXfZMcIuhrfgeILTLe+ZeBCavQPtKQ==}
     peerDependencies:
-      react: ^19.3.0
+      react: ^19.3.1
 
   react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
@@ -2346,8 +2346,8 @@ packages:
       react: '>=18.0.0'
       scheduler: '>=0.19.0'
 
-  react@19.3.0:
-    resolution: {integrity: sha512-E8LUcbtBWt20bbl2YoHfx4ZDBdxVTfOKtCZn9cDSJ4l6/nuoApcpIBcj47t2wZoVX8g2ZHuMHbiShgCR1T5Sog==}
+  react@19.3.1:
+    resolution: {integrity: sha512-QNhWdt7nrgVWWQG58QuGsAR3jv3Hbe4mb4vz7w2csnHavciZJgda1CPNaldF6eVxv90ud3jUXpKlHL69gO38yw==}
     engines: {node: '>=0.10.0'}
 
   readdirp@5.0.0:
@@ -2987,17 +2987,17 @@ snapshots:
 
   '@emotion/memoize@0.9.0': {}
 
-  '@emotion/react@11.14.0(@types/react@19.3.0)(react@19.3.0)(supports-color@7.2.0)':
+  '@emotion/react@11.14.0(@types/react@19.3.0)(react@19.3.1)(supports-color@7.2.0)':
     dependencies:
       '@babel/runtime': 7.29.7
       '@emotion/babel-plugin': 11.13.5(supports-color@7.2.0)
       '@emotion/cache': 11.14.0
       '@emotion/serialize': 1.3.3
-      '@emotion/use-insertion-effect-with-fallbacks': 1.2.0(react@19.3.0)
+      '@emotion/use-insertion-effect-with-fallbacks': 1.2.0(react@19.3.1)
       '@emotion/utils': 1.4.2
       '@emotion/weak-memoize': 0.4.0
       hoist-non-react-statics: 3.3.2
-      react: 19.3.0
+      react: 19.3.1
     optionalDependencies:
       '@types/react': 19.3.0
     transitivePeerDependencies:
@@ -3013,16 +3013,16 @@ snapshots:
 
   '@emotion/sheet@1.4.0': {}
 
-  '@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.3.0)(react@19.3.0)(supports-color@7.2.0))(@types/react@19.3.0)(react@19.3.0)(supports-color@7.2.0)':
+  '@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.3.0)(react@19.3.1)(supports-color@7.2.0))(@types/react@19.3.0)(react@19.3.1)(supports-color@7.2.0)':
     dependencies:
       '@babel/runtime': 7.29.7
       '@emotion/babel-plugin': 11.13.5(supports-color@7.2.0)
       '@emotion/is-prop-valid': 1.4.0
-      '@emotion/react': 11.14.0(@types/react@19.3.0)(react@19.3.0)(supports-color@7.2.0)
+      '@emotion/react': 11.14.0(@types/react@19.3.0)(react@19.3.1)(supports-color@7.2.0)
       '@emotion/serialize': 1.3.3
-      '@emotion/use-insertion-effect-with-fallbacks': 1.2.0(react@19.3.0)
+      '@emotion/use-insertion-effect-with-fallbacks': 1.2.0(react@19.3.1)
       '@emotion/utils': 1.4.2
-      react: 19.3.0
+      react: 19.3.1
     optionalDependencies:
       '@types/react': 19.3.0
     transitivePeerDependencies:
@@ -3030,9 +3030,9 @@ snapshots:
 
   '@emotion/unitless@0.10.0': {}
 
-  '@emotion/use-insertion-effect-with-fallbacks@1.2.0(react@19.3.0)':
+  '@emotion/use-insertion-effect-with-fallbacks@1.2.0(react@19.3.1)':
     dependencies:
-      react: 19.3.0
+      react: 19.3.1
 
   '@emotion/utils@1.4.2': {}
 
@@ -3047,18 +3047,18 @@ snapshots:
       '@floating-ui/core': 1.8.0
       '@floating-ui/utils': 0.2.12
 
-  '@floating-ui/react-dom@2.1.9(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@floating-ui/react-dom@2.1.9(react-dom@19.3.1(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@floating-ui/dom': 1.8.0
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      react: 19.3.1
+      react-dom: 19.3.1(react@19.3.1)
 
-  '@floating-ui/react@0.27.20(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@floating-ui/react@0.27.20(react-dom@19.3.1(react@19.3.1))(react@19.3.1)':
     dependencies:
-      '@floating-ui/react-dom': 2.1.9(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      '@floating-ui/react-dom': 2.1.9(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       '@floating-ui/utils': 0.2.12
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      react: 19.3.1
+      react-dom: 19.3.1(react@19.3.1)
       tabbable: 6.5.0
 
   '@floating-ui/utils@0.2.12': {}
@@ -3070,16 +3070,16 @@ snapshots:
       '@opentelemetry/api': 1.9.1
       '@opentelemetry/otlp-transformer': 0.222.0(@opentelemetry/api@1.9.1)
 
-  '@grafana/faro-react@2.12.1(react-dom@19.3.0(react@19.3.0))(react-router-dom@7.18.4(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-router@8.4.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react@19.3.0)(supports-color@7.2.0)':
+  '@grafana/faro-react@2.12.1(react-dom@19.3.1(react@19.3.1))(react-router-dom@7.18.4(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(react-router@8.4.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(react@19.3.1)(supports-color@7.2.0)':
     dependencies:
       '@grafana/faro-web-sdk': 2.12.1
       '@grafana/faro-web-tracing': 2.12.1(supports-color@7.2.0)
       hoist-non-react-statics: 3.3.2
-      react: 19.3.0
+      react: 19.3.1
     optionalDependencies:
-      react-dom: 19.3.0(react@19.3.0)
-      react-router: 8.4.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      react-router-dom: 7.18.4(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      react-dom: 19.3.1(react@19.3.1)
+      react-router: 8.4.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
+      react-router-dom: 7.18.4(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -3189,18 +3189,18 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@nais/apm@0.7.3(@grafana/faro-react@2.12.1(react-dom@19.3.0(react@19.3.0))(react-router-dom@7.18.4(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-router@8.4.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react@19.3.0)(supports-color@7.2.0))(react-dom@19.3.0(react@19.3.0))(react-router-dom@7.18.4(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-router@8.4.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react@19.3.0)(supports-color@7.2.0)':
+  '@nais/apm@0.7.3(@grafana/faro-react@2.12.1(react-dom@19.3.1(react@19.3.1))(react-router-dom@7.18.4(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(react-router@8.4.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(react@19.3.1)(supports-color@7.2.0))(react-dom@19.3.1(react@19.3.1))(react-router-dom@7.18.4(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(react-router@8.4.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(react@19.3.1)(supports-color@7.2.0)':
     dependencies:
-      '@grafana/faro-react': 2.12.1(react-dom@19.3.0(react@19.3.0))(react-router-dom@7.18.4(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-router@8.4.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react@19.3.0)(supports-color@7.2.0)
+      '@grafana/faro-react': 2.12.1(react-dom@19.3.1(react@19.3.1))(react-router-dom@7.18.4(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(react-router@8.4.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(react@19.3.1)(supports-color@7.2.0)
       '@grafana/faro-web-sdk': 2.12.1
       '@grafana/faro-web-tracing': 2.12.1(supports-color@7.2.0)
       '@grafana/rrweb': 2.0.0-grafana.2
       '@grafana/rrweb-snapshot': 2.0.0-grafana.2
       fflate: 0.8.3
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
-      react-router: 8.4.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      react-router-dom: 7.18.4(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      react: 19.3.1
+      react-dom: 19.3.1(react@19.3.1)
+      react-router: 8.4.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
+      react-router-dom: 7.18.4(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -3208,17 +3208,17 @@ snapshots:
 
   '@navikt/ds-css@8.19.2': {}
 
-  '@navikt/ds-react@8.19.1(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@navikt/ds-react@8.19.1(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)':
     dependencies:
-      '@floating-ui/react': 0.27.20(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@floating-ui/react-dom': 2.1.9(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      '@floating-ui/react': 0.27.20(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
+      '@floating-ui/react-dom': 2.1.9(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       '@navikt/aksel-icons': 8.19.2
       '@navikt/ds-tokens': 8.19.2
       '@types/react': 19.3.0
       date-fns: 4.4.0
-      react: 19.3.0
-      react-day-picker: 10.0.1(@types/react@19.3.0)(react@19.3.0)
-      react-dom: 19.3.0(react@19.3.0)
+      react: 19.3.1
+      react-day-picker: 10.0.1(@types/react@19.3.0)(react@19.3.1)
+      react-dom: 19.3.1(react@19.3.1)
 
   '@navikt/ds-tailwind@8.19.2': {}
 
@@ -3398,14 +3398,14 @@ snapshots:
       '@opentelemetry/api': 1.9.1
       tdigest: 0.1.2
 
-  '@react-router/dev@8.4.0(@react-router/serve@8.4.0(react-router@8.4.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(supports-color@7.2.0)(typescript@7.0.2))(babel-plugin-macros@3.1.0)(react-router@8.4.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(supports-color@7.2.0)(typescript@7.0.2)(vite@8.3.4(@types/node@26.6.5)(jiti@2.7.0))':
+  '@react-router/dev@8.4.0(@react-router/serve@8.4.0(react-router@8.4.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(supports-color@7.2.0)(typescript@7.0.2))(babel-plugin-macros@3.1.0)(react-router@8.4.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(supports-color@7.2.0)(typescript@7.0.2)(vite@8.3.4(@types/node@26.6.5)(jiti@2.7.0))':
     dependencies:
       '@babel/core': 7.29.7(supports-color@7.2.0)
       '@babel/generator': 7.29.7
       '@babel/parser': 7.29.7
       '@babel/traverse': 7.29.7(supports-color@7.2.0)
       '@babel/types': 7.29.7
-      '@react-router/node': 8.4.0(react-router@8.4.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(typescript@7.0.2)
+      '@react-router/node': 8.4.0(react-router@8.4.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(typescript@7.0.2)
       '@remix-run/node-fetch-server': 0.14.2
       babel-dead-code-elimination: 1.0.12(supports-color@7.2.0)
       chokidar: 5.0.0
@@ -3420,49 +3420,49 @@ snapshots:
       picocolors: 1.1.1
       pkg-types: 2.3.1
       react-refresh: 0.18.0
-      react-router: 8.4.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      react-router: 8.4.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       semver: 7.8.5
       tinyglobby: 0.2.17
       valibot: 1.4.1(typescript@7.0.2)
       vite: 8.3.4(@types/node@26.6.5)(jiti@2.7.0)
     optionalDependencies:
-      '@react-router/serve': 8.4.0(react-router@8.4.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(supports-color@7.2.0)(typescript@7.0.2)
+      '@react-router/serve': 8.4.0(react-router@8.4.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(supports-color@7.2.0)(typescript@7.0.2)
       typescript: 7.0.2
     transitivePeerDependencies:
       - babel-plugin-macros
       - supports-color
 
-  '@react-router/express@8.4.0(express@5.2.1(supports-color@7.2.0))(react-router@8.4.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(typescript@7.0.2)':
+  '@react-router/express@8.4.0(express@5.2.1(supports-color@7.2.0))(react-router@8.4.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(typescript@7.0.2)':
     dependencies:
-      '@react-router/node': 8.4.0(react-router@8.4.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(typescript@7.0.2)
+      '@react-router/node': 8.4.0(react-router@8.4.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(typescript@7.0.2)
       express: 5.2.1(supports-color@7.2.0)
-      react-router: 8.4.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      react-router: 8.4.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
     optionalDependencies:
       typescript: 7.0.2
 
-  '@react-router/fs-routes@8.4.0(@react-router/dev@8.4.0(@react-router/serve@8.4.0(react-router@8.4.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(supports-color@7.2.0)(typescript@7.0.2))(babel-plugin-macros@3.1.0)(react-router@8.4.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(supports-color@7.2.0)(typescript@7.0.2)(vite@8.3.4(@types/node@26.6.5)(jiti@2.7.0)))(typescript@7.0.2)':
+  '@react-router/fs-routes@8.4.0(@react-router/dev@8.4.0(@react-router/serve@8.4.0(react-router@8.4.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(supports-color@7.2.0)(typescript@7.0.2))(babel-plugin-macros@3.1.0)(react-router@8.4.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(supports-color@7.2.0)(typescript@7.0.2)(vite@8.3.4(@types/node@26.6.5)(jiti@2.7.0)))(typescript@7.0.2)':
     dependencies:
-      '@react-router/dev': 8.4.0(@react-router/serve@8.4.0(react-router@8.4.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(supports-color@7.2.0)(typescript@7.0.2))(babel-plugin-macros@3.1.0)(react-router@8.4.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(supports-color@7.2.0)(typescript@7.0.2)(vite@8.3.4(@types/node@26.6.5)(jiti@2.7.0))
+      '@react-router/dev': 8.4.0(@react-router/serve@8.4.0(react-router@8.4.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(supports-color@7.2.0)(typescript@7.0.2))(babel-plugin-macros@3.1.0)(react-router@8.4.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(supports-color@7.2.0)(typescript@7.0.2)(vite@8.3.4(@types/node@26.6.5)(jiti@2.7.0))
       minimatch: 10.2.5
     optionalDependencies:
       typescript: 7.0.2
 
-  '@react-router/node@8.4.0(react-router@8.4.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(typescript@7.0.2)':
+  '@react-router/node@8.4.0(react-router@8.4.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(typescript@7.0.2)':
     dependencies:
       '@remix-run/node-fetch-server': 0.14.2
-      react-router: 8.4.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      react-router: 8.4.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
     optionalDependencies:
       typescript: 7.0.2
 
-  '@react-router/serve@8.4.0(react-router@8.4.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(supports-color@7.2.0)(typescript@7.0.2)':
+  '@react-router/serve@8.4.0(react-router@8.4.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(supports-color@7.2.0)(typescript@7.0.2)':
     dependencies:
-      '@react-router/express': 8.4.0(express@5.2.1(supports-color@7.2.0))(react-router@8.4.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(typescript@7.0.2)
-      '@react-router/node': 8.4.0(react-router@8.4.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(typescript@7.0.2)
+      '@react-router/express': 8.4.0(express@5.2.1(supports-color@7.2.0))(react-router@8.4.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(typescript@7.0.2)
+      '@react-router/node': 8.4.0(react-router@8.4.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(typescript@7.0.2)
       '@remix-run/node-fetch-server': 0.14.2
       compression: 1.8.1(supports-color@7.2.0)
       express: 5.2.1(supports-color@7.2.0)
       morgan: 1.11.0(supports-color@7.2.0)
-      react-router: 8.4.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      react-router: 8.4.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       source-map-support: 0.5.21
     transitivePeerDependencies:
       - supports-color
@@ -3519,38 +3519,38 @@ snapshots:
 
   '@rolldown/pluginutils@1.0.1': {}
 
-  '@rvf/core@8.1.2(@types/react@19.3.0)(react@19.3.0)(scheduler@0.28.0)':
+  '@rvf/core@8.1.2(@types/react@19.3.0)(react@19.3.1)(scheduler@0.28.0)':
     dependencies:
       '@rvf/set-get': 7.0.3
       hotscript: 1.0.13
       immer: 10.2.0
-      react: 19.3.0
-      react-tracked: 2.0.1(react@19.3.0)(scheduler@0.28.0)
-      zustand: 5.0.15(@types/react@19.3.0)(immer@10.2.0)(react@19.3.0)
+      react: 19.3.1
+      react-tracked: 2.0.1(react@19.3.1)(scheduler@0.28.0)
+      zustand: 5.0.15(@types/react@19.3.0)(immer@10.2.0)(react@19.3.1)
     transitivePeerDependencies:
       - '@types/react'
       - scheduler
       - use-sync-external-store
 
-  '@rvf/react-router@8.2.0(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react-router@8.4.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react@19.3.0)(scheduler@0.28.0)':
+  '@rvf/react-router@8.2.0(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react-router@8.4.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(react@19.3.1)(scheduler@0.28.0)':
     dependencies:
-      '@rvf/react': 8.1.3(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(scheduler@0.28.0)
+      '@rvf/react': 8.1.3(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(scheduler@0.28.0)
       '@rvf/set-get': 7.0.3
-      react: 19.3.0
-      react-router: 8.4.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      react: 19.3.1
+      react-router: 8.4.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
     transitivePeerDependencies:
       - '@types/react'
       - react-dom
       - scheduler
       - use-sync-external-store
 
-  '@rvf/react@8.1.3(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(scheduler@0.28.0)':
+  '@rvf/react@8.1.3(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(scheduler@0.28.0)':
     dependencies:
-      '@rvf/core': 8.1.2(@types/react@19.3.0)(react@19.3.0)(scheduler@0.28.0)
+      '@rvf/core': 8.1.2(@types/react@19.3.0)(react@19.3.1)(scheduler@0.28.0)
       '@rvf/set-get': 7.0.3
       '@standard-schema/spec': 1.1.0
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      react: 19.3.1
+      react-dom: 19.3.1(react@19.3.1)
     transitivePeerDependencies:
       - '@types/react'
       - scheduler
@@ -3651,12 +3651,12 @@ snapshots:
     optionalDependencies:
       vitest: 5.0.4(@opentelemetry/api@1.9.1)(@types/node@26.6.5)(@vitest/coverage-v8@5.0.4)(happy-dom@20.14.6)(msw@3.0.3(@types/node@26.6.5)(graphql@16.14.2)(supports-color@7.2.0)(typescript@7.0.2)(vite@8.3.4(@types/node@26.6.5)(jiti@2.7.0)))(vite@8.3.4(@types/node@26.6.5)(jiti@2.7.0))
 
-  '@testing-library/react@16.3.3(@testing-library/dom@10.4.2)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@testing-library/react@16.3.3(@testing-library/dom@10.4.2)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@babel/runtime': 7.29.7
       '@testing-library/dom': 10.4.2
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      react: 19.3.1
+      react-dom: 19.3.1(react@19.3.1)
     optionalDependencies:
       '@types/react': 19.3.0
       '@types/react-dom': 19.3.0(@types/react@19.3.0)
@@ -4142,14 +4142,14 @@ snapshots:
 
   forwarded@0.2.0: {}
 
-  framer-motion@14.2.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0):
+  framer-motion@14.2.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1):
     dependencies:
       motion-dom: 14.2.0
       motion-utils: 14.1.1
       tslib: 2.8.1
     optionalDependencies:
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      react: 19.3.1
+      react-dom: 19.3.1(react@19.3.1)
 
   fresh@2.0.0: {}
 
@@ -4530,13 +4530,13 @@ snapshots:
 
   motion-utils@14.1.1: {}
 
-  motion@14.2.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0):
+  motion@14.2.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1):
     dependencies:
-      framer-motion: 14.2.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      framer-motion: 14.2.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       tslib: 2.8.1
     optionalDependencies:
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      react: 19.3.1
+      react-dom: 19.3.1(react@19.3.1)
 
   ms@2.0.0: {}
 
@@ -4727,17 +4727,17 @@ snapshots:
 
   re2js@2.8.8: {}
 
-  react-day-picker@10.0.1(@types/react@19.3.0)(react@19.3.0):
+  react-day-picker@10.0.1(@types/react@19.3.0)(react@19.3.1):
     dependencies:
       '@date-fns/tz': 1.5.0
       date-fns: 4.4.0
-      react: 19.3.0
+      react: 19.3.1
     optionalDependencies:
       '@types/react': 19.3.0
 
-  react-dom@19.3.0(react@19.3.0):
+  react-dom@19.3.1(react@19.3.1):
     dependencies:
-      react: 19.3.0
+      react: 19.3.1
       scheduler: 0.28.0
 
   react-is@16.13.1: {}
@@ -4746,36 +4746,36 @@ snapshots:
 
   react-refresh@0.18.0: {}
 
-  react-router-dom@7.18.4(react-dom@19.3.0(react@19.3.0))(react@19.3.0):
+  react-router-dom@7.18.4(react-dom@19.3.1(react@19.3.1))(react@19.3.1):
     dependencies:
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
-      react-router: 7.18.4(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      react: 19.3.1
+      react-dom: 19.3.1(react@19.3.1)
+      react-router: 7.18.4(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
 
-  react-router@7.18.4(react-dom@19.3.0(react@19.3.0))(react@19.3.0):
+  react-router@7.18.4(react-dom@19.3.1(react@19.3.1))(react@19.3.1):
     dependencies:
       cookie: 1.1.1
-      react: 19.3.0
+      react: 19.3.1
       set-cookie-parser: 2.7.2
     optionalDependencies:
-      react-dom: 19.3.0(react@19.3.0)
+      react-dom: 19.3.1(react@19.3.1)
 
-  react-router@8.4.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0):
+  react-router@8.4.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1):
     dependencies:
       '@remix-run/route-pattern': 0.22.1
       cookie-es: 3.1.1
-      react: 19.3.0
+      react: 19.3.1
     optionalDependencies:
-      react-dom: 19.3.0(react@19.3.0)
+      react-dom: 19.3.1(react@19.3.1)
 
-  react-tracked@2.0.1(react@19.3.0)(scheduler@0.28.0):
+  react-tracked@2.0.1(react@19.3.1)(scheduler@0.28.0):
     dependencies:
       proxy-compare: 3.0.1
-      react: 19.3.0
+      react: 19.3.1
       scheduler: 0.28.0
-      use-context-selector: 2.0.0(react@19.3.0)(scheduler@0.28.0)
+      use-context-selector: 2.0.0(react@19.3.1)(scheduler@0.28.0)
 
-  react@19.3.0: {}
+  react@19.3.1: {}
 
   readdirp@5.0.0: {}
 
@@ -5097,9 +5097,9 @@ snapshots:
       escalade: 3.2.0
       picocolors: 1.1.1
 
-  use-context-selector@2.0.0(react@19.3.0)(scheduler@0.28.0):
+  use-context-selector@2.0.0(react@19.3.1)(scheduler@0.28.0):
     dependencies:
-      react: 19.3.0
+      react: 19.3.1
       scheduler: 0.28.0
 
   uuid@14.0.2: {}
@@ -5198,8 +5198,8 @@ snapshots:
 
   zod@4.6.7: {}
 
-  zustand@5.0.15(@types/react@19.3.0)(immer@10.2.0)(react@19.3.0):
+  zustand@5.0.15(@types/react@19.3.0)(immer@10.2.0)(react@19.3.1):
     optionalDependencies:
       '@types/react': 19.3.0
       immer: 10.2.0
-      react: 19.3.0
+      react: 19.3.1
