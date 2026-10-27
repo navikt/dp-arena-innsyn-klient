@@ -71,6 +71,111 @@ afterEach(() => {
 });
 
 describe("StartMigreringDialog", () => {
+    it.each<Opplysningstype>(["integer", "float"])("formaterer %s med tusenskille og sender et tall", async (type) => {
+        const {innsendt, router} = visTomOpplysning(type, "2026-08-01");
+        const felt = await screen.findByRole("textbox", {name: "Ny opplysning"});
+        fireEvent.change(felt, {target: {value: "1234567"}});
+
+        expect(felt).toHaveValue("1\u00a0234\u00a0567");
+        fireEvent.click(screen.getByRole("button", {name: "Start migrering"}));
+        await waitFor(() => expect(innsendt).toHaveBeenCalledOnce());
+
+        const formData: FormData = innsendt.mock.calls[0][0];
+        expect(JSON.parse(String(formData.get("grunnlag"))).opplysninger).toEqual([{
+            uuid: "ny-opplysning",
+            verdi: 1234567,
+            gyldigFraOgMed: "2026-08-01",
+        }]);
+        router.dispose();
+    });
+
+    it("beholder desimaltegnet og avsluttende nuller mens brukeren skriver", async () => {
+        const {innsendt, router} = visTomOpplysning("float", "2026-08-01");
+        const felt = await screen.findByRole("textbox", {name: "Ny opplysning"});
+        for (const verdi of ["1", "12", "123", "1234", "1\u00a0234,", "1\u00a0234,5", "1\u00a0234,50"]) {
+            fireEvent.change(felt, {target: {value: verdi}});
+        }
+
+        expect(felt).toHaveValue("1\u00a0234,50");
+        fireEvent.click(screen.getByRole("button", {name: "Start migrering"}));
+        await waitFor(() => expect(innsendt).toHaveBeenCalledOnce());
+
+        const formData: FormData = innsendt.mock.calls[0][0];
+        expect(JSON.parse(String(formData.get("grunnlag"))).opplysninger[0].verdi).toBe(1234.5);
+        router.dispose();
+    });
+
+    it("beholder markørposisjonen når brukeren redigerer midt i beløpet", async () => {
+        const {router} = visTomOpplysning("integer", "2026-08-01");
+        const felt = await screen.findByRole<HTMLInputElement>("textbox", {name: "Ny opplysning"});
+        felt.focus();
+        fireEvent.change(felt, {target: {value: "123456"}});
+        expect(felt).toHaveValue("123\u00a0456");
+
+        fireEvent.change(felt, {
+            target: {value: "1293\u00a0456", selectionStart: 3, selectionEnd: 3},
+        });
+
+        expect(felt).toHaveValue("1\u00a0293\u00a0456");
+        expect(felt.selectionStart).toBe(4);
+        expect(felt.selectionEnd).toBe(4);
+        router.dispose();
+    });
+
+    it("lar backspace slette sifferet foran et tusenskille", async () => {
+        const {router} = visTomOpplysning("integer", "2026-08-01");
+        const felt = await screen.findByRole<HTMLInputElement>("textbox", {name: "Ny opplysning"});
+        felt.focus();
+        fireEvent.change(felt, {target: {value: "12345"}});
+        felt.setSelectionRange(3, 3);
+
+        fireEvent.keyDown(felt, {key: "Backspace"});
+        expect(felt.selectionStart).toBe(2);
+        fireEvent.change(felt, {target: {value: "1\u00a0345", selectionStart: 1, selectionEnd: 1}});
+
+        expect(felt).toHaveValue("1\u00a0345");
+        expect(felt.selectionStart).toBe(1);
+        router.dispose();
+    });
+
+    it("lar delete slette sifferet etter et tusenskille", async () => {
+        const {router} = visTomOpplysning("integer", "2026-08-01");
+        const felt = await screen.findByRole<HTMLInputElement>("textbox", {name: "Ny opplysning"});
+        felt.focus();
+        fireEvent.change(felt, {target: {value: "12345"}});
+        felt.setSelectionRange(2, 2);
+
+        fireEvent.keyDown(felt, {key: "Delete"});
+        expect(felt.selectionStart).toBe(3);
+        fireEvent.change(felt, {target: {value: "12\u00a045", selectionStart: 3, selectionEnd: 3}});
+
+        expect(felt).toHaveValue("1\u00a0245");
+        expect(felt.selectionStart).toBe(3);
+        router.dispose();
+    });
+
+    it.each<Opplysningstype>(["integer", "float"])("viser kr uten at det inngår i %s-verdien", async (type) => {
+        const {innsendt, router} = visTomOpplysning(type, "2026-08-01");
+        const felt = await screen.findByRole("textbox", {name: "Ny opplysning"});
+        expect(screen.getByText("kr")).toHaveAttribute("aria-hidden", "true");
+        expect(felt).toHaveAccessibleDescription("Beløp i kroner.");
+        expect(felt).toHaveValue("");
+
+        fireEvent.change(felt, {target: {value: "123"}});
+        expect(felt).toHaveValue("123");
+        fireEvent.click(screen.getByRole("button", {name: "Start migrering"}));
+        await waitFor(() => expect(innsendt).toHaveBeenCalledOnce());
+
+        const formData: FormData = innsendt.mock.calls[0][0];
+        expect(formData.get("opplysning-ny-opplysning")).toBe("123");
+        expect(JSON.parse(String(formData.get("grunnlag"))).opplysninger).toEqual([{
+            uuid: "ny-opplysning",
+            verdi: 123,
+            gyldigFraOgMed: "2026-08-01",
+        }]);
+        router.dispose();
+    });
+
     const grunnlagMedTomtTallfelt = {
         ...datagrunnlag,
         opplysninger: [

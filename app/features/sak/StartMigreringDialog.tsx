@@ -9,7 +9,7 @@ import {
     TextField,
     useDatepicker
 } from "@navikt/ds-react";
-import {type FormEvent, useState} from "react";
+import {type FormEvent, useLayoutEffect, useRef, useState} from "react";
 import {format, isValid, parse} from "date-fns";
 import {
     type ActionFunctionArgs,
@@ -25,6 +25,8 @@ import invariant from "tiny-invariant";
 import {unleash} from "~/utils/unleash.server";
 import {hentMigreringDatagrunnlag} from "~/features/sak/clients/migrer-sak-client.server";
 import type {components} from "../../../openapi/arena-migrering-typer";
+import styles from "./StartMigreringDialog.module.css";
+import {fjernTusenskille, formaterBelopUnderInntasting} from "~/utils/number.utils";
 
 export async function action({request, params}: ActionFunctionArgs) {
     return await handleActions(request, params);
@@ -69,16 +71,19 @@ export default function StartMigreringDialog() {
                 }
 
                 switch (opplysning.verdi?.type) {
-                    case "integer":
-                        if (!/^-?\d+$/.test(tekst) || !Number.isSafeInteger(Number(tekst))) {
+                    case "integer": {
+                        const tallTekst = fjernTusenskille(tekst);
+                        if (!/^-?\d+$/.test(tallTekst) || !Number.isSafeInteger(Number(tallTekst))) {
                             valideringsfeil[verdiFelt] = "Skriv et gyldig heltall.";
                             continue;
                         }
-                        verdi = Number(tekst);
+                        verdi = Number(tallTekst);
                         break;
+                    }
                     case "float": {
-                        const tall = Number(tekst.replace(",", "."));
-                        if (!/^-?(?:\d+(?:[.,]\d+)?|[.,]\d+)$/.test(tekst) || !Number.isFinite(tall)) {
+                        const tallTekst = fjernTusenskille(tekst);
+                        const tall = Number(tallTekst.replace(",", "."));
+                        if (!/^-?(?:\d+(?:[.,]\d+)?|[.,]\d+)$/.test(tallTekst) || !Number.isFinite(tall)) {
                             valideringsfeil[verdiFelt] = "Skriv et gyldig tall.";
                             continue;
                         }
@@ -191,24 +196,25 @@ export default function StartMigreringDialog() {
                                             datagrunnlag.opplysninger.map((opplysning, index) => {
                                                 const gyldigFraOgMed = opplysning.gyldigFraOgMed;
                                                 return (
-                                                <Table.Row key={opplysning.uuid ?? index}>
-                                                    <Table.HeaderCell scope="row">{opplysning.navn}</Table.HeaderCell>
-                                                    <Table.DataCell>
-                                                        <OpplysningVerdi
-                                                            opplysning={opplysning}
-                                                            error={feil[`opplysning-${opplysning.uuid}`]}/>
-                                                    </Table.DataCell>
-                                                    <Table.DataCell>{gyldigFraOgMed ? Intl.DateTimeFormat("no-NO", {
-                                                        day: "2-digit",
-                                                        month: "2-digit",
-                                                        year: "numeric"
-                                                    }).format(new Date(gyldigFraOgMed))
-                                                        : (
-                                                        <FraOgMed
-                                                            opplysning={opplysning}
-                                                            error={feil[`gyldigFraOgMed-${opplysning.uuid}`]}/>
-                                                    )}</Table.DataCell>
-                                                </Table.Row>
+                                                    <Table.Row key={opplysning.uuid ?? index}>
+                                                        <Table.HeaderCell
+                                                            scope="row">{opplysning.navn}</Table.HeaderCell>
+                                                        <Table.DataCell>
+                                                            <OpplysningVerdi
+                                                                opplysning={opplysning}
+                                                                error={feil[`opplysning-${opplysning.uuid}`]}/>
+                                                        </Table.DataCell>
+                                                        <Table.DataCell>{gyldigFraOgMed ? Intl.DateTimeFormat("no-NO", {
+                                                                day: "2-digit",
+                                                                month: "2-digit",
+                                                                year: "numeric"
+                                                            }).format(new Date(gyldigFraOgMed))
+                                                            : (
+                                                                <FraOgMed
+                                                                    opplysning={opplysning}
+                                                                    error={feil[`gyldigFraOgMed-${opplysning.uuid}`]}/>
+                                                            )}</Table.DataCell>
+                                                    </Table.Row>
                                                 );
                                             })}
                                     </Table.Body>
@@ -241,7 +247,8 @@ function OpplysningVerdi({opplysning, error}: {
             return <RadioGroup legend={opplysning.navn}
                                name={`opplysning-${opplysning.uuid}`}
                                error={error}
-                               hideLegend>
+                               hideLegend
+            size={'small'}>
                 <Radio value="true">Ja</Radio>
                 <Radio value="false">Nei</Radio>
             </RadioGroup>;
@@ -258,21 +265,15 @@ function OpplysningVerdi({opplysning, error}: {
                               defaultValue=""
                               error={error}
                               hideLabel
-                              htmlSize={16}/>;
+                              htmlSize={16}
+                              size={'small'}/>;
         }
         return <BodyShort>{opplysning.verdi.verdi as string}</BodyShort>;
     }
 
     if (opplysning.verdi?.type === "integer" || opplysning.verdi?.type === "float") {
         if (opplysning.verdi.verdi === null || opplysning.verdi.verdi === undefined) {
-            return <TextField label={opplysning.navn}
-                              name={`opplysning-${opplysning.uuid}`}
-                              type="text"
-                              inputMode={opplysning.verdi.type === "integer" ? "numeric" : "decimal"}
-                              defaultValue=""
-                              error={error}
-                              hideLabel
-                              htmlSize={16}/>;
+            return <BelopFelt opplysning={opplysning} error={error}/>;
         }
         return <BodyShort>
             {Intl.NumberFormat("no-NO", {maximumFractionDigits: 20}).format(opplysning.verdi.verdi as number)}
@@ -294,26 +295,94 @@ function OpplysningVerdi({opplysning, error}: {
     }
 }
 
+function BelopFelt({opplysning, error}: {
+    opplysning: components["schemas"]["MigreringGrunnlagOpplysning"];
+    error?: string;
+}) {
+    const [felt, setFelt] = useState({
+        verdi: "",
+        start: 0,
+        slutt: 0,
+    });
+    const inputRef = useRef<HTMLInputElement>(null);
+
+    useLayoutEffect(() => {
+        const input = inputRef.current;
+        if (input && input === document.activeElement) {
+            input.setSelectionRange(felt.start, felt.slutt);
+        }
+    }, [felt]);
+
+    return (
+        <div className={styles.amountField}>
+            <TextField label={opplysning.navn}
+                       description="Beløp i kroner."
+                       name={`opplysning-${opplysning.uuid}`}
+                       ref={inputRef}
+                       type="text"
+                       inputMode={opplysning.verdi?.type === "integer" ? "numeric" : "decimal"}
+                       value={felt.verdi}
+                       onChange={(event) => {
+                           const input = event.currentTarget;
+                           const formatert = formaterBelopUnderInntasting(input.value);
+                           const finnPosisjon = (posisjon: number) => {
+                               let tegnIgjen = fjernTusenskille(input.value.slice(0, posisjon)).length;
+                               let indeks = 0;
+                               while (indeks < formatert.length && tegnIgjen > 0) {
+                                   if (fjernTusenskille(formatert[indeks]) !== "") {
+                                       tegnIgjen--;
+                                   }
+                                   indeks++;
+                               }
+                               return indeks;
+                           };
+                           setFelt({
+                               verdi: formatert,
+                               start: finnPosisjon(input.selectionStart ?? input.value.length),
+                               slutt: finnPosisjon(input.selectionEnd ?? input.value.length),
+                           });
+                       }}
+                       onKeyDown={(event) => {
+                           const input = event.currentTarget;
+                           const posisjon = input.selectionStart;
+                           if (posisjon === null || posisjon !== input.selectionEnd || event.ctrlKey || event.metaKey || event.altKey) {
+                               return;
+                           }
+                           if (event.key === "Backspace" && posisjon > 0 && fjernTusenskille(input.value[posisjon - 1]) === "") {
+                               input.setSelectionRange(posisjon - 1, posisjon - 1);
+                           } else if (event.key === "Delete" && posisjon < input.value.length && fjernTusenskille(input.value[posisjon]) === "") {
+                               input.setSelectionRange(posisjon + 1, posisjon + 1);
+                           }
+                       }}
+                       error={error}
+                       hideLabel
+                       size="small"/>
+            <span className={styles.currencySuffix} aria-hidden="true">kr</span>
+        </div>
+    );
+}
+
 const FraOgMed = ({opplysning, error}: {
     opplysning: components["schemas"]["MigreringGrunnlagOpplysning"];
     error?: string;
 }) => {
-    const { datepickerProps, inputProps } = useDatepicker({
+    const {datepickerProps, inputProps} = useDatepicker({
         fromDate: new Date("Aug 23 2019"),
         allowTwoDigitYear: false,
     });
 
     return (
-            <DatePicker {...datepickerProps}>
-                <DatePicker.Input
-                    {...inputProps}
-                    label={`Gyldig fra og med for ${opplysning.navn}`}
-                    name={`gyldigFraOgMed-${opplysning.uuid}`}
-                    error={error}
-                    description="Format: dd.mm.åååå"
-                    hideLabel
-                />
-            </DatePicker>
+        <DatePicker {...datepickerProps}>
+            <DatePicker.Input
+                {...inputProps}
+                label={`Gyldig fra og med for ${opplysning.navn}`}
+                name={`gyldigFraOgMed-${opplysning.uuid}`}
+                error={error}
+                description="Format: dd.mm.åååå"
+                hideLabel
+                size={'small'}
+            />
+        </DatePicker>
     );
 };
 
@@ -321,7 +390,7 @@ const DatoOpplysning = ({opplysning, error}: {
     opplysning: components["schemas"]["MigreringGrunnlagOpplysning"];
     error?: string;
 }) => {
-    const { datepickerProps, inputProps } = useDatepicker({
+    const {datepickerProps, inputProps} = useDatepicker({
         fromDate: new Date("Aug 23 2019"),
         allowTwoDigitYear: false,
     });
@@ -335,6 +404,7 @@ const DatoOpplysning = ({opplysning, error}: {
                 error={error}
                 description="Format: dd.mm.åååå"
                 hideLabel
+                size={'small'}
             />
         </DatePicker>
     );
