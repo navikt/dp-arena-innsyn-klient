@@ -1,16 +1,30 @@
-import {BodyShort, Button, Dialog, Table} from "@navikt/ds-react";
+import {
+    BodyShort,
+    Button,
+    DatePicker,
+    Dialog,
+    Radio,
+    RadioGroup,
+    Table,
+    TextField,
+    useDatepicker
+} from "@navikt/ds-react";
+import {type FormEvent, useState} from "react";
+import {format, isValid, parse} from "date-fns";
 import {
     type ActionFunctionArgs,
     Form,
     type LoaderFunctionArgs,
-    useActionData,
     useLoaderData,
     useNavigate,
-    useNavigation
+    useNavigation,
+    useSubmit
 } from "react-router";
 import {handleActions} from "~/features/handle-actions";
 import invariant from "tiny-invariant";
 import {unleash} from "~/utils/unleash.server";
+import {hentMigreringDatagrunnlag} from "~/features/sak/clients/migrer-sak-client.server";
+import type {components} from "../../../openapi/arena-migrering-typer";
 
 export async function action({request, params}: ActionFunctionArgs) {
     return await handleActions(request, params);
@@ -20,25 +34,126 @@ export async function loader({params, request}: LoaderFunctionArgs) {
     invariant(params.sakId, "Mangler sak id")
     invariant(params.personId, "Mangler person id")
 
+    const datagrunnlag = await hentMigreringDatagrunnlag(request, params.sakId);
     return {
         personId: params.personId,
         sakId: params.sakId,
+        datagrunnlag,
         kanStarteMigrering: unleash.isEnabled("dp-migrering.start-migrering"),
     };
 }
 
 export default function StartMigreringDialog() {
 
-    const {sakId, kanStarteMigrering} = useLoaderData<typeof loader>();
-    const actionData = useActionData<typeof action>();
-    const opplysninger = actionData && "opplysninger" in actionData ? actionData.opplysninger : undefined;
+    const {datagrunnlag, kanStarteMigrering, sakId, personId} = useLoaderData<typeof loader>();
 
     const navigate = useNavigate();
     const navigation = useNavigation();
+    const submit = useSubmit();
+    const [feil, setFeil] = useState<Record<string, string>>({});
 
+    const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        const formData = new FormData(event.currentTarget);
+        const valideringsfeil: Record<string, string> = {};
+        const opplysninger: components["schemas"]["StartMigreringOpplysning"][] = [];
+
+        for (const opplysning of datagrunnlag.opplysninger) {
+            const verdiFelt = `opplysning-${opplysning.uuid}`;
+            const innsendtVerdi = formData.get(verdiFelt);
+            let verdi = opplysning.verdi?.verdi;
+            if (typeof innsendtVerdi === "string") {
+                const tekst = innsendtVerdi.trim();
+                if (tekst === "") {
+                    continue;
+                }
+
+                switch (opplysning.verdi?.type) {
+                    case "integer":
+                        if (!/^-?\d+$/.test(tekst) || !Number.isSafeInteger(Number(tekst))) {
+                            valideringsfeil[verdiFelt] = "Skriv et gyldig heltall.";
+                            continue;
+                        }
+                        verdi = Number(tekst);
+                        break;
+                    case "float": {
+                        const tall = Number(tekst.replace(",", "."));
+                        if (!/^-?(?:\d+(?:[.,]\d+)?|[.,]\d+)$/.test(tekst) || !Number.isFinite(tall)) {
+                            valideringsfeil[verdiFelt] = "Skriv et gyldig tall.";
+                            continue;
+                        }
+                        verdi = tall;
+                        break;
+                    }
+                    case "boolean":
+                        if (tekst !== "true" && tekst !== "false") {
+                            valideringsfeil[verdiFelt] = "Velg ja eller nei.";
+                            continue;
+                        }
+                        verdi = tekst === "true";
+                        break;
+                    case "date": {
+                        const dato = parseDatoTilIso(tekst);
+                        if (!dato) {
+                            valideringsfeil[verdiFelt] = "Skriv en gyldig dato på formen dd.mm.åååå.";
+                            continue;
+                        }
+                        verdi = dato;
+                        break;
+                    }
+                    case "string":
+                        verdi = tekst;
+                        break;
+                }
+            }
+            if (verdi == null) {
+                continue;
+            }
+
+            let gyldigFraOgMed = opplysning.gyldigFraOgMed;
+            if (!gyldigFraOgMed) {
+                const datoFelt = `gyldigFraOgMed-${opplysning.uuid}`;
+                const innsendtDato = formData.get(datoFelt);
+                const datoTekst = typeof innsendtDato === "string" ? innsendtDato.trim() : "";
+                if (datoTekst === "") {
+                    valideringsfeil[datoFelt] = "Fyll inn gyldighetsdato for opplysningen.";
+                    continue;
+                }
+                const dato = parseDatoTilIso(datoTekst);
+                if (!dato) {
+                    valideringsfeil[datoFelt] = "Skriv en gyldig dato på formen dd.mm.åååå.";
+                    continue;
+                }
+                gyldigFraOgMed = dato;
+            }
+            opplysninger.push({uuid: opplysning.uuid, verdi, gyldigFraOgMed});
+        }
+
+        setFeil(valideringsfeil);
+        const forsteFeil = Object.keys(valideringsfeil)[0];
+        if (forsteFeil) {
+            const felt = event.currentTarget.elements.namedItem(forsteFeil);
+            const fokusFelt = felt instanceof RadioNodeList ? felt.item(0) : felt;
+            if (fokusFelt instanceof HTMLInputElement) {
+                fokusFelt.focus();
+            }
+            return;
+        }
+
+        const grunnlag: components["schemas"]["StartMigrering"] = {
+            sakId: datagrunnlag.sakId,
+            initiertAv: datagrunnlag.initiertAv,
+            ident: datagrunnlag.ident,
+            innvilgetFraOgMed: datagrunnlag.innvilgetFraOgMed,
+            innvilgetTilOgMed: datagrunnlag.innvilgetTilOgMed,
+            opplysninger,
+        };
+        formData.set("grunnlag", JSON.stringify(grunnlag));
+        submit(formData, {method: "post"});
+    };
 
     const onCancel = () => {
-        navigate(`/person/4886346/saker/${sakId}`);
+        navigate(`/person/${personId}/saker/${sakId}`);
     }
 
     return (
@@ -49,34 +164,19 @@ export default function StartMigreringDialog() {
                     }
                 }}
                 size="medium">
-            <Dialog.Popup width="large">
-                <Form method="post" style={{display: "contents"}}>
+            <Dialog.Popup width="80%">
+                <Form method="post" onSubmit={onSubmit} style={{display: "contents"}}>
                     <input hidden={true} readOnly={true} name="_action" value="migrer-sak"/>
 
                     <Dialog.Header>
                         <Dialog.Title>Migrer sak</Dialog.Title>
                         <Dialog.Description>
-                            {opplysninger && opplysninger.length > 0 && (
-                                <>
-                                    <BodyShort>Følgende opplysninger vil bli migrert:</BodyShort>
-                                </>
-                            )}
-                            {!opplysninger && (
-                                <>
-                                    <BodyShort>
-                                        Migrer saken for videre behandling i DP-Sak
-                                    </BodyShort>
-                                </>
-                            )}
+                            <BodyShort>Følgende opplysninger vil bli migrert:</BodyShort>
                         </Dialog.Description>
                     </Dialog.Header>
                     <Dialog.Body>
-                        {!opplysninger && (
-                            <BodyShort>
-                                Her må det stå noe smart!!! 🧐
-                            </BodyShort>
-                        )}
-                        {opplysninger && opplysninger.length > 0 && (
+
+                        {datagrunnlag.opplysninger && datagrunnlag.opplysninger.length > 0 && (
                             <>
                                 <Table>
                                     <Table.Header>
@@ -87,13 +187,30 @@ export default function StartMigreringDialog() {
                                         </Table.Row>
                                     </Table.Header>
                                     <Table.Body>
-                                        {opplysninger.map((opplysning, index) => (
-                                            <Table.Row key={opplysning.uuid ?? index}>
-                                                <Table.HeaderCell scope="row">{opplysning.navn}</Table.HeaderCell>
-                                                <Table.DataCell>{opplysning.verdi}</Table.DataCell>
-                                                <Table.DataCell>{opplysning.gyldigFraOgMed}</Table.DataCell>
-                                            </Table.Row>
-                                        ))}
+                                        {
+                                            datagrunnlag.opplysninger.map((opplysning, index) => {
+                                                const gyldigFraOgMed = opplysning.gyldigFraOgMed;
+                                                return (
+                                                <Table.Row key={opplysning.uuid ?? index}>
+                                                    <Table.HeaderCell scope="row">{opplysning.navn}</Table.HeaderCell>
+                                                    <Table.DataCell>
+                                                        <OpplysningVerdi
+                                                            opplysning={opplysning}
+                                                            error={feil[`opplysning-${opplysning.uuid}`]}/>
+                                                    </Table.DataCell>
+                                                    <Table.DataCell>{gyldigFraOgMed ? Intl.DateTimeFormat("no-NO", {
+                                                        day: "2-digit",
+                                                        month: "2-digit",
+                                                        year: "numeric"
+                                                    }).format(new Date(gyldigFraOgMed))
+                                                        : (
+                                                        <FraOgMed
+                                                            opplysning={opplysning}
+                                                            error={feil[`gyldigFraOgMed-${opplysning.uuid}`]}/>
+                                                    )}</Table.DataCell>
+                                                </Table.Row>
+                                                );
+                                            })}
                                     </Table.Body>
                                 </Table>
                             </>
@@ -101,9 +218,9 @@ export default function StartMigreringDialog() {
                     </Dialog.Body>
                     <Dialog.Footer>
                         <Dialog.CloseTrigger>
-                            <Button onClick={onCancel}>Lukk</Button>
+                            <Button type="button" onClick={onCancel}>Lukk</Button>
                         </Dialog.CloseTrigger>
-                        <Button variant="primary" disabled={!kanStarteMigrering || opplysninger !== undefined}
+                        <Button type="submit" variant="primary" disabled={!kanStarteMigrering}
                                 loading={navigation.state !== "idle"}>
                             Start migrering
                         </Button>
@@ -112,4 +229,121 @@ export default function StartMigreringDialog() {
             </Dialog.Popup>
         </Dialog>
     );
+}
+
+function OpplysningVerdi({opplysning, error}: {
+    opplysning: components["schemas"]["MigreringGrunnlagOpplysning"];
+    error?: string;
+}) {
+
+    if (opplysning.verdi?.type === "boolean") {
+        if (opplysning.verdi.verdi === null || opplysning.verdi.verdi === undefined) {
+            return <RadioGroup legend={opplysning.navn}
+                               name={`opplysning-${opplysning.uuid}`}
+                               error={error}
+                               hideLegend>
+                <Radio value="true">Ja</Radio>
+                <Radio value="false">Nei</Radio>
+            </RadioGroup>;
+        }
+        return <BodyShort>{opplysning.verdi.verdi ? "Ja" : "Nei"}</BodyShort>;
+    }
+
+    if (opplysning.verdi?.type === "string") {
+        if (!opplysning.verdi.verdi) {
+            return <TextField label={opplysning.navn}
+                              name={`opplysning-${opplysning.uuid}`}
+                              type="text"
+                              inputMode="text"
+                              defaultValue=""
+                              error={error}
+                              hideLabel
+                              htmlSize={16}/>;
+        }
+        return <BodyShort>{opplysning.verdi.verdi as string}</BodyShort>;
+    }
+
+    if (opplysning.verdi?.type === "integer" || opplysning.verdi?.type === "float") {
+        if (opplysning.verdi.verdi === null || opplysning.verdi.verdi === undefined) {
+            return <TextField label={opplysning.navn}
+                              name={`opplysning-${opplysning.uuid}`}
+                              type="text"
+                              inputMode={opplysning.verdi.type === "integer" ? "numeric" : "decimal"}
+                              defaultValue=""
+                              error={error}
+                              hideLabel
+                              htmlSize={16}/>;
+        }
+        return <BodyShort>
+            {Intl.NumberFormat("no-NO", {maximumFractionDigits: 20}).format(opplysning.verdi.verdi as number)}
+            {opplysning.verdi.type === "integer" ? " kr" : ""}
+        </BodyShort>;
+    }
+
+    if (opplysning.verdi?.type === "date") {
+        if (!opplysning.verdi.verdi) {
+            return <DatoOpplysning opplysning={opplysning} error={error}/>;
+        }
+        return <BodyShort>
+            {Intl.DateTimeFormat("no-NO", {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric"
+            }).format(new Date(opplysning.verdi.verdi as string))}
+        </BodyShort>
+    }
+}
+
+const FraOgMed = ({opplysning, error}: {
+    opplysning: components["schemas"]["MigreringGrunnlagOpplysning"];
+    error?: string;
+}) => {
+    const { datepickerProps, inputProps } = useDatepicker({
+        fromDate: new Date("Aug 23 2019"),
+        allowTwoDigitYear: false,
+    });
+
+    return (
+            <DatePicker {...datepickerProps}>
+                <DatePicker.Input
+                    {...inputProps}
+                    label={`Gyldig fra og med for ${opplysning.navn}`}
+                    name={`gyldigFraOgMed-${opplysning.uuid}`}
+                    error={error}
+                    description="Format: dd.mm.åååå"
+                    hideLabel
+                />
+            </DatePicker>
+    );
+};
+
+const DatoOpplysning = ({opplysning, error}: {
+    opplysning: components["schemas"]["MigreringGrunnlagOpplysning"];
+    error?: string;
+}) => {
+    const { datepickerProps, inputProps } = useDatepicker({
+        fromDate: new Date("Aug 23 2019"),
+        allowTwoDigitYear: false,
+    });
+
+    return (
+        <DatePicker {...datepickerProps}>
+            <DatePicker.Input
+                {...inputProps}
+                label={opplysning.navn}
+                name={`opplysning-${opplysning.uuid}`}
+                error={error}
+                description="Format: dd.mm.åååå"
+                hideLabel
+            />
+        </DatePicker>
+    );
+};
+
+function parseDatoTilIso(tekst: string): string | undefined {
+    if (!/^\d{2}\.\d{2}\.\d{4}$/.test(tekst)) {
+        return undefined;
+    }
+    const dato = parse(tekst, "dd.MM.yyyy", new Date());
+    return isValid(dato) ? format(dato, "yyyy-MM-dd") : undefined;
 }

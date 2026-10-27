@@ -1,8 +1,8 @@
-import type {ActionFunctionArgs} from "react-router";
+import {type ActionFunctionArgs, redirect} from "react-router";
 import {sokPersonAction} from "~/components/person-sok/sok-person-action";
 import {getEnv} from "~/utils/env.utils";
 import {logger} from "~/utils/logger.utils";
-import {migrerSakAction} from "~/features/sak/migrer-sak-action";
+import {migrerSakAction} from "~/features/sak/migrer-sak-action.server";
 import invariant from "tiny-invariant";
 
 export async function handleActions(request: Request, params: ActionFunctionArgs["params"]) {
@@ -15,7 +15,9 @@ export async function handleActions(request: Request, params: ActionFunctionArgs
 
         case "migrer-sak":
             invariant(params.sakId, "params.sakId er påkrevd for migrer-sak action");
-            return migrerSakAction(request, params.sakId);
+            invariant(params.personId, "params.personId er påkrevd for migrer-sak action");
+            await migrerSakAction(request, params.sakId, formData);
+            return redirect(`/person/${params.personId}/saker/${params.sakId}`);
 
         default:
             logger.warn(`Ukjent action: ${actionToRun}`);

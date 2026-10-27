@@ -11,10 +11,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get?: never;
-        put?: never;
-        /** Initier migrering for en sak */
-        post: {
+        /** Henter datagrunnlag for migrering av en sak fra Arena */
+        get: {
             parameters: {
                 query?: never;
                 header?: never;
@@ -31,10 +29,45 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["StartMigreringResponse"];
+                        "application/json": components["schemas"]["MigreringGrunnlag"];
                     };
                 };
-                /** @description Feil ved initiering av migrering */
+                /** @description Feil ved henting av datagrunnlag for migrering */
+                default: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["HttpProblem"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        /** Starter migrering av en sak fra Arena */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    sakId: string;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["StartMigrering"];
+                };
+            };
+            responses: {
+                /** @description Accepted */
+                202: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Feil ved start av migrering */
                 default: {
                     headers: {
                         [name: string]: unknown;
@@ -55,15 +88,49 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
-        StartMigreringResponse: {
-            opplysninger?: components["schemas"]["OpplysningResponse"][];
+        /** @description Opplysningens verdi. Typen avhenger av opplysningen. */
+        Any: string | number | boolean;
+        MigreringGrunnlag: {
+            sakId: number;
+            initiertAv: string;
+            /** @description Fødselsnummer eller D-nummer til en person. Må være 11 siffer. */
+            ident: string;
+            /** Format: date */
+            innvilgetFraOgMed: string;
+            /** Format: date */
+            innvilgetTilOgMed?: string;
+            opplysninger: components["schemas"]["MigreringGrunnlagOpplysning"][];
         };
-        OpplysningResponse: {
-            navn?: string;
-            verdi?: string;
+        MigreringGrunnlagOpplysning: {
+            navn: string;
+            verdi?: components["schemas"]["MigreringGrunnlagOpplysningVerdi"];
             /** Format: date */
             gyldigFraOgMed?: string;
-            uuid?: string;
+            /** Format: uuid */
+            uuid: string;
+        };
+        MigreringGrunnlagOpplysningVerdi: {
+            verdi: components["schemas"]["Any"];
+            /** @enum {string} */
+            type: "date" | "string" | "integer" | "float" | "boolean";
+        };
+        StartMigrering: {
+            sakId: number;
+            initiertAv: string;
+            /** @description Fødselsnummer eller D-nummer til en person. Må være 11 siffer. */
+            ident: string;
+            /** Format: date */
+            innvilgetFraOgMed: string;
+            /** Format: date */
+            innvilgetTilOgMed?: string;
+            opplysninger: components["schemas"]["StartMigreringOpplysning"][];
+        };
+        StartMigreringOpplysning: {
+            verdi: components["schemas"]["Any"];
+            /** Format: date */
+            gyldigFraOgMed: string;
+            /** Format: uuid */
+            uuid: string;
         };
         HttpProblem: {
             /**
