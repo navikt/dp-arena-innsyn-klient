@@ -1,4 +1,4 @@
-FROM europe-north1-docker.pkg.dev/cgr-nav/pull-through/nav.no/node:25@sha256:8d9f61be7e77b221e519f57e744f9c5726664e6e9a40c41c71874c1d9e3dc474 AS runtime
+FROM europe-north1-docker.pkg.dev/cgr-nav/pull-through/nav.no/node:25@sha256:45790177068ad33448ef4281ca03c697ced33e9519084166f4342331502d93ca AS runtime
 WORKDIR /app
 
 ARG NODE_ENV=production
