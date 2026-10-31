@@ -87,11 +87,11 @@ Bruker → Ingress/Proxy → [Feature toggle]
 
 ```kotlin
 // RedirectServer.kt — enkel Ktor-app som ruter basert på toggle
-fun Application.configureRouting(unleashServer: Unleash) {
+fun Application.configureRouting(unleash: Unleash) {
     routing {
         get("/{path...}") {
             val path = call.parameters.getAll("path")?.joinToString("/") ?: ""
-            val target = if (unleashServer.isEnabled("ny-tjeneste-aktiv")) {
+            val target = if (unleash.isEnabled("ny-tjeneste-aktiv")) {
                 "https://ny-tjeneste.intern.nav.no/$path"
             } else {
                 "https://gammel-tjeneste.intern.nav.no/$path"
@@ -109,10 +109,10 @@ fun Application.configureRouting(unleashServer: Unleash) {
 class MigrerendeService(
     private val gammel: GammelService,
     private val ny: NyService,
-    private val unleashServer: Unleash
+    private val unleash: Unleash
 ) {
     fun hentVedtak(id: String): Vedtak {
-        return if (unleashServer.isEnabled("bruk-ny-vedtak-service")) {
+        return if (unleash.isEnabled("bruk-ny-vedtak-service")) {
             ny.hentVedtak(id)
         } else {
             gammel.hentVedtak(id)
@@ -136,7 +136,7 @@ Nav bruker Unleash for gradvis utrulling. Standard oppsett:
 spec:
   env:
     - name: UNLEASH_SERVER_API_URL
-      value: https://unleashServer.nais.io/api
+      value: https://unleash.nais.io/api
     - name: UNLEASH_SERVER_API_TOKEN
       value: ${UNLEASH_API_TOKEN}
 ```
@@ -154,7 +154,7 @@ fun erAktivert(toggle: FeatureToggle, navIdent: String? = null): Boolean {
     val context = UnleashContext.builder()
         .apply { navIdent?.let { addProperty("navIdent", it) } }
         .build()
-    return unleashServer.isEnabled(toggle.key, context)
+    return unleash.isEnabled(toggle.key, context)
 }
 ```
 
@@ -250,7 +250,7 @@ spec:
 spec:
   gcp:
     sqlInstances:
-      - type: POSTGRES_15
+      - type: POSTGRES_18
         tier: db-custom-1-3840
         diskAutoresize: true
         highAvailability: true
@@ -281,7 +281,7 @@ testcontainers.reuse.enable=true
 ```kotlin
 // Delt test-database med gjenbruk
 object TestDatabase {
-    val container = PostgreSQLContainer<Nothing>("postgres:15").apply {
+    val container = PostgreSQLContainer<Nothing>("postgres:18").apply {
         withDatabaseName("testdb")
         withReuse(true)
         start()
