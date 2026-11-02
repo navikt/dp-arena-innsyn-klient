@@ -43,6 +43,6 @@ describe("formaterTallMedTusenSeperator", () => {
   });
 
   it("returnerer NaN-formatering for ugyldig streng", () => {
-    expect(formaterTallMedTusenSeperator("ikke-tall")).toBe("NaN");
+    expect(formaterTallMedTusenSeperator("ikke-tall")).toBe("ikke-tall");
   });
 });

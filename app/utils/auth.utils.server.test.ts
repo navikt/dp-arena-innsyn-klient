@@ -61,7 +61,7 @@ describe("getSaksbehandlingOboToken", () => {
 
     it("kaster 401 Response når OBO-utveksling feiler", async () => {
         process.env.IS_LOCALHOST = "false";
-        process.env.DP_MIGRERING_CLUSTER_NAME = "dev-fss";
+        process.env.DP_MIGRERING_CLUSTER_NAME = "dev-gcp";
         vi.mocked(getToken).mockReturnValue("gyldig-token");
         vi.mocked(validateToken).mockResolvedValue({
             ok: true,
@@ -79,7 +79,7 @@ describe("getSaksbehandlingOboToken", () => {
 
     it("returnerer OBO-token med riktig audience (dp-migrering) når alt validerer", async () => {
         process.env.IS_LOCALHOST = "false";
-        process.env.DP_MIGRERING_CLUSTER_NAME = "dev-fss";
+        process.env.DP_MIGRERING_CLUSTER_NAME = "dev-gcp";
         vi.mocked(getToken).mockReturnValue("gyldig-token");
         vi.mocked(validateToken).mockResolvedValue({
             ok: true,
@@ -92,7 +92,7 @@ describe("getSaksbehandlingOboToken", () => {
         expect(token).toBe("obo-token");
         expect(requestOboToken).toHaveBeenCalledWith(
             "gyldig-token",
-            "api://dev-fss.teamdagpenger.dp-migrering/.default",
+            "api://dev-gcp.teamdagpenger.dp-migrering/.default",
         );
     });
 });

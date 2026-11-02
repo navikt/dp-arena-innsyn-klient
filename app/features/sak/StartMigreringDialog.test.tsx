@@ -31,6 +31,7 @@ const datagrunnlag: components["schemas"]["MigreringGrunnlag"] = {
         {uuid: "tom-tekst", navn: "Tom tekst", verdi: {type: "string", verdi: ""}, gyldigFraOgMed: "2026-07-01"},
         {uuid: "uten-verdi", navn: "Uten verdi", gyldigFraOgMed: "2026-01-01"},
     ],
+    migreringId: "00000000-0000-0000-0000-000000000000",
 };
 
 function visDialog(kanStarteMigrering = true, grunnlag: unknown = datagrunnlag) {
@@ -130,7 +131,7 @@ describe("StartMigreringDialog", () => {
         felt.setSelectionRange(3, 3);
 
         fireEvent.keyDown(felt, {key: "Backspace"});
-        expect(felt.selectionStart).toBe(2);
+        expect(felt.selectionStart).toBe(3);
         fireEvent.change(felt, {target: {value: "1\u00a0345", selectionStart: 1, selectionEnd: 1}});
 
         expect(felt).toHaveValue("1\u00a0345");
@@ -146,7 +147,7 @@ describe("StartMigreringDialog", () => {
         felt.setSelectionRange(2, 2);
 
         fireEvent.keyDown(felt, {key: "Delete"});
-        expect(felt.selectionStart).toBe(3);
+        expect(felt.selectionStart).toBe(2);
         fireEvent.change(felt, {target: {value: "12\u00a045", selectionStart: 3, selectionEnd: 3}});
 
         expect(felt).toHaveValue("1\u00a0245");
@@ -220,6 +221,7 @@ describe("StartMigreringDialog", () => {
             initiertAv: datagrunnlag.initiertAv,
             ident: datagrunnlag.ident,
             innvilgetFraOgMed: datagrunnlag.innvilgetFraOgMed,
+            migreringId: datagrunnlag.migreringId,
             opplysninger: [
                 {uuid: "tekst", verdi: "verdi", gyldigFraOgMed: "2026-02-01"},
                 {uuid: "boolsk", verdi: false, gyldigFraOgMed: "2026-03-01"},

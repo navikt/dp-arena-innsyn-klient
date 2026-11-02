@@ -26,6 +26,7 @@ const grunnlag: components["schemas"]["StartMigrering"] = {
         verdi: 42,
         gyldigFraOgMed: "2026-02-01",
     }],
+    migreringId: "00000000-0000-0000-0000-000000000000",
 };
 
 function sendSkjema(innsendtGrunnlag: unknown = grunnlag) {

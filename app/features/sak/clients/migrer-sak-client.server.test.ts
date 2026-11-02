@@ -16,6 +16,7 @@ const grunnlag: components["schemas"]["StartMigrering"] = {
     initiertAv: "test-saksbehandler",
     ident: "syntetisk-ident",
     innvilgetFraOgMed: "2026-01-01",
+    migreringId: "00000000-0000-0000-0000-000000000000",
     opplysninger: [],
 };
 

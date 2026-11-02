@@ -26,7 +26,7 @@ import {unleash} from "~/utils/unleash.server";
 import {hentMigreringDatagrunnlag} from "~/features/sak/clients/migrer-sak-client.server";
 import type {components} from "../../../openapi/arena-migrering-typer";
 import styles from "./StartMigreringDialog.module.css";
-import {fjernTusenskille, formaterTallMedTusenSeperator} from "~/utils/number.utils";
+import {fjernTusenskille, formaterBelopUnderInntasting} from "~/utils/number.utils";
 
 export async function action({request, params}: ActionFunctionArgs) {
     return await handleActions(request, params);
@@ -302,15 +302,15 @@ function BelopFelt({opplysning, error}: {
 }) {
     const [felt, setFelt] = useState({
         verdi: "",
-        // start: 0,
-        // slutt: 0,
+        start: 0,
+        slutt: 0,
     });
     const inputRef = useRef<HTMLInputElement>(null);
 
     useLayoutEffect(() => {
         const input = inputRef.current;
         if (input && input === document.activeElement) {
-            // input.setSelectionRange(felt.start, felt.slutt);
+            input.setSelectionRange(felt.start, felt.slutt);
         }
     }, [felt]);
 
@@ -319,31 +319,29 @@ function BelopFelt({opplysning, error}: {
             <TextField label={opplysning.navn}
                        description="Beløp i kroner."
                        name={`opplysning-${opplysning.uuid}`}
-                //ref={inputRef}
+                       ref={inputRef}
                        type="text"
                        inputMode={"decimal"}
-                // inputMode={opplysning.verdi?.type === "integer" ? "numeric" : "decimal"}
                        value={felt.verdi}
                        onChange={(event) => {
-                           // const input = event.currentTarget;
-                           // const formatert = formaterBelopUnderInntasting(input.value);
-                           // const finnPosisjon = (posisjon: number) => {
-                           //     let tegnIgjen = fjernTusenskille(input.value.slice(0, posisjon)).length;
-                           //     let indeks = 0;
-                           //     while (indeks < formatert.length && tegnIgjen > 0) {
-                           //         if (fjernTusenskille(formatert[indeks]) !== "") {
-                           //             tegnIgjen--;
-                           //         }
-                           //         indeks++;
-                           //     }
-                           //     return indeks;
-                           // };
-                           // if (isNaN(Number(fjernTusenskille(event.currentTarget.value)))) return;
+                           const input = event.currentTarget;
+                           const formatert = formaterBelopUnderInntasting(input.value);
+                           const finnPosisjon = (posisjon: number) => {
+                               let tegnIgjen = fjernTusenskille(input.value.slice(0, posisjon)).length;
+                               let indeks = 0;
+                               while (indeks < formatert.length && tegnIgjen > 0) {
+                                   if (fjernTusenskille(formatert[indeks]) !== "") {
+                                       tegnIgjen--;
+                                   }
+                                   indeks++;
+                               }
+                               return indeks;
+                           };
 
                            setFelt({
-                               verdi: formaterTallMedTusenSeperator(fjernTusenskille(event.currentTarget.value)),
-                               // start: finnPosisjon(input.selectionStart ?? input.value.length),
-                               // slutt: finnPosisjon(input.selectionEnd ?? input.value.length),
+                               verdi: formatert,
+                               start: finnPosisjon(input.selectionStart ?? input.value.length),
+                               slutt: finnPosisjon(input.selectionEnd ?? input.value.length),
                            });
                        }}
                        error={error}
