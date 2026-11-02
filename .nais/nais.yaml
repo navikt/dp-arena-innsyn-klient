@@ -38,7 +38,7 @@ spec:
     - name: GCP_ENV
       value: "{{gcp_env}}"
     - name: DP_MIGRERING_URL
-      value: "https://{{dp-migrering_url}}/"
+      value: "http://{{dp-migrering_url}}/"
     - name: DP_MIGRERING_CLUSTER_NAME
       value: "{{dp-migrering_cluster_name}}"
   envFrom:
