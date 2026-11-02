@@ -46,7 +46,7 @@ spec:
 
   accessPolicy:
     outbound:
-      internal:
+      rules:
         - application: dp-migrering
       external:
         - host: graph.microsoft.com
