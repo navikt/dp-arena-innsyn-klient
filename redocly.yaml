@@ -1,9 +1,9 @@
 apis:
   arena-sak-innsyn@v1:
-    root: https://dp-migrering.dev-fss-pub.nais.io/arena/innsyn/openapi/arena-sak-innsyn-api.yaml
+    root: https://dp-migrering.intern.dev.nav.no/arena/innsyn/openapi/arena-sak-innsyn-api.yaml
     x-openapi-ts:
       output: ./openapi/arena-sak-innsyn-typer.ts
   arena-migrering@v1:
-    root: https://dp-migrering.dev-fss-pub.nais.io/arena/migrering/openapi/arena-migrering-api.yaml
+    root: https://dp-migrering.intern.dev.nav.no/arena/migrering/openapi/arena-migrering-api.yaml
     x-openapi-ts:
       output: ./openapi/arena-migrering-typer.ts

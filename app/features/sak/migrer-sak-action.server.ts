@@ -5,6 +5,7 @@ import type {components} from "../../../openapi/arena-migrering-typer";
 import {logger} from "~/utils/logger.utils";
 
 const startMigreringSchema: z.ZodType<components["schemas"]["StartMigrering"]> = z.object({
+    migreringId: z.uuid(),
     sakId: z.number().int().positive(),
     initiertAv: z.string().min(1),
     ident: z.string().regex(/^\d{11}$/),
@@ -44,5 +45,6 @@ export async function migrerSakAction(request: Request, sakId: string, formData:
 
     logger.info(`Starter migrering for sakId: ${sakId}`);
     logger.info(`Antall opplysninger: ${resultat.data.opplysninger.length}`);
+    // logger.info(`Opplysninger: ${JSON.stringify(resultat.data.opplysninger)}`);
     return await migrerSak(request, resultat.data);
 }

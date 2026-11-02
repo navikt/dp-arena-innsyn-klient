@@ -26,7 +26,7 @@ import {unleash} from "~/utils/unleash.server";
 import {hentMigreringDatagrunnlag} from "~/features/sak/clients/migrer-sak-client.server";
 import type {components} from "../../../openapi/arena-migrering-typer";
 import styles from "./StartMigreringDialog.module.css";
-import {fjernTusenskille, formaterBelopUnderInntasting} from "~/utils/number.utils";
+import {fjernTusenskille, formaterTallMedTusenSeperator} from "~/utils/number.utils";
 
 export async function action({request, params}: ActionFunctionArgs) {
     return await handleActions(request, params);
@@ -146,6 +146,7 @@ export default function StartMigreringDialog() {
         }
 
         const grunnlag: components["schemas"]["StartMigrering"] = {
+            migreringId: datagrunnlag.migreringId,
             sakId: datagrunnlag.sakId,
             initiertAv: datagrunnlag.initiertAv,
             ident: datagrunnlag.ident,
@@ -248,7 +249,7 @@ function OpplysningVerdi({opplysning, error}: {
                                name={`opplysning-${opplysning.uuid}`}
                                error={error}
                                hideLegend
-            size={'small'}>
+                               size={'small'}>
                 <Radio value="true">Ja</Radio>
                 <Radio value="false">Nei</Radio>
             </RadioGroup>;
@@ -301,15 +302,15 @@ function BelopFelt({opplysning, error}: {
 }) {
     const [felt, setFelt] = useState({
         verdi: "",
-        start: 0,
-        slutt: 0,
+        // start: 0,
+        // slutt: 0,
     });
     const inputRef = useRef<HTMLInputElement>(null);
 
     useLayoutEffect(() => {
         const input = inputRef.current;
         if (input && input === document.activeElement) {
-            input.setSelectionRange(felt.start, felt.slutt);
+            // input.setSelectionRange(felt.start, felt.slutt);
         }
     }, [felt]);
 
@@ -318,41 +319,32 @@ function BelopFelt({opplysning, error}: {
             <TextField label={opplysning.navn}
                        description="Beløp i kroner."
                        name={`opplysning-${opplysning.uuid}`}
-                       ref={inputRef}
+                //ref={inputRef}
                        type="text"
-                       inputMode={opplysning.verdi?.type === "integer" ? "numeric" : "decimal"}
+                       inputMode={"decimal"}
+                // inputMode={opplysning.verdi?.type === "integer" ? "numeric" : "decimal"}
                        value={felt.verdi}
                        onChange={(event) => {
-                           const input = event.currentTarget;
-                           const formatert = formaterBelopUnderInntasting(input.value);
-                           const finnPosisjon = (posisjon: number) => {
-                               let tegnIgjen = fjernTusenskille(input.value.slice(0, posisjon)).length;
-                               let indeks = 0;
-                               while (indeks < formatert.length && tegnIgjen > 0) {
-                                   if (fjernTusenskille(formatert[indeks]) !== "") {
-                                       tegnIgjen--;
-                                   }
-                                   indeks++;
-                               }
-                               return indeks;
-                           };
+                           // const input = event.currentTarget;
+                           // const formatert = formaterBelopUnderInntasting(input.value);
+                           // const finnPosisjon = (posisjon: number) => {
+                           //     let tegnIgjen = fjernTusenskille(input.value.slice(0, posisjon)).length;
+                           //     let indeks = 0;
+                           //     while (indeks < formatert.length && tegnIgjen > 0) {
+                           //         if (fjernTusenskille(formatert[indeks]) !== "") {
+                           //             tegnIgjen--;
+                           //         }
+                           //         indeks++;
+                           //     }
+                           //     return indeks;
+                           // };
+                           // if (isNaN(Number(fjernTusenskille(event.currentTarget.value)))) return;
+
                            setFelt({
-                               verdi: formatert,
-                               start: finnPosisjon(input.selectionStart ?? input.value.length),
-                               slutt: finnPosisjon(input.selectionEnd ?? input.value.length),
+                               verdi: formaterTallMedTusenSeperator(fjernTusenskille(event.currentTarget.value)),
+                               // start: finnPosisjon(input.selectionStart ?? input.value.length),
+                               // slutt: finnPosisjon(input.selectionEnd ?? input.value.length),
                            });
-                       }}
-                       onKeyDown={(event) => {
-                           const input = event.currentTarget;
-                           const posisjon = input.selectionStart;
-                           if (posisjon === null || posisjon !== input.selectionEnd || event.ctrlKey || event.metaKey || event.altKey) {
-                               return;
-                           }
-                           if (event.key === "Backspace" && posisjon > 0 && fjernTusenskille(input.value[posisjon - 1]) === "") {
-                               input.setSelectionRange(posisjon - 1, posisjon - 1);
-                           } else if (event.key === "Delete" && posisjon < input.value.length && fjernTusenskille(input.value[posisjon]) === "") {
-                               input.setSelectionRange(posisjon + 1, posisjon + 1);
-                           }
                        }}
                        error={error}
                        hideLabel

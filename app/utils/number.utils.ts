@@ -1,6 +1,9 @@
 export function formaterTallMedTusenSeperator(verdi: string | number): string {
   const nummer = typeof verdi === "number" ? verdi : parseFloat(verdi);
 
+  if (isNaN(nummer)) {
+    return verdi.toString();
+  }
   return new Intl.NumberFormat("no-NO").format(nummer);
 }
 

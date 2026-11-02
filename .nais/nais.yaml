@@ -46,10 +46,11 @@ spec:
 
   accessPolicy:
     outbound:
+      internal:
+        - application: dp-migrering
       external:
         - host: graph.microsoft.com
         - host: login.microsoftonline.com
-        - host: "{{dp-migrering_url}}"
         - host: teamdagpenger-unleash-api.nav.cloud.nais.io
 
   azure:

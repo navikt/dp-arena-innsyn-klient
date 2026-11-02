@@ -92,6 +92,8 @@ export interface components {
         Any: string | number | boolean;
         MigreringGrunnlag: {
             sakId: number;
+            /** Format: uuid */
+            migreringId: string;
             initiertAv: string;
             /** @description Fødselsnummer eller D-nummer til en person. Må være 11 siffer. */
             ident: string;
@@ -110,12 +112,14 @@ export interface components {
             uuid: string;
         };
         MigreringGrunnlagOpplysningVerdi: {
-            verdi: components["schemas"]["Any"];
+            verdi?: components["schemas"]["Any"];
             /** @enum {string} */
             type: "date" | "string" | "integer" | "float" | "boolean";
         };
         StartMigrering: {
             sakId: number;
+            /** Format: uuid */
+            migreringId: string;
             initiertAv: string;
             /** @description Fødselsnummer eller D-nummer til en person. Må være 11 siffer. */
             ident: string;
