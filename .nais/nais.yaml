@@ -39,8 +39,8 @@ spec:
       value: "{{gcp_env}}"
     - name: DP_MIGRERING_URL
       value: "http://{{dp-migrering_url}}/"
-    - name: DP_MIGRERING_CLUSTER_NAME
-      value: "{{dp-migrering_cluster_name}}"
+#    - name: DP_MIGRERING_CLUSTER_NAME
+#      value: "{{dp-migrering_cluster_name}}"
   envFrom:
     - secret: dp-arena-innsyn-klient-api-token
 

@@ -1,8 +1,8 @@
 ingress: "https://arena-innsyn-dagpenger.ansatt.nav.no"
 gcp_env: "prod"
 
-dp-migrering_cluster_name: "prod-fss"
-dp-migrering_url: "dp-migrering.prod-fss-pub.nais.io"
+#dp-migrering_cluster_name: "prod-gcp"
+dp-migrering_url: "dp-migrering"
 
 azure:
   tenant: nav.no

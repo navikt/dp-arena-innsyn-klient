@@ -61,7 +61,7 @@ describe("getSaksbehandlingOboToken", () => {
 
     it("kaster 401 Response når OBO-utveksling feiler", async () => {
         process.env.IS_LOCALHOST = "false";
-        process.env.DP_MIGRERING_CLUSTER_NAME = "dev-gcp";
+        process.env.NAIS_CLUSTER_NAME = "dev-gcp";
         vi.mocked(getToken).mockReturnValue("gyldig-token");
         vi.mocked(validateToken).mockResolvedValue({
             ok: true,
@@ -79,7 +79,7 @@ describe("getSaksbehandlingOboToken", () => {
 
     it("returnerer OBO-token med riktig audience (dp-migrering) når alt validerer", async () => {
         process.env.IS_LOCALHOST = "false";
-        process.env.DP_MIGRERING_CLUSTER_NAME = "dev-gcp";
+        process.env.NAIS_CLUSTER_NAME = "dev-gcp";
         vi.mocked(getToken).mockReturnValue("gyldig-token");
         vi.mocked(validateToken).mockResolvedValue({
             ok: true,
