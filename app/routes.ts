@@ -9,7 +9,11 @@ export default [
                 route(":sakId", "features/sak/SaksDetaljerPage.tsx"),
             ])
         ]),
-        route("migrering/:sakId", "features/migrering/StartMigreringPage.tsx"),
+        route("saker/:sakId", "features/migrering/MigreringPage.tsx", [
+            route("migreringer", "features/migrering/MigreringList.tsx",[
+                route(":migreringId", "features/migrering/MigreringDetaljerPage.tsx",)
+            ] ),
+        ]),
         route("api/internal", "features/api/index.ts", [
             route("isReady", "features/api/is-ready.ts"),
             route("isAlive", "features/api/is-alive.ts"),

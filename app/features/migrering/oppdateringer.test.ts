@@ -10,10 +10,10 @@ vi.mock("~/features/migrering/clients/migrering-oppdateringer.server", () => ({
 const migreringId = "11111111-1111-4111-8111-111111111111";
 const backendstrom = 'id: 42\ndata: {"id":42,"hendelse":"MIGRERING_STARTET","initiertAv":"syntetisk-ident"}\n\n';
 
-function kallLoader(query = "", headers?: HeadersInit, id = migreringId) {
+function kallLoader(query = "", headers?: HeadersInit, id = migreringId, signal?: AbortSignal) {
     const url = new URL(`http://localhost/api/migrering/${id}/oppdateringer${query}`);
     return loader({
-        request: new Request(url, {headers}),
+        request: new Request(url, {headers, signal}),
         url,
         pattern: "/api/migrering/:migreringId/oppdateringer",
         params: {migreringId: id},
@@ -72,5 +72,116 @@ describe("migrering oppdateringer loader", () => {
             new Response("{}", {headers: {"Content-Type": "application/json"}}),
         );
         await expect(kallLoader()).rejects.toMatchObject({status: 502});
+    });
+
+    it("avslutter en strom med klientavbrudd uten lesefeil", async () => {
+        const abortController = new AbortController();
+        const backend = new ReadableStream<Uint8Array>({
+            start(controller) {
+                controller.enqueue(new TextEncoder().encode(backendstrom));
+                abortController.signal.addEventListener("abort", () => {
+                    controller.error(abortController.signal.reason);
+                }, {once: true});
+            },
+        });
+        vi.mocked(hentMigreringsstrom).mockResolvedValue(
+            new Response(backend, {headers: {"Content-Type": "text/event-stream"}}),
+        );
+
+        const response = await kallLoader("", undefined, migreringId, abortController.signal);
+        const reader = response.body!.getReader();
+        expect(new TextDecoder().decode((await reader.read()).value)).toBe(backendstrom);
+        const neste = reader.read();
+        abortController.abort();
+
+        await expect(neste).resolves.toMatchObject({done: true});
+        expect(backend.locked).toBe(false);
+    });
+
+    it("videresender backendfeil selv om klienten har avbrutt", async () => {
+        const abortController = new AbortController();
+        const feil = new TypeError("Forbindelsen ble brutt");
+        const backend = new ReadableStream<Uint8Array>({
+            start(controller) {
+                abortController.signal.addEventListener("abort", () => controller.error(feil), {once: true});
+            },
+        });
+        vi.mocked(hentMigreringsstrom).mockResolvedValue(
+            new Response(backend, {headers: {"Content-Type": "text/event-stream"}}),
+        );
+
+        const response = await kallLoader("", undefined, migreringId, abortController.signal);
+        const lesing = response.text();
+        abortController.abort();
+
+        await expect(lesing).rejects.toBe(feil);
+        expect(backend.locked).toBe(false);
+    });
+
+    it("videresender AbortError uten klientavbrudd", async () => {
+        const feil = new DOMException("Backend avbrutt", "AbortError");
+        const backend = new ReadableStream<Uint8Array>({
+            start(controller) {
+                controller.error(feil);
+            },
+        });
+        vi.mocked(hentMigreringsstrom).mockResolvedValue(
+            new Response(backend, {headers: {"Content-Type": "text/event-stream"}}),
+        );
+
+        const response = await kallLoader();
+        await expect(response.text()).rejects.toBe(feil);
+        expect(backend.locked).toBe(false);
+    });
+
+    it("kansellerer backend og frigir leseren ved kansellering under lesing", async () => {
+        const cancel = vi.fn();
+        const backend = new ReadableStream<Uint8Array>({cancel});
+        vi.mocked(hentMigreringsstrom).mockResolvedValue(
+            new Response(backend, {headers: {"Content-Type": "text/event-stream"}}),
+        );
+
+        const response = await kallLoader();
+        const reader = response.body!.getReader();
+        const lesing = reader.read();
+        await reader.cancel("Klienten lukket forbindelsen");
+
+        await expect(lesing).resolves.toMatchObject({done: true});
+        expect(cancel).toHaveBeenCalledWith("Klienten lukket forbindelsen");
+        expect(backend.locked).toBe(false);
+    });
+
+    it("beholder reelle feil ved kansellering", async () => {
+        const feil = new TypeError("Kunne ikke kansellere backend");
+        const backend = new ReadableStream<Uint8Array>({
+            cancel() {
+                throw feil;
+            },
+        });
+        vi.mocked(hentMigreringsstrom).mockResolvedValue(
+            new Response(backend, {headers: {"Content-Type": "text/event-stream"}}),
+        );
+
+        const response = await kallLoader();
+        await expect(response.body!.cancel()).rejects.toBe(feil);
+        expect(backend.locked).toBe(false);
+    });
+
+    it("returnerer klientavbrudd hvis forbindelsen lukkes for backend svarer", async () => {
+        const abortController = new AbortController();
+        vi.mocked(hentMigreringsstrom).mockImplementation(async (request) => {
+            abortController.abort();
+            throw request.signal.reason;
+        });
+
+        const response = await kallLoader("", undefined, migreringId, abortController.signal);
+        expect(response.status).toBe(499);
+        expect(response.body).toBeNull();
+    });
+
+    it("videresender feil for backend svarer uten klientavbrudd", async () => {
+        const feil = new TypeError("Backend er utilgjengelig");
+        vi.mocked(hentMigreringsstrom).mockRejectedValue(feil);
+        await expect(kallLoader()).rejects.toBe(feil);
     });
 });

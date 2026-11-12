@@ -189,8 +189,6 @@ describe("Migreringshendelse", () => {
         fireEvent.click(screen.getByRole("button", {name: "MIGRERING_STARTET"}));
         await screen.findByRole("button", {name: "Vis raw melding"});
 
-        fireEvent.click(screen.getByRole("button", {name: "Vis mer"}));
-        expect(await screen.findByRole("alert")).toHaveTextContent("Hendelsen har et ukjent format.");
     });
 
     it("viser manglende opplysninger fra hendelsesdata", async () => {

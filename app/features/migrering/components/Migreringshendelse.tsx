@@ -118,14 +118,14 @@ function TilleggsinfoWrap({children}: { children: React.ReactNode }) {
 }
 
 const manglendeOpplysningerSchema = z.object({
-    manglendeOpplysninger: z.array(z.object({navn: z.string(), uuid: z.string()})),
-    opplysninger: z.array(z.object({navn: z.string(), id: z.string()})),
+    manglendeOpplysninger: z.array(z.object({navn: z.string(), uuid: z.string()})).nullable(),
+    opplysninger: z.array(z.object({navn: z.string(), uuid: z.string()})).optional(),
 });
 
 function TilleggsinfoManglerOpplysninger({data}: {data: unknown}) {
     const resultat = manglendeOpplysningerSchema.safeParse(data);
     if (!resultat.success) {
-        return <p role="alert">Hendelsen har et ukjent format. Se den opprinnelige meldingen.</p>;
+        return <p role="alert">Hendelsen har et ukjent format. Se den opprinnelige meldingen. {JSON.stringify(resultat.error)}</p>;
     }
     const opplysninger = resultat.data;
     return (
@@ -134,7 +134,7 @@ function TilleggsinfoManglerOpplysninger({data}: {data: unknown}) {
                 <Table.HeaderCell>Manglende opplysninger</Table.HeaderCell>
                 <Table.DataCell>
                     <List as="ul" size={"small"}>
-                        {opplysninger.manglendeOpplysninger.map((opplysning, index) => (
+                        {opplysninger.manglendeOpplysninger?.map((opplysning, index) => (
                             <List.Item key={index} title={opplysning.navn}>
                                 {opplysning.uuid}
                             </List.Item>
@@ -145,11 +145,11 @@ function TilleggsinfoManglerOpplysninger({data}: {data: unknown}) {
             <Table.Row>
                 <Table.HeaderCell>Opplysninger</Table.HeaderCell>
                 <Table.DataCell>
-                    {opplysninger.opplysninger.length === 0 ? <BodyShort size={"small"}>Ingen opplysninger</BodyShort> :
+                    {opplysninger.opplysninger?.length === 0 ? <BodyShort size={"small"}>Ingen opplysninger</BodyShort> :
                         <List as="ul" size={"small"}>
-                            {opplysninger.opplysninger.map((opplysning, index) => (
+                            {opplysninger.opplysninger?.map((opplysning, index) => (
                                 <List.Item key={index} title={opplysning.navn}>
-                                    {opplysning.id}
+                                    {opplysning.uuid}
                                 </List.Item>
                             ))}
                         </List>}

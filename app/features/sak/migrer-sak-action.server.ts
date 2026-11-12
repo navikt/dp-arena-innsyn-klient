@@ -3,6 +3,7 @@ import {migrerSak} from "~/features/sak/clients/migrer-sak-client.server";
 import {unleash} from "~/utils/unleash.server";
 import type {components} from "../../../openapi/arena-migrering-typer";
 import {logger} from "~/utils/logger.utils";
+import {redirect} from "react-router";
 
 const startMigreringSchema: z.ZodType<components["schemas"]["StartMigreringRequest"]> = z.object({
     migreringsTidspunkt: z.iso.date(),
@@ -24,5 +25,7 @@ export async function migrerSakAction(request: Request, sakId: string, formData:
         throw new Response("Ugyldig input", {status: 400});
     }
     logger.info(`Starter migrering for sakId=${sakId} med input: ${JSON.stringify(resultat.data)}`);
-    return await migrerSak(sakId, request, resultat.data);
+    const migrering = await migrerSak(sakId, request, resultat.data);
+
+    return redirect(`/saker/${sakId}/migreringer/${migrering.migreringId}`);
 }
