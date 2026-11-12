@@ -9,7 +9,7 @@ export default [
                 route(":sakId", "features/sak/SaksDetaljerPage.tsx"),
             ])
         ]),
-        route("saker/:sakId", "features/migrering/MigreringPage.tsx", [
+        route("migrering/person/:personId/saker/:sakId", "features/migrering/MigreringPage.tsx", [
             route("migreringer", "features/migrering/MigreringList.tsx",[
                 route(":migreringId", "features/migrering/MigreringDetaljerPage.tsx",)
             ] ),

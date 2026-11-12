@@ -18,10 +18,12 @@ export async function action({request, params}: ActionFunctionArgs) {
 
 export async function loader({params, request}: LoaderFunctionArgs) {
     invariant(params.sakId, "Mangler sak id")
+    invariant(params.personId, "Mangler person id")
     const sak = await hentSakForPerson(request, params.sakId);
 
     return {
         sak,
+        personId: params.personId,
         kanStarteMigrering: unleash.isEnabled("dp-migrering.start-migrering"),
     };
 }
@@ -40,7 +42,7 @@ function getTildato(vedtak: components["schemas"]["ArenaVedtakMedDetaljerRespons
 }
 
 export default function SaksDetaljer() {
-    const {sak, kanStarteMigrering} = useLoaderData<typeof loader>();
+    const {sak, kanStarteMigrering, personId} = useLoaderData<typeof loader>();
 
     const nyesteVedtak = sak.vedtak.sort((a, b) => b.lopenrvedtak - a.lopenrvedtak)[0];
 
@@ -95,7 +97,7 @@ export default function SaksDetaljer() {
                         </HStack>
                     </HStack>
                     <WithFeatureEnabled enabled={kanStarteMigrering}>
-                        <Button as={Link} to={sak.statuskode !== 'AKTIV' ? '#' : `/saker/${sak.sakId}/migreringer`} size="medium" disabled={sak.statuskode !== 'AKTIV'}>Migrer sak</Button>
+                        <Button as={Link} to={sak.statuskode !== 'AKTIV' ? '#' : `/migrering/person/${personId}/saker/${sak.sakId}/migreringer`} size="medium" disabled={sak.statuskode !== 'AKTIV'}>Migrer sak</Button>
                     </WithFeatureEnabled>
                 </HStack>
                 <div className={"card"}>

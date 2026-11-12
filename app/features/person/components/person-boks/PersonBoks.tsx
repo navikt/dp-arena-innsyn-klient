@@ -1,4 +1,4 @@
-import {BodyShort, CopyButton,} from "@navikt/ds-react";
+import {BodyShort, CopyButton, Link,} from "@navikt/ds-react";
 import {useSaksbehandler} from "~/hooks/useSaksbehandler";
 import {maskerVerdi} from "~/utils/skjul-sensitiv-opplysning";
 
@@ -45,11 +45,14 @@ export function PersonBoks({person}: IProps) {
                     </BodyShort>
                 </div>
 
+
                 <BodyShort size="small" textColor="subtle" className={styles.infoElement}>
                     Fødselsnummer:{" "}
-                    {skjulSensitiveOpplysninger
-                        ? maskerVerdi(fødselsnummerMedMellomrom)
-                        : fødselsnummerMedMellomrom}
+                    <Link href={`/person/${person.personId}/saker`}>
+                        {skjulSensitiveOpplysninger
+                            ? maskerVerdi(fødselsnummerMedMellomrom)
+                            : fødselsnummerMedMellomrom}
+                    </Link>
                     <CopyButton copyText={person.fodselsnummer || ""} size="xsmall"/>
                 </BodyShort>
 

@@ -15,18 +15,21 @@ export async function action({request, params}: ActionFunctionArgs) {
 
 export async function loader({params, request}: LoaderFunctionArgs) {
     invariant(params.sakId, "Mangler sak id")
+    invariant(params.personId, "Mangler person id")
     const sakId = params.sakId;
+    const personId = params.personId;
     const migreringer = await hentMigreringer(request, sakId)
     return {
         migreringer,
-        sakId
+        sakId,
+        personId
 
     }
 
 }
 
 export default function MigreringList() {
-    const {migreringer, sakId} = useLoaderData<typeof loader>()
+    const {migreringer, sakId, personId} = useLoaderData<typeof loader>()
     const [erLukket, setErLukket] = useState(false);
     const params = useParams()
     return (
@@ -64,7 +67,7 @@ export default function MigreringList() {
                                                             <HStack gap={"space-12"} align={"center"}>
                                                                 <LinkCard.Anchor asChild>
                                                                     <Link
-                                                                        to={`/saker/${migrering.sakId}/migreringer/${migrering.migreringId}`}>
+                                                                        to={`/migrering/person/${personId}/saker/${sakId}/migreringer/${migrering.migreringId}`}>
                                                                         {formaterTilNorskDato(migrering.opprettetTidspunkt, true)}
                                                                     </Link>
                                                                 </LinkCard.Anchor>

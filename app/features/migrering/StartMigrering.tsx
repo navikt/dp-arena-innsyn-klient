@@ -1,11 +1,15 @@
-import {BodyShort, Box, Button, Checkbox, DatePicker, HStack, Label, useDatepicker, VStack} from "@navikt/ds-react";
+import {Box, Button, Checkbox, DatePicker, HStack, Label, Link, useDatepicker, VStack} from "@navikt/ds-react";
 import {Form} from "react-router";
 import {format} from "date-fns";
 import {useForm} from "@rvf/react-router";
 import {validerStartMigrering} from "~/utils/validering.util";
+import type {components} from "../../../openapi/arena-sak-innsyn-typer";
 
 
-export default function StartMigrering({sakId}: { sakId: string }) {
+export default function StartMigrering({sakId, person}: {
+    sakId: string,
+    person: components["schemas"]["ArenaPersonResponse"]
+}) {
     // const actionData = useActionData<typeof action>();
     // const {sakId} = useLoaderData<typeof loader>();
     // const migreringResponse = actionData && "migreringId" in actionData
@@ -46,18 +50,18 @@ export default function StartMigrering({sakId}: { sakId: string }) {
                      padding="space-8"
                      borderWidth="2"
                      borderRadius="12">
-                    <HStack gap={"space-32"} justify={"space-between"} align={"center"}>
+                    <HStack gap={"space-32"} justify={"space-between"} align={"center"} paddingInline={"space-12"}>
                         <HStack gap={"space-32"} align={"center"}>
-                            <Box borderWidth={"0 1 0 0"} paddingInline="space-16" >
+                            <Box borderWidth={"0 1 0 0"} paddingInline="space-16">
 
-                            <HStack gap={"space-8"} align={"center"}>
-                                <Label>Sak Id:</Label>
-                                <BodyShort>{sakId}</BodyShort>
-                            </HStack>
+                                <HStack gap={"space-8"} align={"center"}>
+                                    <Label>Sak Id:</Label>
+                                    <Link href={`/person/${person.personId}/saker/${sakId}`}>{sakId}</Link>
+                                </HStack>
                             </Box>
                             <HStack gap={"space-12"} align={"center"}>
 
-                                <Checkbox name="simulering" value="true">
+                                <Checkbox name="simulering" value="true" defaultChecked={true}>
                                     Simuler migrering
                                 </Checkbox>
                                 <DatePicker {...datepickerProps} >
@@ -72,7 +76,8 @@ export default function StartMigrering({sakId}: { sakId: string }) {
                                 </DatePicker>
                             </HStack>
                         </HStack>
-                        <Button type="submit" loading={startMigreringForm.formState.submitStatus === 'submitting'} size={"small"}>Start
+                        <Button type="submit" loading={startMigreringForm.formState.submitStatus === 'submitting'}
+                                size={"small"}>Start
                             migrering</Button>
                     </HStack>
                 </Box>

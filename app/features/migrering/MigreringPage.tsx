@@ -3,17 +3,22 @@ import {handleActions} from "~/features/handle-actions";
 import invariant from "tiny-invariant";
 import StartMigrering from "~/features/migrering/StartMigrering";
 import {PersonBoks} from "~/features/person/components/person-boks/PersonBoks";
+import {hentPerson} from "~/features/person/clients/person-client.server";
 
 export async function action({request, params}: ActionFunctionArgs) {
     return await handleActions(request, params);
 }
 
-export async function loader({params}: ActionFunctionArgs) {
+export async function loader({params, request}: ActionFunctionArgs) {
     invariant(params.sakId, "sakId is required");
+    invariant(params.personId, "personId is required");
+
+    const person = await hentPerson(request, Number(params.personId))
+
 
     return {
         sakId: params.sakId,
-        person: {etternavn: "test", fodselsnummer: "12345678901", fornavn: "test", personId: 123}
+        person
     }
 }
 
@@ -22,7 +27,7 @@ export default function MigreringPage() {
     return (
         <>
             <PersonBoks person={person}/>
-            <StartMigrering sakId={sakId}/>
+            <StartMigrering sakId={sakId} person={person} />
             <div className={`main flex gap-4`}>
                 <Outlet/>
             </div>
