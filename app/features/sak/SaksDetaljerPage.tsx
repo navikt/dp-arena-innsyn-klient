@@ -95,7 +95,7 @@ export default function SaksDetaljer() {
                         </HStack>
                     </HStack>
                     <WithFeatureEnabled enabled={kanStarteMigrering}>
-                        <Button as={Link} to={`/saker/${sak.sakId}/migreringer`} size="medium" disabled={sak.statuskode !== 'AKTIV'}>Migrer sak</Button>
+                        <Button as={Link} to={sak.statuskode !== 'AKTIV' ? '#' : `/saker/${sak.sakId}/migreringer`} size="medium" disabled={sak.statuskode !== 'AKTIV'}>Migrer sak</Button>
                     </WithFeatureEnabled>
                 </HStack>
                 <div className={"card"}>

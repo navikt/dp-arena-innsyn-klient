@@ -44,7 +44,7 @@ export default function MigreringList() {
                             <aside className={"flex flex-col gap-4"}>
                                 <div className={"card flex flex-col gap-4 p-4"}>
 
-                                    <Heading size={"small"}>Migreringer for sak {sakId} </Heading>
+                                    <Heading size={"small"}>Migreringer ({migreringer.length})</Heading>
                                     {migreringer.length === 0 && (
                                         <BodyShort size={"small"}>Ingen migreringer funnet for denne saken</BodyShort>
                                     )}
