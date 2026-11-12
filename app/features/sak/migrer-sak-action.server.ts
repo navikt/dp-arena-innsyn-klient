@@ -10,7 +10,7 @@ const startMigreringSchema: z.ZodType<components["schemas"]["StartMigreringReque
     simulering: z.boolean(),
 });
 
-export async function migrerSakAction(request: Request, sakId: string, formData: FormData) {
+export async function migrerSakAction(request: Request, sakId: string, personId: string, formData: FormData) {
     if (!unleash.isEnabled("dp-migrering.start-migrering")) {
         throw new Response("Migrering er ikke tilgjengelig", {status: 403});
     }
@@ -27,5 +27,5 @@ export async function migrerSakAction(request: Request, sakId: string, formData:
     logger.info(`Starter migrering for sakId=${sakId} med input: ${JSON.stringify(resultat.data)}`);
     const migrering = await migrerSak(sakId, request, resultat.data);
 
-    return redirect(`/saker/${sakId}/migreringer/${migrering.migreringId}`);
+    return redirect(`/migrering/person/${personId}/saker/${sakId}/migreringer/${migrering.migreringId}`);
 }
