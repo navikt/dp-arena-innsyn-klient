@@ -7,17 +7,20 @@ export default [
         route("person/:personId", "features/person/PersonPage.tsx", [
             route("saker", "features/sak/SaksListePage.tsx", [
                 route(":sakId", "features/sak/SaksDetaljerPage.tsx"),
-                route(":sakId/start-migrering", "features/sak/StartMigreringDialog.tsx"),
-
             ])
         ]),
-        route("api/internal", "features/api/index.ts",[
+        route("migrering/:sakId", "features/migrering/StartMigreringPage.tsx"),
+        route("api/internal", "features/api/index.ts", [
             route("isReady", "features/api/is-ready.ts"),
             route("isAlive", "features/api/is-alive.ts"),
             route("metrics", "features/api/metrics.ts")
 
         ])
-    ])
+    ]),
+    route(
+        "api/migrering/:migreringId/oppdateringer",
+        "features/migrering/oppdateringer.ts",
+    ),
+    route("api/migrering/hendelse/:hendelseId", "features/migrering/hendelse.ts"),
 
 ] satisfies RouteConfig;
-

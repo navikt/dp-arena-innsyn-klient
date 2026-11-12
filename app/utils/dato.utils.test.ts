@@ -15,7 +15,13 @@ describe("formaterTilNorskDato", () => {
   });
 
   it("formaterer en ISO-streng med klokkeslett", () => {
-    expect(formaterTilNorskDato("2021-01-31T12:30:45", true)).toBe("31.01.2021 - 12:30:45");
+    expect(formaterTilNorskDato("2021-01-31T12:30:45", true)).toBe("31.01.2021 12:30:45");
+  });
+
+  it("returnerer tankestrek når datoen mangler", () => {
+    expect(formaterTilNorskDato(null)).toBe("—");
+    expect(formaterTilNorskDato(undefined)).toBe("—");
+    expect(formaterTilNorskDato(undefined, true)).toBe("—");
   });
 
   it("kaster feil for ugyldig datoformat", () => {

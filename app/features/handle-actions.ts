@@ -15,10 +15,7 @@ export async function handleActions(request: Request, params: ActionFunctionArgs
 
         case "migrer-sak":
             invariant(params.sakId, "params.sakId er påkrevd for migrer-sak action");
-            invariant(params.personId, "params.personId er påkrevd for migrer-sak action");
-            await migrerSakAction(request, params.sakId, formData);
-            return redirect(`/person/${params.personId}/saker/${params.sakId}`);
-
+            return await migrerSakAction(request, params.sakId, formData);
         default:
             logger.warn(`Ukjent action: ${actionToRun}`);
             if (getEnv("IS_LOCALHOST") === "true") {

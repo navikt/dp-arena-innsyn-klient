@@ -5,35 +5,15 @@ import {arenaMigreringClient} from "~/utils/client.utils.server";
 import type {components} from "../../../../openapi/arena-migrering-typer";
 
 
-export async function hentMigreringDatagrunnlag(request: Request, sakId: string): Promise<components["schemas"]["MigreringGrunnlag"]> {
+export type StartMigreringResponse = components["schemas"]["StartMigreringResponse"];
+
+export async function migrerSak(sakId: string, request: Request, grunnlag: components["schemas"]["StartMigreringRequest"]) {
     const onBehalfOfToken = await getSaksbehandlingOboToken(request);
 
-    const {data, error, response} = await arenaMigreringClient.GET("/arena/migrering/sak/{sakId}", {
+    const {data, error, response} = await arenaMigreringClient.POST("/arena/migrering/sak/{sakId}", {
         headers: getHeaders(onBehalfOfToken),
         params: {
             path: {sakId: sakId},
-        },
-    });
-
-
-    if (data) {
-        return data;
-    }
-
-    if (error) {
-        handleHttpProblem(error);
-    }
-
-    throw new Error(`Uhåndtert feil ved migrering. ${response.status} - ${response.statusText}`);
-}
-
-export async function migrerSak(request: Request, grunnlag: components["schemas"]["StartMigrering"]) {
-    const onBehalfOfToken = await getSaksbehandlingOboToken(request);
-
-    const {error, response} = await arenaMigreringClient.POST("/arena/migrering/sak/{sakId}", {
-        headers: getHeaders(onBehalfOfToken),
-        params: {
-            path: {sakId: grunnlag.sakId.toString()},
         },
         body: grunnlag,
     });
@@ -42,8 +22,8 @@ export async function migrerSak(request: Request, grunnlag: components["schemas"
         handleHttpProblem(error);
     }
 
-    if (response.status === 202) {
-        return null;
+    if (response.status === 201) {
+        return data as components["schemas"]["StartMigreringResponse"];
     }
 
     throw new Error(`Uhåndtert feil ved migrering. ${response.status} - ${response.statusText}`);

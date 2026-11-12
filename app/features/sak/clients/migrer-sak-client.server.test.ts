@@ -11,28 +11,32 @@ vi.mock("~/utils/client.utils.server", () => ({
 }));
 
 const request = new Request("http://localhost/");
-const grunnlag: components["schemas"]["StartMigrering"] = {
+const sakId = "123";
+const grunnlag: components["schemas"]["StartMigreringRequest"] = {
+    simulering: false,
+    migreringsTidspunkt: "2026-01-01",
+};
+const migrering: components["schemas"]["StartMigreringResponse"] = {
     sakId: 123,
     initiertAv: "test-saksbehandler",
     ident: "syntetisk-ident",
-    innvilgetFraOgMed: "2026-01-01",
     migreringId: "00000000-0000-0000-0000-000000000000",
-    opplysninger: [],
+    simulering: false,
 };
 
 beforeEach(() => vi.clearAllMocks());
 
 describe("migrerSak", () => {
-    it("godtar 202 Accepted uten responsinnhold", async () => {
+    it("returnerer migreringssvaret ved 201 Created", async () => {
         vi.mocked(arenaMigreringClient.POST).mockResolvedValue({
-            response: new Response(null, {status: 202}),
-            data: undefined,
+            response: new Response(null, {status: 201}),
+            data: migrering,
         });
 
-        await expect(migrerSak(request, grunnlag)).resolves.toBeNull();
+        await expect(migrerSak(sakId, request, grunnlag)).resolves.toEqual(migrering);
         expect(arenaMigreringClient.POST).toHaveBeenCalledWith("/arena/migrering/sak/{sakId}", {
             headers: expect.objectContaining({"Content-Type": "application/json"}),
-            params: {path: {sakId: "123"}},
+            params: {path: {sakId}},
             body: grunnlag,
         });
     });
@@ -43,15 +47,16 @@ describe("migrerSak", () => {
             error: {type: "about:blank", title: "Konflikt", status: 409},
         });
 
-        await expect(migrerSak(request, grunnlag)).rejects.toMatchObject({status: 409});
+        await expect(migrerSak(sakId, request, grunnlag)).rejects.toMatchObject({status: 409});
     });
 
     it("avviser uventede svar", async () => {
         vi.mocked(arenaMigreringClient.POST).mockResolvedValue({
             response: new Response(null, {status: 200}),
-            data: undefined,
+            data: migrering,
         });
 
-        await expect(migrerSak(request, grunnlag)).rejects.toThrow("Uhåndtert feil ved migrering. 200");
+        await expect(migrerSak(sakId, request, grunnlag))
+            .rejects.toThrow("Uhåndtert feil ved migrering. 200");
     });
 });

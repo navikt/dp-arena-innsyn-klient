@@ -4,36 +4,55 @@
  */
 
 export interface paths {
-    "/arena/migrering/sak/{sakId}": {
+    "/arena/migrering/hendelse/{hendelseId}": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** Henter datagrunnlag for migrering av en sak fra Arena */
+        /**
+         * Henter en lagret hendelse for én migrering
+         * @description Krever saksbehandlergruppe og tilgang til personen i StPeter.
+         */
         get: {
             parameters: {
                 query?: never;
                 header?: never;
                 path: {
-                    sakId: string;
+                    hendelseId: number;
                 };
                 cookie?: never;
             };
             requestBody?: never;
             responses: {
-                /** @description OK */
+                /** @description Hendelsen ble funnet */
                 200: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["MigreringGrunnlag"];
+                        "application/json": components["schemas"]["MigreringHendelseResponse"];
                     };
                 };
-                /** @description Feil ved henting av datagrunnlag for migrering */
-                default: {
+                /** @description Ugyldig HendelseId */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["HttpProblem"];
+                    };
+                };
+                /** @description Manglende eller ugyldig autentisering */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Ingen tilgang til personen eller hendelsen finnes ikke */
+                403: {
                     headers: {
                         [name: string]: unknown;
                     };
@@ -43,6 +62,118 @@ export interface paths {
                 };
             };
         };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/arena/migrering/{migreringId}/oppdateringer": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Strømmer lagrede hendelser for én migrering
+         * @description Krever saksbehandlergruppe og tilgang til personen i StPeter.
+         *     Hendelser sendes i stigende database-ID med hendelsesnavnet som `event`,
+         *     database-ID som `id` og lagret hendelses-JSON som `data`.
+         *     Uten cursor sendes historikken fra starten. Ved gjenoppkobling sendes bare
+         *     hendelser med ID større enn cursor. `Last-Event-ID` har forrang over `since`.
+         *     Strømmen sender `event: ping` med `data: {}` etter 20 sekunder uten hendelser.
+         *     Etter 15 minutter, eller før token utløper, sendes `event: close` med
+         *     `data: {"reason":"reauth"}`. Klienten må da hente et nytt token og koble til
+         *     med siste mottatte hendelses-ID. Hendelser hentes i puljer på 10, med
+         *     to sekunders pause når det ikke finnes nye hendelser.
+         *     Bruk en SSE-klient som kan sende Authorization-header.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    since?: number;
+                };
+                header?: {
+                    "Last-Event-ID"?: number;
+                };
+                path: {
+                    migreringId: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Hendelsesstrøm. Ping og close har ingen hendelses-ID. */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        /**
+                         * @example event: migrering_startet
+                         *     data: {"status":"startet"}
+                         *     id: 42
+                         */
+                        "text/event-stream": string;
+                    };
+                };
+                /** @description Ugyldig migreringId eller cursor */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["HttpProblem"];
+                    };
+                };
+                /** @description Manglende eller ugyldig autentisering */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Ingen tilgang til personen eller migreringen finnes ikke */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["HttpProblem"];
+                    };
+                };
+                /** @description Grensen på 100 samtidige strømmer per applikasjonsinstans er nådd */
+                429: {
+                    headers: {
+                        /** @description Antall sekunder før klienten kan prøve igjen */
+                        "Retry-After"?: number;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["HttpProblem"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/arena/migrering/sak/{sakId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
         put?: never;
         /** Starter migrering av en sak fra Arena */
         post: {
@@ -56,16 +187,18 @@ export interface paths {
             };
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["StartMigrering"];
+                    "application/json": components["schemas"]["StartMigreringRequest"];
                 };
             };
             responses: {
-                /** @description Accepted */
-                202: {
+                /** @description Created */
+                201: {
                     headers: {
                         [name: string]: unknown;
                     };
-                    content?: never;
+                    content: {
+                        "application/json": components["schemas"]["StartMigreringResponse"];
+                    };
                 };
                 /** @description Feil ved start av migrering */
                 default: {
@@ -88,53 +221,45 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
-        /** @description Opplysningens verdi. Typen avhenger av opplysningen. */
-        Any: string | number | boolean;
-        MigreringGrunnlag: {
+        MigreringHendelseResponse: {
+            /** Format: int64 */
+            id: number;
+            sakId: number;
+            /** Format: uuid */
+            meldingId?: string;
+            initiertAv: string;
+            hendelse: string;
+            data: string;
+            opprinnelse: string;
+            /** Format: date-time */
+            tidspunkt: string;
+        };
+        StartMigreringRequest: {
+            /**
+             * Format: date
+             * @description Dato for når migreringen skal kjøres.
+             */
+            migreringsTidspunkt: string;
+            /**
+             * @description Om migreringen skal kjøres i simuleringsmodus.
+             * @default false
+             */
+            simulering: boolean;
+        };
+        StartMigreringResponse: {
             sakId: number;
             /** Format: uuid */
             migreringId: string;
+            /**
+             * @description Om migreringen skal kjøres i simuleringsmodus.
+             * @default false
+             */
+            simulering: boolean;
             initiertAv: string;
             /** @description Fødselsnummer eller D-nummer til en person. Må være 11 siffer. */
             ident: string;
-            /** Format: date */
-            innvilgetFraOgMed: string;
-            /** Format: date */
-            innvilgetTilOgMed?: string;
-            opplysninger: components["schemas"]["MigreringGrunnlagOpplysning"][];
-        };
-        MigreringGrunnlagOpplysning: {
-            navn: string;
-            verdi?: components["schemas"]["MigreringGrunnlagOpplysningVerdi"];
-            /** Format: date */
-            gyldigFraOgMed?: string;
-            /** Format: uuid */
-            uuid: string;
-        };
-        MigreringGrunnlagOpplysningVerdi: {
-            verdi?: components["schemas"]["Any"];
-            /** @enum {string} */
-            type: "date" | "string" | "integer" | "float" | "boolean";
-        };
-        StartMigrering: {
-            sakId: number;
-            /** Format: uuid */
-            migreringId: string;
-            initiertAv: string;
-            /** @description Fødselsnummer eller D-nummer til en person. Må være 11 siffer. */
-            ident: string;
-            /** Format: date */
-            innvilgetFraOgMed: string;
-            /** Format: date */
-            innvilgetTilOgMed?: string;
-            opplysninger: components["schemas"]["StartMigreringOpplysning"][];
-        };
-        StartMigreringOpplysning: {
-            verdi: components["schemas"]["Any"];
-            /** Format: date */
-            gyldigFraOgMed: string;
-            /** Format: uuid */
-            uuid: string;
+            /** Format: date-time */
+            migreringsTidspunkt?: string;
         };
         HttpProblem: {
             /**

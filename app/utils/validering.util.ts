@@ -10,5 +10,16 @@ export function hentValideringForPersonIdent() {
     });
 }
 
+export function validerStartMigrering() {
+    return z.object({
+        simulering: z
+            .enum(["true"])
+            .optional()
+            .transform((value) => value === "true"),
+        migreringsTidspunkt: z.iso.date({
+            error: "Velg en gyldig migreringsdato",
+        }),
+    });
+}
 
 
