@@ -18,7 +18,7 @@
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@nais/apm": "0.7.3",
-    "@navikt/aksel-icons": "^8.16.2",
+    "@navikt/aksel-icons": "^8.22.1",
     "@navikt/ds-css": "^8.16.2",
     "@navikt/ds-react": "^8.16.2",
     "@navikt/ds-tailwind": "^8.16.2",
