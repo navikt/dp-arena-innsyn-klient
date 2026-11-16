@@ -1,10 +1,14 @@
-import {Accordion, BodyShort, Button, List, Table, Tag} from "@navikt/ds-react";
+import {Accordion, BodyShort, Button, HStack, List, Table, Tag} from "@navikt/ds-react";
 import {z} from "zod";
 import {useFetcher} from "react-router";
 import type {loader} from "~/features/migrering/hendelse";
 import type {Migreringshendelse as Hendelse} from "~/features/migrering/use-migreringshendelser";
 import type {MigreringHendelseResponse} from "~/features/migrering/clients/hendelse-client.server";
-import {lesHendelsesdata, MigreringshendelseRawVisningDialog} from "~/features/migrering/components/MigreringshendelseRawVisningDialog";
+import {
+    lesHendelsesdata,
+    MigreringshendelseRawVisningDialog
+} from "~/features/migrering/components/MigreringshendelseRawVisningDialog";
+import {ArrowLeftIcon, ArrowRightIcon} from "@navikt/aksel-icons";
 
 
 export function Migreringshendelse({hendelse}: { hendelse: Hendelse }) {
@@ -25,7 +29,14 @@ export function Migreringshendelse({hendelse}: { hendelse: Hendelse }) {
             }
         }}>
             <Accordion.Header>
-                <HendelseTag hendelse={hendelse}/>
+                <HStack gap={"space-12"}>
+                    <HendelseTag hendelse={hendelse}/>
+                    {hendelse.opprinnelse === "Intern" ? <ArrowRightIcon fontSize={"1.5rem"}/> :
+                        <ArrowLeftIcon fontSize={"1.5rem"}/>}
+                    <Tag variant={"moderate"} size={"small"} data-color={"neutral"}>
+                        DP-SAK
+                    </Tag>
+                </HStack>
             </Accordion.Header>
             <Accordion.Content>
                 <>
@@ -34,7 +45,8 @@ export function Migreringshendelse({hendelse}: { hendelse: Hendelse }) {
                     {fetcher.data?.feil && (
                         <>
                             <p role="alert">{fetcher.data.feil}</p>
-                            <Button type="button" size="small" variant="secondary" onClick={hentDetaljer} disabled={laster}>
+                            <Button type="button" size="small" variant="secondary" onClick={hentDetaljer}
+                                    disabled={laster}>
                                 Prøv igjen
                             </Button>
                         </>
@@ -55,7 +67,8 @@ export function Migreringshendelse({hendelse}: { hendelse: Hendelse }) {
                                 (
                                     <Table.ExpandableRow key={hendelse.id}
                                                          content={innhold && !innhold.feil
-                                                             ? <Tilleggsinfo hendelse={fetcher.data.hendelse} data={innhold.data}/>
+                                                             ? <Tilleggsinfo hendelse={fetcher.data.hendelse}
+                                                                             data={innhold.data}/>
                                                              : null}
                                                          expandOnRowClick
                                     >
@@ -92,7 +105,9 @@ function HendelseTag({hendelse}: { hendelse: Hendelse }) {
 
 function Tilleggsinfo({hendelse, data}: { hendelse: MigreringHendelseResponse; data: unknown }) {
     switch (hendelse.hendelse) {
-        case "MIGRERING_STARTET_MED_MANGLENDE_OPPLYSNINGER":
+        case "MIGRERING_STARTET_MANGLENDE_OPPLYSNINGER":
+            return <TilleggsinfoManglerOpplysninger data={data}/>;
+        case "MIGRERING_STARTET_OPPLYSNINGER":
             return <TilleggsinfoManglerOpplysninger data={data}/>;
         case "MIGRERING_AVBRUTT":
             return <TilleggsinfoAvbrutt data={data}/>;
@@ -118,14 +133,15 @@ function TilleggsinfoWrap({children}: { children: React.ReactNode }) {
 }
 
 const manglendeOpplysningerSchema = z.object({
-    manglendeOpplysninger: z.array(z.object({navn: z.string(), uuid: z.string()})).nullable(),
+    manglendeOpplysninger: z.array(z.object({navn: z.string(), uuid: z.string()})).nullable().optional(),
     opplysninger: z.array(z.object({navn: z.string(), uuid: z.string()})).optional(),
 });
 
-function TilleggsinfoManglerOpplysninger({data}: {data: unknown}) {
+function TilleggsinfoManglerOpplysninger({data}: { data: unknown }) {
     const resultat = manglendeOpplysningerSchema.safeParse(data);
     if (!resultat.success) {
-        return <p role="alert">Hendelsen har et ukjent format. Se den opprinnelige meldingen. {JSON.stringify(resultat.error)}</p>;
+        return <p role="alert">Hendelsen har et ukjent format. Se den opprinnelige
+            meldingen. {JSON.stringify(resultat.error)}</p>;
     }
     const opplysninger = resultat.data;
     return (
@@ -133,19 +149,22 @@ function TilleggsinfoManglerOpplysninger({data}: {data: unknown}) {
             <Table.Row>
                 <Table.HeaderCell>Manglende opplysninger</Table.HeaderCell>
                 <Table.DataCell>
-                    <List as="ul" size={"small"}>
-                        {opplysninger.manglendeOpplysninger?.map((opplysning, index) => (
-                            <List.Item key={index} title={opplysning.navn}>
-                                {opplysning.uuid}
-                            </List.Item>
-                        ))}
-                    </List>
+                    {opplysninger.manglendeOpplysninger?.length === 0 || opplysninger.manglendeOpplysninger == null ?
+                        <BodyShort size={"small"}>-</BodyShort> :
+                        <List as="ul" size={"small"}>
+                            {opplysninger.manglendeOpplysninger?.map((opplysning, index) => (
+                                <List.Item key={index} title={opplysning.navn}>
+                                    {opplysning.uuid}
+                                </List.Item>
+                            ))}
+                        </List>}
                 </Table.DataCell>
             </Table.Row>
             <Table.Row>
                 <Table.HeaderCell>Opplysninger</Table.HeaderCell>
                 <Table.DataCell>
-                    {opplysninger.opplysninger?.length === 0 ? <BodyShort size={"small"}>Ingen opplysninger</BodyShort> :
+                    {opplysninger.opplysninger?.length === 0 || opplysninger.opplysninger == null ?
+                        <BodyShort size={"small"}>-</BodyShort> :
                         <List as="ul" size={"small"}>
                             {opplysninger.opplysninger?.map((opplysning, index) => (
                                 <List.Item key={index} title={opplysning.navn}>
@@ -159,7 +178,7 @@ function TilleggsinfoManglerOpplysninger({data}: {data: unknown}) {
     );
 }
 
-function TilleggsinfoAvbrutt({data}: {data: unknown}) {
+function TilleggsinfoAvbrutt({data}: { data: unknown }) {
     const resultat = z.object({årsak: z.json()}).safeParse(data);
     if (!resultat.success) {
         return <p role="alert">Hendelsen har et ukjent format. Se den opprinnelige meldingen.</p>;

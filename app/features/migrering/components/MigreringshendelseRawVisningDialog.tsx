@@ -1,5 +1,5 @@
 import {useRef} from "react";
-import {Button, HStack, Modal} from "@navikt/ds-react";
+import {Button, HStack, Modal, CopyButton, Box} from "@navikt/ds-react";
 
 export function lesHendelsesdata(tekst: string) {
     let data: unknown;
@@ -30,11 +30,16 @@ export function MigreringshendelseRawVisningDialog({tekst}: {tekst: string}) {
 
             <Modal ref={ref} header={{heading: "Raw melding"}} size={"medium"} width={"100%"}>
                 <Modal.Body>
-                    <pre  style={{
+                    <CopyButton copyText={tekst} text={"Kopier melding"} activeText={"Kopiert!"} />
+                    <Box padding={"space-32"} background={"neutral-moderate"} borderRadius={"12"} borderWidth={"1"} borderColor={"neutral-subtle"} as={"pre"}  style={{
                         whiteSpace: "pre-wrap",
                         fontSize: "0.75rem",
                         fontFamily: "monospace",
-                    }}>{tekst}</pre>
+                    }}>
+                        {tekst}
+                    </Box>
+
+
                 </Modal.Body>
                 <Modal.Footer>
 

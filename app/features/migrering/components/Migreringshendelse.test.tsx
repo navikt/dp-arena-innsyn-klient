@@ -49,7 +49,7 @@ describe("Migreringshendelse", () => {
     it("henter detaljer ved forste apning og gjenbruker dem ved ny apning", async () => {
         const loader = vi.fn().mockReturnValue({hendelse: detaljer, feil: null});
         visHendelser(loader);
-        const knapp = screen.getByRole("button", {name: "MIGRERING_STARTET"});
+        const knapp = screen.getByRole("button", {name: "MIGRERING_STARTET DP-SAK"});
         expect(loader).not.toHaveBeenCalled();
 
         fireEvent.click(knapp);
@@ -72,7 +72,7 @@ describe("Migreringshendelse", () => {
         });
         const loader = vi.fn().mockReturnValue(promise);
         visHendelser(loader);
-        const knapp = screen.getByRole("button", {name: "MIGRERING_STARTET"});
+        const knapp = screen.getByRole("button", {name: "MIGRERING_STARTET DP-SAK"});
 
         fireEvent.click(knapp);
         expect(await screen.findByRole("status")).toHaveTextContent("Henter hendelsen.");
@@ -93,7 +93,7 @@ describe("Migreringshendelse", () => {
             .mockReturnValueOnce({hendelse: detaljer, feil: null});
         visHendelser(loader);
 
-        fireEvent.click(screen.getByRole("button", {name: "MIGRERING_STARTET"}));
+        fireEvent.click(screen.getByRole("button", {name: "MIGRERING_STARTET DP-SAK"}));
         expect(await screen.findByRole("alert")).toHaveTextContent("Du har ikke tilgang");
 
         fireEvent.click(screen.getByRole("button", {name: "Prøv igjen"}));
@@ -116,12 +116,12 @@ describe("Migreringshendelse", () => {
             {id: 43, hendelse: "ANDRE"},
         ]);
 
-        fireEvent.click(screen.getByRole("button", {name: "FORSTE"}));
+        fireEvent.click(screen.getByRole("button", {name: "FORSTE DP-SAK"}));
         expect(within(await apneRawMelding()).getByText(/Detaljer 42/)).toBeVisible();
         fireEvent.click(screen.getAllByRole("button", {name: "Lukk"})[1]);
         expect(loader).toHaveBeenCalledTimes(1);
 
-        fireEvent.click(screen.getByRole("button", {name: "ANDRE"}));
+        fireEvent.click(screen.getByRole("button", {name: "ANDRE DP-SAK"}));
         await waitFor(() => expect(screen.getAllByRole("button", {name: "Vis raw melding"})).toHaveLength(2));
         const knapper = screen.getAllByRole("button", {name: "Vis raw melding"});
         fireEvent.click(knapper[1]);
@@ -134,7 +134,7 @@ describe("Migreringshendelse", () => {
         const loader = vi.fn();
         visHendelser(loader, [{hendelse: "UTEN_ID"}]);
 
-        fireEvent.click(screen.getByRole("button", {name: "UTEN_ID"}));
+        fireEvent.click(screen.getByRole("button", {name: "UTEN_ID DP-SAK"}));
         expect(screen.getByRole("alert")).toHaveTextContent("Hendelsen mangler en ID");
         expect(loader).not.toHaveBeenCalled();
     });
@@ -146,7 +146,7 @@ describe("Migreringshendelse", () => {
         });
         const {container} = visHendelser(loader);
 
-        fireEvent.click(screen.getByRole("button", {name: "MIGRERING_STARTET"}));
+        fireEvent.click(screen.getByRole("button", {name: "MIGRERING_STARTET DP-SAK"}));
         expect(within(await apneRawMelding()).getByText("<script>sensitivtInnhold()</script>")).toBeVisible();
         expect(screen.getByRole("alert")).toHaveTextContent("Viser originalteksten.");
         expect(container.querySelector("script")).toBeNull();
@@ -159,7 +159,7 @@ describe("Migreringshendelse", () => {
         });
         visHendelser(loader);
 
-        fireEvent.click(screen.getByRole("button", {name: "MIGRERING_STARTET"}));
+        fireEvent.click(screen.getByRole("button", {name: "MIGRERING_STARTET DP-SAK"}));
         expect(within(await apneRawMelding()).getByText(/Listeinnhold/)).toBeVisible();
         expect(screen.queryByRole("alert")).not.toBeInTheDocument();
     });
@@ -171,7 +171,7 @@ describe("Migreringshendelse", () => {
         });
         visHendelser(loader);
 
-        fireEvent.click(screen.getByRole("button", {name: "MIGRERING_STARTET"}));
+        fireEvent.click(screen.getByRole("button", {name: "MIGRERING_STARTET DP-SAK"}));
         expect(await screen.findByRole("alert")).toHaveTextContent("Viser originalteksten.");
         expect(within(await apneRawMelding()).getByText(tekst)).toBeVisible();
     });
@@ -186,7 +186,7 @@ describe("Migreringshendelse", () => {
             feil: null,
         });
         visHendelser(loader);
-        fireEvent.click(screen.getByRole("button", {name: "MIGRERING_STARTET"}));
+        fireEvent.click(screen.getByRole("button", {name: "MIGRERING_STARTET DP-SAK"}));
         await screen.findByRole("button", {name: "Vis raw melding"});
 
     });
@@ -195,7 +195,7 @@ describe("Migreringshendelse", () => {
         const loader = vi.fn().mockReturnValue({
             hendelse: {
                 ...detaljer,
-                hendelse: "MIGRERING_STARTET_MED_MANGLENDE_OPPLYSNINGER",
+                hendelse: "MIGRERING_STARTET_MANGLENDE_OPPLYSNINGER",
                 data: JSON.stringify({
                     manglendeOpplysninger: [{navn: "Eksempelopplysning", uuid: "opplysning-1"}],
                     opplysninger: [],
@@ -204,13 +204,13 @@ describe("Migreringshendelse", () => {
             feil: null,
         });
         visHendelser(loader);
-        fireEvent.click(screen.getByRole("button", {name: "MIGRERING_STARTET"}));
+        fireEvent.click(screen.getByRole("button", {name: "MIGRERING_STARTET DP-SAK"}));
         await screen.findByRole("button", {name: "Vis raw melding"});
 
         fireEvent.click(screen.getByRole("button", {name: "Vis mer"}));
         expect(screen.getByText("Eksempelopplysning")).toBeVisible();
         expect(screen.getByText("opplysning-1")).toBeVisible();
-        expect(screen.getByText("Ingen opplysninger")).toBeVisible();
+        expect(screen.getByText("-")).toBeVisible();
         expect(screen.queryByRole("alert")).not.toBeInTheDocument();
     });
 
@@ -224,7 +224,7 @@ describe("Migreringshendelse", () => {
             feil: null,
         });
         visHendelser(loader);
-        fireEvent.click(screen.getByRole("button", {name: "MIGRERING_STARTET"}));
+        fireEvent.click(screen.getByRole("button", {name: "MIGRERING_STARTET DP-SAK"}));
         await screen.findByRole("button", {name: "Vis raw melding"});
 
         fireEvent.click(screen.getByRole("button", {name: "Vis mer"}));

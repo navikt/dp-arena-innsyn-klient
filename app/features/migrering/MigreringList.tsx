@@ -1,6 +1,6 @@
 import {type ActionFunctionArgs, Link, type LoaderFunctionArgs, Outlet, useLoaderData, useParams} from "react-router";
 import invariant from "tiny-invariant";
-import {BodyShort, Button, Heading, HGrid, HStack, LinkCard, Page, Tag, VStack} from "@navikt/ds-react";
+import {BodyShort, Box, Button, Heading, HGrid, HStack, LinkCard, Page, Tag, VStack} from "@navikt/ds-react";
 import {ChevronLeftDoubleIcon, ChevronRightDoubleIcon, MigrationIcon} from "@navikt/aksel-icons";
 import {useState} from "react";
 import {AnimatePresence, motion} from "motion/react";
@@ -83,15 +83,20 @@ export default function MigreringList() {
                                                                     </Tag>
                                                                 }
                                                             </HStack>
+                                                            <Box>
+
                                                             <Tag
                                                                 // key={sak.sakId}
                                                                 size={"small"}
                                                                 variant={"moderate"}
                                                                 data-color={migrering.status?.endsWith("AVBRUTT") ? "danger" : "success"}
-                                                                className={"whitespace-nowrap"}
+                                                                className={"whitespace-nowrap overflow-hidden text-ellipsis max-w-75 content-center inline-block"}
+
+
                                                             >
                                                                 {migrering.status}
                                                             </Tag>
+                                                            </Box>
                                                         </VStack>
                                                     </LinkCard.Title>
                                                     <LinkCard.Description>
