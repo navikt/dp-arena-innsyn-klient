@@ -87,7 +87,7 @@ jobs:
         run: pnpm install --ignore-scripts --prod
 
       - name: Bygg og push Docker image
-        uses: nais/docker-build-push@v0
+        uses: nais/docker-build-push@v1
         id: docker-build-push
         with:
           team: teamdagpenger
