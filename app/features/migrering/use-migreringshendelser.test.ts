@@ -113,10 +113,10 @@ describe("useMigreringshendelser", () => {
 
     it.each([
         "MIGRERING_STARTET",
-        "MIGRERING_STARTET_MED_MANGLENDE_OPPLYSNINGER",
+        "MIGRERING_MANGLENDE_OPPLYSNINGER",
         "MIGRERING_AVBRUTT",
         "migrering_startet",
-        "migrering_startet_med_manglende_opplysninger",
+        "migrering_manglende_opplysninger",
         "migrering_avbrutt",
     ])(
         "leser SSE-feltene event og id for %s",

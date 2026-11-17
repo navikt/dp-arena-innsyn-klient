@@ -105,12 +105,18 @@ function HendelseTag({hendelse}: { hendelse: Hendelse }) {
 
 function Tilleggsinfo({hendelse, data}: { hendelse: MigreringHendelseResponse; data: unknown }) {
     switch (hendelse.hendelse) {
-        case "MIGRERING_STARTET_MANGLENDE_OPPLYSNINGER":
+        case "MIGRERING_MANGLENDE_OPPLYSNINGER":
             return <TilleggsinfoManglerOpplysninger data={data}/>;
-        case "MIGRERING_STARTET_OPPLYSNINGER":
+        case "MIGRERING_OPPLYSNINGER":
+            return <TilleggsinfoManglerOpplysninger data={data}/>;
+            case "MIGRERING_SIMULERING_RESULTAT":
             return <TilleggsinfoManglerOpplysninger data={data}/>;
         case "MIGRERING_AVBRUTT":
             return <TilleggsinfoAvbrutt data={data}/>;
+        case "BEHANDLING_OPPRETTET":
+            return <BodyShort size={"small"}>🍾</BodyShort>
+        case "FORSLAG_TIL_BEHANDLINGSRESULTAT":
+            return <BodyShort size={"small"}>🚀</BodyShort>;
         default:
             return <BodyShort size={"small"}>Ingen tilleggsinformasjon tilgjengelig for denne hendelsen.</BodyShort>;
     }
@@ -135,6 +141,7 @@ function TilleggsinfoWrap({children}: { children: React.ReactNode }) {
 const manglendeOpplysningerSchema = z.object({
     manglendeOpplysninger: z.array(z.object({navn: z.string(), uuid: z.string()})).nullable().optional(),
     opplysninger: z.array(z.object({navn: z.string(), uuid: z.string()})).optional(),
+    simulerteOpplysninger: z.array(z.object({navn: z.string(), uuid: z.string()})).optional(),
 });
 
 function TilleggsinfoManglerOpplysninger({data}: { data: unknown }) {
@@ -146,34 +153,50 @@ function TilleggsinfoManglerOpplysninger({data}: { data: unknown }) {
     const opplysninger = resultat.data;
     return (
         <TilleggsinfoWrap>
-            <Table.Row>
-                <Table.HeaderCell>Manglende opplysninger</Table.HeaderCell>
-                <Table.DataCell>
-                    {opplysninger.manglendeOpplysninger?.length === 0 || opplysninger.manglendeOpplysninger == null ?
-                        <BodyShort size={"small"}>-</BodyShort> :
-                        <List as="ul" size={"small"}>
-                            {opplysninger.manglendeOpplysninger?.map((opplysning, index) => (
-                                <List.Item key={index} title={opplysning.navn}>
-                                    {opplysning.uuid}
-                                </List.Item>
-                            ))}
-                        </List>}
-                </Table.DataCell>
-            </Table.Row>
-            <Table.Row>
-                <Table.HeaderCell>Opplysninger</Table.HeaderCell>
-                <Table.DataCell>
-                    {opplysninger.opplysninger?.length === 0 || opplysninger.opplysninger == null ?
-                        <BodyShort size={"small"}>-</BodyShort> :
-                        <List as="ul" size={"small"}>
-                            {opplysninger.opplysninger?.map((opplysning, index) => (
-                                <List.Item key={index} title={opplysning.navn}>
-                                    {opplysning.uuid}
-                                </List.Item>
-                            ))}
-                        </List>}
-                </Table.DataCell>
-            </Table.Row>
+            {opplysninger.manglendeOpplysninger?.length === 0 || opplysninger.manglendeOpplysninger == null ? null : (
+                <Table.Row>
+                    <Table.HeaderCell style={{verticalAlign: "top"}}>Manglende opplysninger</Table.HeaderCell>
+                    <Table.DataCell>
+                            <List as="ul" size={"small"}>
+                                {opplysninger.manglendeOpplysninger?.map((opplysning, index) => (
+                                    <List.Item key={index} title={opplysning.navn}>
+                                        {opplysning.uuid}
+                                    </List.Item>
+                                ))}
+                            </List>
+                    </Table.DataCell>
+                </Table.Row>
+            )}
+
+            {opplysninger.simulerteOpplysninger?.length === 0 || opplysninger.simulerteOpplysninger == null ? null : (
+                <Table.Row>
+                    <Table.HeaderCell  style={{verticalAlign: "top"}}>Simulerte opplysninger</Table.HeaderCell>
+                    <Table.DataCell>
+                            <List as="ul" size={"small"}>
+                                {opplysninger.simulerteOpplysninger?.map((opplysning, index) => (
+                                    <List.Item key={index} title={opplysning.navn}>
+                                        {opplysning.uuid}
+                                    </List.Item>
+                                ))}
+                            </List>
+                    </Table.DataCell>
+                </Table.Row>
+            )}
+            {opplysninger.opplysninger?.length === 0 || opplysninger.opplysninger == null ? null : (
+                <Table.Row>
+                    <Table.HeaderCell  style={{verticalAlign: "top"}}>Opplysninger</Table.HeaderCell>
+                    <Table.DataCell>
+                            <List as="ul" size={"small"}>
+                                {opplysninger.opplysninger?.map((opplysning, index) => (
+                                    <List.Item key={index} title={opplysning.navn}>
+                                        {opplysning.uuid}
+                                    </List.Item>
+                                ))}
+                            </List>
+                    </Table.DataCell>
+                </Table.Row>
+            )}
+
         </TilleggsinfoWrap>
     );
 }

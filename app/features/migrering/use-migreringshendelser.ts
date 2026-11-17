@@ -21,7 +21,8 @@ function reducer(hendelser: Migreringshendelse[], action: HendelsesAction) {
 
 const hendelsesnavn = [
     "MIGRERING_STARTET",
-    "MIGRERING_STARTET_MED_MANGLENDE_OPPLYSNINGER",
+    "MIGRERING_MANGLENDE_OPPLYSNINGER",
+    "MIGRERING_OPPLYSNINGER",
     "MIGRERING_AVBRUTT",
 ];
 

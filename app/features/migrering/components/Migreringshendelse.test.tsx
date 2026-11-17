@@ -195,7 +195,7 @@ describe("Migreringshendelse", () => {
         const loader = vi.fn().mockReturnValue({
             hendelse: {
                 ...detaljer,
-                hendelse: "MIGRERING_STARTET_MANGLENDE_OPPLYSNINGER",
+                hendelse: "MIGRERING_MANGLENDE_OPPLYSNINGER",
                 data: JSON.stringify({
                     manglendeOpplysninger: [{navn: "Eksempelopplysning", uuid: "opplysning-1"}],
                     opplysninger: [],
@@ -210,7 +210,6 @@ describe("Migreringshendelse", () => {
         fireEvent.click(screen.getByRole("button", {name: "Vis mer"}));
         expect(screen.getByText("Eksempelopplysning")).toBeVisible();
         expect(screen.getByText("opplysning-1")).toBeVisible();
-        expect(screen.getByText("-")).toBeVisible();
         expect(screen.queryByRole("alert")).not.toBeInTheDocument();
     });
 
