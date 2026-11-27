@@ -1,4 +1,4 @@
-import {Accordion, Box, Detail, Heading, HStack, Label, Page, Tag, VStack} from "@navikt/ds-react";
+import {Accordion, Box, Detail, Heading, HGrid, Label, Page, Tag, Tooltip, VStack} from "@navikt/ds-react";
 import {type ActionFunctionArgs, useLoaderData} from "react-router";
 import {handleActions} from "~/features/handle-actions";
 import {useMigreringshendelser} from "~/features/migrering/use-migreringshendelser";
@@ -42,7 +42,7 @@ export default function MigreringDetaljerPage() {
                      padding="space-16"
                      borderWidth="2"
                      borderRadius="12">
-                    <HStack gap={"space-8"} justify={"space-between"} align={"start"}>
+                    <HGrid columns={4} gap={"space-16"}>
                         <VStack gap={"space-4"} align={"start"}>
                             <Label>Sak Id</Label>
                             <Detail>{migrering.sakId}</Detail>
@@ -57,20 +57,29 @@ export default function MigreringDetaljerPage() {
                         </VStack>
                         <VStack gap={"space-4"} align={"start"}>
                             <Label>Migrerings Tidspunkt</Label>
-                            <Detail>{formaterTilNorskDato(migrering.migreringsTidspunkt, true)}</Detail>
+                            <Detail>{formaterTilNorskDato(migrering.migreringsTidspunkt, false)}</Detail>
                         </VStack>
                         <VStack gap={"space-4"} align={"start"}>
-                            <Label>Migrerings Status</Label>
-                            <Tag variant={"moderate"} size={"xsmall"}
-                                 data-color={status?.endsWith("AVBRUTT") ? "danger" : "success"}>
-                                {status}
-                            </Tag>
+                            <Label>Migrering opprettet</Label>
+                            <Detail>{formaterTilNorskDato(migrering.opprettetTidspunkt, true)}</Detail>
                         </VStack>
                         <VStack gap={"space-4"} align={"start"}>
                             <Label>Simulering</Label>
                             {migrering.simulering ? "Ja" : "Nei"}
                         </VStack>
-                    </HStack>
+                        <VStack gap={"space-4"} align={"start"}>
+                            <Label>Status</Label>
+                            <Tag
+                                // key={sak.sakId}
+                                size={"small"}
+                                variant={"moderate"}
+                                data-color={migrering.status?.endsWith("AVBRUTT") ? "danger" : "success"}
+                                // className={"whitespace-nowrap overflow-hidden text-ellipsis max-w-75 content-center inline-block"}
+                            >
+                                {status}
+                            </Tag>
+                        </VStack>
+                    </HGrid>
                 </Box>
                 {/*)}*/}
                 {/*{migreringId && (*/}
